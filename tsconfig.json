@@ -26,6 +26,12 @@
       ],
       "@config/*": [
         "./src/config/*"
+      ],
+      "@core/*": [
+        "./src/@core/*"
+      ],
+      "@infra/*": [
+        "./src/@core/infra/*"
       ]
     }
   }

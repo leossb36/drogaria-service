@@ -9,11 +9,11 @@ export class SwaggerService {
     this.configService = new ConfigService();
   }
   init(app) {
+    if (!this.configService.get('server').isEnabled) return;
     const config = new DocumentBuilder()
       .setTitle(this.configService.get('service').title)
       .setDescription(this.configService.get('service').description)
       .setVersion(this.configService.get('service').version)
-      .addTag(this.configService.get('service').tag)
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document);

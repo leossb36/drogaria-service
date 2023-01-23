@@ -11,6 +11,7 @@ export class ConfigService {
     };
     this.envConfig.server = {
       port: +process.env.SERVICE_PORT,
+      isEnabled: process.env.NODE_ENV === 'development',
     };
     this.envConfig.api = {
       token: process.env.VETOR_API_SECRET,
