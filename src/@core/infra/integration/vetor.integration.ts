@@ -1,5 +1,6 @@
 import { ConfigService } from '@config/configuration.config';
 import { getProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { IProduct } from '@core/application/interface/product.interface';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
@@ -14,7 +15,9 @@ export class VetorIntegrationGateway {
   ) {
     this.baseUrl = this.configService.get('api').url;
     this.headerRequest = {
-      Authorization: `ApiKey ${this.configService.get('api').token}`,
+      Authorization: `${this.configService.get('api').prefix} ${
+        this.configService.get('api').token
+      }`,
     };
   }
 

@@ -1,26 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetProductInformationModelView } from '@core/application/mv/getProductInformation.mv';
-import {
-  IVetorIntegrationRepository,
-  VetorIntegrationRepositoryKey,
-} from '@core/domain/vetor/IVetorRepository';
 import { getProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { VetorIntegrationGateway } from '@core/infra/integration/vetor.integration';
+import { ValidationHelper } from '@core/utils/validation-helper';
 
 @Injectable()
 export class GetProductVetorUseCase {
-  constructor(
-    @Inject(VetorIntegrationRepositoryKey)
-    private readonly vetorRepository: IVetorIntegrationRepository,
-  ) {}
+  constructor(private readonly integration: VetorIntegrationGateway) {}
 
   async execute(
     query: getProductVetorDto,
   ): Promise<GetProductInformationModelView> {
-    const request = await this.vetorRepository.findProducts(query);
+    const request = await this.integration.get(query, '/produtos/consulta');
 
     const { status, data, msg, total } = request;
 
-    if (!!data.length) {
+    if (!data.length || !ValidationHelper.isOk(status)) {
       return;
     }
 
