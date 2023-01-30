@@ -16,6 +16,10 @@ export class SwaggerService {
       .setVersion(this.configService.get('service').version)
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('swagger', app, document);
+    SwaggerModule.setup(
+      `${this.configService.get('server').prefix}/swagger`,
+      app,
+      document,
+    );
   }
 }
