@@ -21,7 +21,10 @@ export class VetorIntegrationGateway {
     };
   }
 
-  async get(params: getProductVetorDto, endpoint: string): Promise<any> {
+  async getProductInfo(
+    params: getProductVetorDto,
+    endpoint: string,
+  ): Promise<any> {
     const { data } = await lastValueFrom(
       this.httpService.get<IProduct>(`${this.baseUrl}${endpoint}`, {
         headers: this.headerRequest,

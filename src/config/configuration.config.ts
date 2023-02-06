@@ -19,6 +19,10 @@ export class ConfigService {
       url: process.env.VETOR_API_URL,
       prefix: process.env.VETOR_API_PREFIX_KEY,
     };
+    this.envConfig.google = {
+      searchEngineId: process.env.GOOGLE_SEARCH_ENGINE_ID,
+      auth: process.env.GOOGLE_API_SECRET,
+    };
   }
   get(key: string): any {
     return this.envConfig[key];

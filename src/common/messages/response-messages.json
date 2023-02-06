@@ -1,0 +1,15 @@
+{
+  "vetor": {
+    "integration": {
+      "get": {
+        "success": "Vetor information successfully returned"
+      },
+      "create": {
+        "success": "Vetor information created successfully"
+      },
+      "exception": {
+        "error": "Cannot execute the action"
+      }
+    }
+  }
+}

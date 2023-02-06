@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class Product {
   @ApiProperty()
@@ -76,4 +76,9 @@ export class Product {
   @ApiProperty()
   @IsDate()
   dtUltimaAlteracao: Date;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
 }

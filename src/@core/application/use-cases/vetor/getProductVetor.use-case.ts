@@ -3,6 +3,7 @@ import { GetProductInformationModelView } from '@core/application/mv/getProductI
 import { getProductVetorDto } from '@core/application/dto/getProductVetor.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
+import * as messages from '@common/messages/response-messages.json';
 
 @Injectable()
 export class GetProductVetorUseCase {
@@ -11,18 +12,21 @@ export class GetProductVetorUseCase {
   async execute(
     query: getProductVetorDto,
   ): Promise<GetProductInformationModelView> {
-    const request = await this.integration.get(query, '/produtos/consulta');
+    const request = await this.integration.getProductInfo(
+      query,
+      '/produtos/consulta',
+    );
 
-    const { status, data, msg, total } = request;
+    const { status, data, total } = request;
 
     if (!data.length || !ValidationHelper.isOk(status)) {
       return;
     }
 
     return {
-      status,
       data,
-      msg,
+      msg: messages.vetor.integration.get.success,
+      status,
       total,
     };
   }
