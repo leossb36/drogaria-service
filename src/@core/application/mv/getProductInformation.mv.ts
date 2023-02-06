@@ -1,20 +1,8 @@
 import { Product } from '@core/infra/integration/model/product.model';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { BaseModelView } from './base.mv';
 
-export class GetProductInformationModelView {
-  @ApiProperty()
-  @IsNumber()
-  status: number;
-
+export class GetProductInformationModelView extends BaseModelView {
   @ApiProperty()
   data: Array<Product>;
-
-  @ApiProperty()
-  @IsString()
-  msg: string;
-
-  @ApiProperty()
-  @IsNumber()
-  total: number;
 }
