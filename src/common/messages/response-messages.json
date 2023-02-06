@@ -5,7 +5,9 @@
         "success": "Vetor information successfully returned"
       },
       "create": {
-        "success": "Vetor information created successfully"
+        "order": {
+          "success": "Order created successfully on Vetor"
+        }
       },
       "exception": {
         "error": "Cannot execute the action"

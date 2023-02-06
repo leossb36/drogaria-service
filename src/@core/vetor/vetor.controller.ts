@@ -1,20 +1,39 @@
-import { getProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { CreateOrderDto } from '@core/application/dto/createOrder.dto';
+import { GetOrderDto } from '@core/application/dto/getOrder.dto';
+import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { CreateOrderInformationModelView } from '@core/application/mv/createOrderInformation.mv';
 import { GetProductInformationModelView } from '@core/application/mv/getProductInformation.mv';
-import { GetProductVetorUseCase } from '@core/application/use-cases/vetor/getProductVetor.use-case';
-import { Controller, Get, Query } from '@nestjs/common';
+import { CreateOrderUseCase } from '@core/application/use-cases/vetor/createOrder.use-case';
+import { GetOrderUseCase } from '@core/application/use-cases/vetor/getOrder.use-case';
+import { GetProductUseCase } from '@core/application/use-cases/vetor/getProduct.use-case';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Vetor')
 @Controller('vetor')
 export class VetorIntegrationController {
   constructor(
-    private readonly getProductVetorUseCase: GetProductVetorUseCase,
+    private readonly getProductUseCase: GetProductUseCase,
+    private readonly createOrderUseCase: CreateOrderUseCase,
+    private readonly getOrderUseCase: GetOrderUseCase,
   ) {}
 
   @Get('/products')
   async getProduct(
-    @Query() query: getProductVetorDto,
+    @Query() query: GetProductVetorDto,
   ): Promise<GetProductInformationModelView> {
-    return this.getProductVetorUseCase.execute(query);
+    return await this.getProductUseCase.execute(query);
+  }
+
+  @Post('/order')
+  async createOrder(
+    @Body() body: CreateOrderDto,
+  ): Promise<CreateOrderInformationModelView> {
+    return await this.createOrderUseCase.execute(body);
+  }
+
+  @Get('/order/status')
+  async getOrderStatus(@Query() query: GetOrderDto) {
+    return await this.getOrderUseCase.execute(query);
   }
 }
