@@ -26,15 +26,19 @@ export class VetorIntegrationGateway {
   async getProductInfo(
     params: GetProductVetorDto,
     endpoint: string,
-  ): Promise<any> {
-    const { data } = await lastValueFrom(
-      this.httpService.get<IProduct>(`${this.baseUrl}${endpoint}`, {
-        headers: this.headerRequest,
-        params: params,
-      }),
-    );
+  ): Promise<IProduct> {
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService.get<IProduct>(`${this.baseUrl}${endpoint}`, {
+          headers: this.headerRequest,
+          params: params,
+        }),
+      );
 
-    return data;
+      return data;
+    } catch (err) {
+      console.error(err.data);
+    }
   }
 
   async getOrderInfo(params: GetOrderDto, endpoint: string): Promise<any> {

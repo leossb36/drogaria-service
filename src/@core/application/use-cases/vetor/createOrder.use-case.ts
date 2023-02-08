@@ -12,16 +12,14 @@ export class CreateOrderUseCase {
   async execute(dto: CreateOrderDto): Promise<CreateOrderInformationModelView> {
     const order = await this.integration.createOrder(dto, '/pedidos');
 
-    const { status, data } = order;
-
-    if (!ValidationHelper.isOk(status)) {
+    if (!order || !ValidationHelper.isOk(order.status)) {
       throw new BadRequestException('Cannot create order');
     }
 
     return {
-      data,
+      data: order.data,
       msg: messages.vetor.integration.create.order.success,
-      status,
+      status: order.status,
     };
   }
 }

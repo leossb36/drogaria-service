@@ -23,6 +23,9 @@ export class ConfigService {
       searchEngineId: process.env.GOOGLE_SEARCH_ENGINE_ID,
       auth: process.env.GOOGLE_API_SECRET,
     };
+    this.envConfig.reference = {
+      referenceName: process.env.REFERENCE_NAME,
+    };
   }
   get(key: string): any {
     return this.envConfig[key];

@@ -15,17 +15,23 @@ export class GoogleApiIntegrationGateway {
   }
 
   async getImageProduct(query: unknown): Promise<any> {
+    const referenceQuery = `${
+      this.configService.get('reference').referenceName
+    } ${query}`;
     const request = await this.customSearch.cse.list({
       auth: this.auth,
       cx: this.searchEngineId,
-      q: query,
+      q: referenceQuery,
       searchType: 'image',
       num: 1,
+      // relatedSite: this.configService.get('reference').url,
     });
 
-    const imageList = request.data.items.map((item) => {
-      return item.link;
-    });
+    const imageList = request.data.items
+      ? request.data.items.map((item) => {
+          return item.link;
+        })
+      : undefined;
 
     return imageList;
   }

@@ -4,10 +4,15 @@ import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
 import * as messages from '@common/messages/response-messages.json';
+import { Product } from '@core/infra/integration/model/product.model';
+import { GoogleApiIntegrationGateway } from '@core/infra/integration/google-api.integration';
 
 @Injectable()
 export class GetProductUseCase {
-  constructor(private readonly integration: VetorIntegrationGateway) {}
+  constructor(
+    private readonly integration: VetorIntegrationGateway,
+    private readonly searchEngine: GoogleApiIntegrationGateway,
+  ) {}
 
   async execute(
     query: GetProductVetorDto,
@@ -23,8 +28,20 @@ export class GetProductUseCase {
       return;
     }
 
+    const products: Product[] = [];
+    for (const product of data) {
+      const imageUrl = await this.searchEngine.getImageProduct(
+        product.descricao,
+      );
+
+      products.push({
+        ...product,
+        imageUrl,
+      });
+    }
+
     return {
-      data,
+      data: products,
       msg: messages.vetor.integration.get.success,
       status,
       total,
