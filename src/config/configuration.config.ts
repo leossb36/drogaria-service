@@ -10,7 +10,7 @@ export class ConfigService {
       tag: process.env.SERVICE_TAG,
     };
     this.envConfig.server = {
-      port: +process.env.SERVICE_PORT,
+      port: +process.env.SERVICE_PORT || 3000,
       isEnabled: process.env.NODE_ENV === 'development',
       prefix: '/api',
     };
