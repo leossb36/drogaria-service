@@ -21,7 +21,7 @@ export class ServerConfig {
     app.setGlobalPrefix(this.configService.get('server').prefix);
     this.swaggerService.init(app);
 
-    await app.listen(port).then(() => {
+    await app.listen(port || 3000).then(() => {
       console.log(`API running on port ${port}`);
     });
   }
