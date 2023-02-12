@@ -13,16 +13,12 @@ export class ServerConfig {
   }
 
   async init() {
-    const port: number = this.configService.get('server').port;
-
     const app = await NestFactory.create(AppModule);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix(this.configService.get('server').prefix);
     this.swaggerService.init(app);
 
-    await app.listen(port || 3000).then(() => {
-      console.log(`API running on port ${port}`);
-    });
+    await app.listen(process.env.SERVICE_PORT || 3000);
   }
 }
