@@ -24,7 +24,7 @@ export class GoogleApiIntegrationGateway {
       q: referenceQuery,
       searchType: 'image',
       num: 1,
-      // relatedSite: this.configService.get('reference').url,
+      relatedSite: this.configService.get('reference').url,
     });
 
     const imageList = request.data.items

@@ -42,14 +42,18 @@ export class VetorIntegrationGateway {
   }
 
   async getOrderInfo(params: GetOrderDto, endpoint: string): Promise<any> {
-    const { data } = await lastValueFrom(
-      this.httpService.get(`${this.baseUrl}${endpoint}`, {
-        headers: this.headerRequest,
-        params: params,
-      }),
-    );
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService.get(`${this.baseUrl}${endpoint}`, {
+          headers: this.headerRequest,
+          params: params,
+        }),
+      );
 
-    return data;
+      return data;
+    } catch (error) {
+      console.error(error.response.data);
+    }
   }
 
   async createOrder(body: CreateOrderDto, endpoint: string): Promise<any> {

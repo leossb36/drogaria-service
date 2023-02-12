@@ -25,6 +25,7 @@ export class ConfigService {
     };
     this.envConfig.reference = {
       referenceName: process.env.REFERENCE_NAME,
+      url: process.env.REFERENCE_URL,
     };
   }
   get(key: string): any {

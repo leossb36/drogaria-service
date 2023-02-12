@@ -30,9 +30,8 @@ export class GetProductUseCase {
 
     const products: Product[] = [];
     for (const product of data) {
-      const imageUrl = await this.searchEngine.getImageProduct(
-        product.descricao,
-      );
+      const productName = product.descricao.split(' ');
+      const imageUrl = await this.searchEngine.getImageProduct(productName[0]);
 
       products.push({
         ...product,
