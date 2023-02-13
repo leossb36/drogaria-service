@@ -19,6 +19,15 @@ export class ServerConfig {
     app.setGlobalPrefix(this.configService.get('server').prefix);
     this.swaggerService.init(app);
 
-    await app.listen(process.env.PORT || 3000);
+    const port: number = +process.env.PORT || 3000;
+
+    await app
+      .listen(port)
+      .then(() => {
+        console.log(`Listening on port: ${port}`);
+      })
+      .catch((err) => {
+        console.log(`Unable to stabilish connection:: ${err.message}`);
+      });
   }
 }
