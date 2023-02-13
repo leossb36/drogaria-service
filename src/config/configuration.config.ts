@@ -27,6 +27,11 @@ export class ConfigService {
       referenceName: process.env.REFERENCE_NAME,
       url: process.env.REFERENCE_URL,
     };
+    this.envConfig.woocommerce = {
+      consumerKey: process.env.WOOCOMMERCE_KEY,
+      consumerSecret: process.env.WOOCOMMERCE_SECRET,
+      url: process.env.WOOCOMMERCE_URL,
+    };
   }
   get(key: string): any {
     return this.envConfig[key];
