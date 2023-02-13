@@ -19,6 +19,6 @@ export class ServerConfig {
     app.setGlobalPrefix(this.configService.get('server').prefix);
     this.swaggerService.init(app);
 
-    await app.listen(process.env.SERVICE_PORT || 3000);
+    await app.listen(process.env.PORT || 3000);
   }
 }
