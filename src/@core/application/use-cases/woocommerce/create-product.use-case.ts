@@ -38,12 +38,15 @@ export class CreateProductUseCase {
   }
 
   private fromTo(productFromVetor: Product): getProductWooCommerce {
+    const sku = `${
+      productFromVetor.cdProduto
+    }-${productFromVetor.descricao.replace(' ', '_')}`;
     return {
       name: productFromVetor.descricao,
       slug: productFromVetor.descricao.replace(' ', '-'),
       description: productFromVetor.descricao,
       short_description: productFromVetor.descricao,
-      sku: productFromVetor.descricao,
+      sku: sku,
       price: productFromVetor.vlrOferta.toString(),
       regular_price: productFromVetor.vlrTabela.toString(),
       sale_price: productFromVetor.vlrOferta.toString(),
