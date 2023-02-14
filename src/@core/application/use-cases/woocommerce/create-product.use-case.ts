@@ -4,7 +4,6 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CreateProductUseCase {
@@ -20,7 +19,7 @@ export class CreateProductUseCase {
       '/produtos/consulta',
     );
 
-    for (const product of productsFromVetor?.data) {
+    for (const product of productsFromVetor.data) {
       try {
         await this.woocommerceIntegration.createProduct(this.fromTo(product));
         total += 1;
@@ -39,12 +38,15 @@ export class CreateProductUseCase {
   }
 
   private fromTo(productFromVetor: Product): getProductWooCommerce {
+    const sku = `${
+      productFromVetor.cdProduto
+    }-${productFromVetor.descricao.replace(' ', '-')}`;
     return {
       name: productFromVetor.descricao,
       slug: productFromVetor.descricao.replace(' ', '-'),
       description: productFromVetor.descricao,
       short_description: productFromVetor.descricao,
-      sku: `${productFromVetor.cdProduto}-${uuid()}`,
+      sku: sku,
       price: productFromVetor.vlrOferta.toString(),
       regular_price: productFromVetor.vlrTabela.toString(),
       sale_price: productFromVetor.vlrOferta.toString(),
