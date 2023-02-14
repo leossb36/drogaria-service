@@ -6,6 +6,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { GetOrderDto } from '@core/application/dto/getOrder.dto';
+import { GetCategoryViewModel } from '@core/application/mv/getCategory.mv';
 
 @Injectable()
 export class VetorIntegrationGateway {
@@ -24,8 +25,8 @@ export class VetorIntegrationGateway {
   }
 
   async getProductInfo(
-    params: GetProductVetorDto,
     endpoint: string,
+    params?: GetProductVetorDto,
   ): Promise<IProduct> {
     try {
       const { data } = await lastValueFrom(
@@ -36,6 +37,31 @@ export class VetorIntegrationGateway {
       );
 
       return data;
+    } catch (err) {
+      console.error(err.data);
+    }
+  }
+
+  async getCategories(
+    endpoint: string,
+    params?: GetProductVetorDto,
+  ): Promise<GetCategoryViewModel[]> {
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService.get<IProduct>(`${this.baseUrl}${endpoint}`, {
+          headers: this.headerRequest,
+          params: params,
+        }),
+      );
+
+      const categories = data.data.map((instance) => {
+        return {
+          code: instance.cdCategoria,
+          categoryName: instance.nomeCategoria,
+        };
+      });
+
+      return categories;
     } catch (err) {
       console.error(err.data);
     }

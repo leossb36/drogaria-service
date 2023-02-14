@@ -15,11 +15,11 @@ export class GetProductUseCase {
   ) {}
 
   async execute(
-    query: GetProductVetorDto,
+    query?: GetProductVetorDto,
   ): Promise<GetProductInformationModelView> {
     const request = await this.integration.getProductInfo(
-      query,
       '/produtos/consulta',
+      query,
     );
 
     const { status, data, total } = request;
@@ -28,19 +28,19 @@ export class GetProductUseCase {
       return;
     }
 
-    const products: Product[] = [];
-    for (const product of data) {
-      const productName = product.descricao.split(' ');
-      const imageUrl = await this.searchEngine.getImageProduct(productName[0]);
+    // const products: Product[] = [];
+    // for (const product of data) {
+    //   // const productName = product.descricao.split(' ');
+    //   // const imageUrl = await this.searchEngine.getImageProduct(productName[0]);
 
-      products.push({
-        ...product,
-        imageUrl,
-      });
-    }
+    //   products.push({
+    //     ...product,
+    //     // imageUrl,
+    //   });
+    // }
 
     return {
-      data: products,
+      data: data,
       msg: messages.vetor.integration.get.success,
       status,
       total,

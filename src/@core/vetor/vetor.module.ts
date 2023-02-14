@@ -15,5 +15,6 @@ import { VetorIntegrationController } from './vetor.controller';
     GoogleApiIntegrationGateway,
   ],
   controllers: [VetorIntegrationController],
+  exports: [VetorIntegrationGateway],
 })
 export class VetorModule {}

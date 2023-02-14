@@ -13,5 +13,17 @@
         "error": "Cannot execute the action"
       }
     }
+  },
+  "woocommerce": {
+    "Product": {
+      "create": {
+        "success": "Product created successfully!",
+        "error": "Cannot Create products on WooCommerce!"
+      },
+      "Get": {
+        "success": "List of products successfully returned!",
+        "error": "Invalid request or not found!"
+      }
+    }
   }
 }

@@ -32,4 +32,25 @@ export class WoocommerceIntegration {
       console.error(error.response.data);
     }
   }
+
+  async createOrder(body: unknown): Promise<any> {
+    try {
+      const response = await this.woocommerceConfig.post('order', body);
+      return response;
+    } catch (error) {
+      console.error(error.response.data);
+    }
+  }
+
+  async createCategories(body: unknown): Promise<any> {
+    try {
+      const response = await this.woocommerceConfig.post(
+        'products/categories',
+        body,
+      );
+      return response;
+    } catch (error) {
+      console.error(error.response.data);
+    }
+  }
 }
