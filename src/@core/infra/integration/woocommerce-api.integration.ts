@@ -1,4 +1,5 @@
 import { ConfigService } from '@config/configuration.config';
+import FetchAllProducts from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
@@ -17,8 +18,35 @@ export class WoocommerceIntegration {
 
   async getAllProducts(): Promise<any> {
     try {
-      const response = await this.woocommerceConfig.get('products');
+      const response = await FetchAllProducts(this.woocommerceConfig);
       return response;
+    } catch (err) {
+      console.error(err.data);
+    }
+  }
+
+  async getAllProductsSku(): Promise<string[]> {
+    try {
+      const skus = await FetchAllProducts(this.woocommerceConfig).then(
+        (result) => {
+          return result.map((product) => product.sku);
+        },
+      );
+
+      return skus;
+    } catch (err) {
+      console.error(err.data);
+    }
+  }
+
+  async getAllProductsIds(): Promise<string[]> {
+    try {
+      const ids = await FetchAllProducts(this.woocommerceConfig).then(
+        (result) => {
+          return result.map((product) => product.id);
+        },
+      );
+      return ids;
     } catch (err) {
       console.error(err.data);
     }
