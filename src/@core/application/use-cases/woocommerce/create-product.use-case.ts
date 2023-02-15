@@ -1,7 +1,7 @@
 import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 import { Product } from '@core/infra/integration/model/product.model';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { v4 as uuid } from 'uuid';
@@ -21,21 +21,30 @@ export class CreateProductUseCase {
     );
 
     for (const product of productsFromVetor?.data) {
-      try {
-        await this.woocommerceIntegration.createProduct(this.fromTo(product));
+      const formatedProduct = this.fromTo(product);
+      const hasProductOnWoocommerce = await this.validateProduct(
+        formatedProduct,
+      );
+      if (!hasProductOnWoocommerce) {
+        await this.woocommerceIntegration.createProduct(formatedProduct);
         total += 1;
-      } catch (error) {
-        console.error(error.response.data);
-        throw new BadRequestException(
-          `${messages.woocommerce.Product.create.error}: ${error.response.data}`,
-        );
+      } else {
+        continue;
       }
     }
-
     return {
       total: total,
       message: messages.woocommerce.Product.create.success,
     };
+  }
+  private async validateProduct(
+    newProduct: getProductWooCommerce,
+  ): Promise<boolean> {
+    const productsSkus = await this.woocommerceIntegration.getAllProductsSku();
+
+    const hasProduct = productsSkus.filter((sku) => sku === newProduct.sku);
+
+    return hasProduct.length > 0;
   }
 
   private fromTo(productFromVetor: Product): getProductWooCommerce {
@@ -44,7 +53,7 @@ export class CreateProductUseCase {
       slug: productFromVetor.descricao.replace(' ', '-'),
       description: productFromVetor.descricao,
       short_description: productFromVetor.descricao,
-      sku: `${productFromVetor.cdProduto}-${uuid()}`,
+      sku: `${productFromVetor.cdProduto}-${productFromVetor.descricao}`,
       price: productFromVetor.vlrOferta.toString(),
       regular_price: productFromVetor.vlrTabela.toString(),
       sale_price: productFromVetor.vlrOferta.toString(),
