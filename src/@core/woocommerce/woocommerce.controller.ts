@@ -2,6 +2,7 @@ import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/c
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
+import { UpdateProductListUseCase } from '@core/application/use-cases/woocommerce/update-list-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -15,6 +16,7 @@ export class WoocommerceController {
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly createCategoryUseCase: CreateCategoryUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly updateProductListUseCase: UpdateProductListUseCase,
   ) {}
 
   @Post('/product')
@@ -25,6 +27,11 @@ export class WoocommerceController {
   @Put('/product/:id')
   async updateProductById(@Param('id') id: string): Promise<unknown> {
     return await this.updateProductUseCase.execute(id);
+  }
+
+  @Put('/products')
+  async updateProductList(): Promise<unknown> {
+    return await this.updateProductListUseCase.execute();
   }
 
   @Get('/products')

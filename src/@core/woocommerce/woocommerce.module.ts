@@ -2,6 +2,7 @@ import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/c
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
+import { UpdateProductListUseCase } from '@core/application/use-cases/woocommerce/update-list-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { VetorModule } from '@core/vetor/vetor.module';
@@ -16,6 +17,7 @@ import { WoocommerceController } from './woocommerce.controller';
     CreateOrderUseCase,
     CreateCategoryUseCase,
     UpdateProductUseCase,
+    UpdateProductListUseCase,
     WoocommerceIntegration,
   ],
   controllers: [WoocommerceController],

@@ -39,13 +39,11 @@ export class WoocommerceIntegration {
     }
   }
 
-  async getProductBySku(filter: string): Promise<unknown> {
+  async getProductBySku(filter: string) {
     try {
       const product = await FetchAllProducts(this.woocommerceConfig).then(
         (result) => {
-          return result
-            .map((product) => product)
-            .filter((product) => product.sku === filter);
+          return result.filter((product) => product.sku === filter);
         },
       );
 

@@ -1,19 +1,20 @@
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import FromTo from '@core/utils/mapper-helper';
+import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 
 @Injectable()
-export class UpdateProductUseCase {
+export class UpdateProductListUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly vetorIntegration: VetorIntegrationGateway,
   ) {}
 
-  async execute(id: string): Promise<unknown> {
+  async execute(): Promise<unknown> {
     const params = {
-      $filter: `cdProduto eq ${id} and cdFilial eq 1`,
+      $filter: `cdFilial eq 1`,
     };
 
     const productFromVetor = await this.vetorIntegration.getProductInfo(
@@ -21,22 +22,23 @@ export class UpdateProductUseCase {
       params,
     );
 
-    const bodyFromVetor = FromTo(productFromVetor.data[0]);
-    const wooProduct = await this.woocommerceIntegration.getProductBySku(
-      bodyFromVetor.sku,
-    );
+    for (const product of productFromVetor.data) {
+      const bodyFromVetor = FromTo(product);
+      const wooProduct = await this.woocommerceIntegration.getProductBySku(
+        bodyFromVetor.sku,
+      );
 
-    const product = await this.woocommerceIntegration.updateProductStock(
-      wooProduct[0].id,
-      bodyFromVetor,
-    );
-
-    if (!product.data) {
-      throw new BadRequestException('Cannot update product!');
+      if (!!wooProduct.length) {
+        await this.woocommerceIntegration.updateProductStock(
+          wooProduct[0].id,
+          bodyFromVetor,
+        );
+      } else {
+        continue;
+      }
     }
 
     return {
-      status: product.status,
       message: messages.woocommerce.product.update.success,
     };
   }
