@@ -4,6 +4,7 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
+import FromTo from '@core/utils/mapper-helper';
 
 @Injectable()
 export class CreateProductUseCase {
@@ -15,12 +16,17 @@ export class CreateProductUseCase {
   async execute(): Promise<unknown> {
     let total = 0;
 
+    const query = {
+      $filter: 'cdFilial eq 1',
+    };
+
     const productsFromVetor = await this.vetorIntegration.getProductInfo(
       '/produtos/consulta',
+      query,
     );
 
     for (const product of productsFromVetor?.data) {
-      const formatedProduct = this.fromTo(product);
+      const formatedProduct = FromTo(product);
       const hasProductOnWoocommerce = await this.validateProduct(
         formatedProduct,
       );
@@ -33,7 +39,7 @@ export class CreateProductUseCase {
     }
     return {
       total: total,
-      message: messages.woocommerce.Product.create.success,
+      message: messages.woocommerce.product.create.success,
     };
   }
   private async validateProduct(
@@ -44,44 +50,5 @@ export class CreateProductUseCase {
     const hasProduct = productsSkus.filter((sku) => sku === newProduct.sku);
 
     return hasProduct.length > 0;
-  }
-
-  private fromTo(productFromVetor: Product): getProductWooCommerce {
-    const sku = `${
-      productFromVetor.cdProduto
-    }-${productFromVetor.descricao.replaceAll(' ', '-')}`;
-    return {
-      name: productFromVetor.descricao,
-      slug: productFromVetor.descricao.replaceAll(' ', '-'),
-      description: productFromVetor.descricao,
-      short_description: productFromVetor.descricao,
-      sku: sku.toLowerCase(),
-      price: productFromVetor.vlrOferta.toString(),
-      regular_price: productFromVetor.vlrTabela.toString(),
-      sale_price: productFromVetor.vlrOferta.toString(),
-      on_sale: true,
-      purchasable: true,
-      virtual: false,
-      downloadable: false,
-      tax_status: 'taxable',
-      manage_stock: false,
-      stock_quantity: productFromVetor.qtdEstoque,
-      backorders: 'no',
-      backorders_allowed: false,
-      backordered: false,
-      sold_individually: false,
-      shipping_required: true,
-      shipping_taxable: true,
-      reviews_allowed: true,
-      categories: [
-        {
-          id: productFromVetor.cdCategoria,
-          name: productFromVetor.nomeCategoria,
-          slug: productFromVetor.nomeCategoria.toLowerCase(),
-        },
-      ],
-      stock_status: 'instock',
-      has_options: false,
-    } as getProductWooCommerce;
   }
 }
