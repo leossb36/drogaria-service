@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import FromTo from '@core/utils/mapper-helper';
-import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 
 @Injectable()
 export class UpdateProductListUseCase {
