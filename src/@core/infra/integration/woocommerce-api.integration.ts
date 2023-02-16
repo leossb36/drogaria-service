@@ -39,6 +39,22 @@ export class WoocommerceIntegration {
     }
   }
 
+  async getProductBySku(filter: string): Promise<unknown> {
+    try {
+      const product = await FetchAllProducts(this.woocommerceConfig).then(
+        (result) => {
+          return result
+            .map((product) => product)
+            .filter((product) => product.sku === filter);
+        },
+      );
+
+      return product;
+    } catch (err) {
+      console.error(err.data);
+    }
+  }
+
   async getAllProductsIds(): Promise<string[]> {
     try {
       const ids = await FetchAllProducts(this.woocommerceConfig).then(
@@ -82,7 +98,7 @@ export class WoocommerceIntegration {
     }
   }
 
-  async updateProductStock(id: string, body: unknown) {
+  async updateProductStock(id: number, body: unknown) {
     try {
       const response = await this.woocommerceConfig.put(`products/${id}`, body);
       return response;

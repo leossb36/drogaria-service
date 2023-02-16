@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import FromTo from '@core/utils/mapper-helper';
+import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 
 @Injectable()
 export class UpdateProductUseCase {
@@ -22,12 +23,15 @@ export class UpdateProductUseCase {
     );
 
     const bodyFromVetor = FromTo(productFromVetor.data[0]);
+    const wooProduct: getProductWooCommerce =
+      await this.woocommerceIntegration.getProductBySku(bodyFromVetor.sku);
+
     const product = await this.woocommerceIntegration.updateProductStock(
-      id,
+      wooProduct[0].id,
       bodyFromVetor,
     );
 
-    if (!!product.data.length) {
+    if (!product.data) {
       throw new BadRequestException('Cannot update product!');
     }
 
