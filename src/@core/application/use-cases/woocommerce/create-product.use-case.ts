@@ -49,13 +49,13 @@ export class CreateProductUseCase {
   private fromTo(productFromVetor: Product): getProductWooCommerce {
     const sku = `${
       productFromVetor.cdProduto
-    }-${productFromVetor.descricao.replace(' ', '-')}`;
+    }-${productFromVetor.descricao.replaceAll(' ', '-')}`;
     return {
       name: productFromVetor.descricao,
-      slug: productFromVetor.descricao.replace(' ', '-'),
+      slug: productFromVetor.descricao.replaceAll(' ', '-'),
       description: productFromVetor.descricao,
       short_description: productFromVetor.descricao,
-      sku: sku,
+      sku: sku.toLowerCase(),
       price: productFromVetor.vlrOferta.toString(),
       regular_price: productFromVetor.vlrTabela.toString(),
       sale_price: productFromVetor.vlrOferta.toString(),
