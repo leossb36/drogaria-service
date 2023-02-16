@@ -8,40 +8,40 @@ export class GetProductVetorDto {
   @ApiProperty({
     required: false,
   })
-  '$select': string;
+  '$select'?: string;
 
   @Expose()
   @IsOptional()
   @ApiProperty({
     required: false,
   })
-  '$orderby': string;
+  '$orderby'?: string;
 
   @Expose()
   @IsOptional()
   @ApiProperty({
     required: false,
   })
-  '$top': string;
+  '$top'?: string;
 
   @Expose()
   @IsOptional()
   @ApiProperty({
     required: false,
   })
-  '$skip': string;
+  '$skip'?: string;
 
   @Expose()
   @IsOptional()
   @ApiProperty({
     required: false,
   })
-  '$count': string;
+  '$count'?: string;
 
   @Expose()
   @IsOptional()
   @ApiProperty({
     required: false,
   })
-  '$filter': string;
+  '$filter'?: string;
 }

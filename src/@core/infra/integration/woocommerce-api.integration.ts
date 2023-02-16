@@ -81,4 +81,13 @@ export class WoocommerceIntegration {
       console.error(error.response.data);
     }
   }
+
+  async updateProductStock(id: string, body: unknown) {
+    try {
+      const response = await this.woocommerceConfig.put(`products/${id}`, body);
+      return response;
+    } catch (error) {
+      console.error(error.response.data);
+    }
+  }
 }

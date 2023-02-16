@@ -15,13 +15,17 @@
     }
   },
   "woocommerce": {
-    "Product": {
+    "product": {
       "create": {
         "success": "Product created successfully!",
         "error": "Cannot Create products on WooCommerce!"
       },
-      "Get": {
+      "get": {
         "success": "List of products successfully returned!",
+        "error": "Invalid request or not found!"
+      },
+      "update": {
+        "success": "Product updated successfully",
         "error": "Invalid request or not found!"
       }
     }
