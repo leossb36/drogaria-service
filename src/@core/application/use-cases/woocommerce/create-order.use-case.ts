@@ -1,3 +1,5 @@
+import { createWooOrderDto } from '@core/application/dto/createWooOrder.dto';
+import { createWooOrderModelView } from '@core/application/mv/createWooOrder.mv';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -6,13 +8,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 export class CreateOrderUseCase {
   constructor(private readonly integration: WoocommerceIntegration) {}
 
-  async execute(dto: unknown): Promise<unknown> {
-    const product = await this.integration.createOrder(dto);
+  async execute(dto: createWooOrderDto): Promise<createWooOrderModelView> {
+    const order = await this.integration.createOrder(dto);
 
-    if (!product || !ValidationHelper.isCreated(product.status)) {
-      throw new BadRequestException('Cannot create product!');
+    const { status, data } = order;
+
+    if (!data || !ValidationHelper.isCreated(status)) {
+      throw new BadRequestException('Cannot create order!');
     }
 
-    return product;
+    return data;
   }
 }
