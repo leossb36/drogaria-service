@@ -20,8 +20,9 @@ export class WoocommerceIntegration {
     try {
       const response = await FetchAllProducts(this.woocommerceConfig);
       return response;
-    } catch (err) {
-      console.error(err.data);
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.data);
     }
   }
 
@@ -35,6 +36,7 @@ export class WoocommerceIntegration {
 
       return skus;
     } catch (err) {
+      console.error(err.response.headers);
       console.error(err.data);
     }
   }
@@ -48,8 +50,9 @@ export class WoocommerceIntegration {
       );
 
       return product;
-    } catch (err) {
-      console.error(err.data);
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.data);
     }
   }
 
@@ -61,8 +64,9 @@ export class WoocommerceIntegration {
         },
       );
       return ids;
-    } catch (err) {
-      console.error(err.data);
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.data);
     }
   }
 
@@ -71,6 +75,7 @@ export class WoocommerceIntegration {
       const response = await this.woocommerceConfig.post('products', body);
       return response;
     } catch (error) {
+      console.error(error.response.headers);
       console.error(error.response.data);
     }
   }
@@ -80,6 +85,7 @@ export class WoocommerceIntegration {
       const response = await this.woocommerceConfig.post('order', body);
       return response;
     } catch (error) {
+      console.error(error.response.headers);
       console.error(error.response.data);
     }
   }
@@ -92,6 +98,7 @@ export class WoocommerceIntegration {
       );
       return response;
     } catch (error) {
+      console.error(error.response.headers);
       console.error(error.response.data);
     }
   }
@@ -101,6 +108,7 @@ export class WoocommerceIntegration {
       const response = await this.woocommerceConfig.put(`products/${id}`, body);
       return response;
     } catch (error) {
+      console.error(error.response.headers);
       console.error(error.response.data);
     }
   }
