@@ -1,3 +1,5 @@
+import { createWooOrderDto } from '@core/application/dto/createWooOrder.dto';
+import { createWooOrderModelView } from '@core/application/mv/createWooOrder.mv';
 import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
@@ -40,7 +42,9 @@ export class WoocommerceController {
   }
 
   @Post('/order')
-  async createOrder(@Body() body: unknown): Promise<unknown> {
+  async createOrder(
+    @Body() body: createWooOrderDto,
+  ): Promise<createWooOrderModelView> {
     return await this.createOrderUseCase.execute(body);
   }
 
