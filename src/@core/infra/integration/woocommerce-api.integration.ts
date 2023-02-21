@@ -22,7 +22,7 @@ export class WoocommerceIntegration {
       return response;
     } catch (error) {
       console.error(error.response.headers);
-      console.error(error.data);
+      console.error(error.response.data);
     }
   }
 
@@ -37,7 +37,7 @@ export class WoocommerceIntegration {
       return skus;
     } catch (err) {
       console.error(err.response.headers);
-      console.error(err.data);
+      console.error(err.response.data);
     }
   }
 
@@ -52,7 +52,7 @@ export class WoocommerceIntegration {
       return product;
     } catch (error) {
       console.error(error.response.headers);
-      console.error(error.data);
+      console.error(error.response.data);
     }
   }
 
@@ -66,7 +66,7 @@ export class WoocommerceIntegration {
       return ids;
     } catch (error) {
       console.error(error.response.headers);
-      console.error(error.data);
+      console.error(error.response.data);
     }
   }
 
