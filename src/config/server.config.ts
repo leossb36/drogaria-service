@@ -1,3 +1,4 @@
+import { ErrorsInterceptor } from '@common/interceptors/errors.interceptor';
 import { SwaggerService } from '@common/swagger/swagger.service';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -14,6 +15,7 @@ export class ServerConfig {
 
   async init() {
     const app = await NestFactory.create(AppModule);
+    app.useGlobalInterceptors(new ErrorsInterceptor());
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix(this.configService.get('server').prefix);
