@@ -16,6 +16,16 @@ export class WoocommerceIntegration {
     });
   }
 
+  async getUserByEmail(email: string): Promise<any> {
+    try {
+      const response = await this.woocommerceConfig.post(this.woocommerceConfig);
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async getAllProducts(): Promise<any> {
     try {
       const response = await FetchAllProducts(this.woocommerceConfig);

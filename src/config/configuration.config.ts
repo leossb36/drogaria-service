@@ -3,6 +3,9 @@ export class ConfigService {
 
   constructor() {
     this.envConfig = {};
+    this.envConfig.auth = {
+      secretKey: process.env.JWT_SECRET_KEY,
+    };
     this.envConfig.service = {
       title: process.env.SERVICE_TITLE,
       description: process.env.SERVICE_DESCRIPTION,

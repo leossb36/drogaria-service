@@ -1,4 +1,4 @@
-import { ConfigService } from './configuration';
+import { ConfigService } from '@config/configuration.config';
 
 const configService = new ConfigService();
 

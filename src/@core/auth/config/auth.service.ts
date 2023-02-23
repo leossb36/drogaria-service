@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserService } from '../../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
-    private jwtService: JwtService,
+    private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.getByEmail(email);
+    const user = await this.woocommerceIntegration.getUserByEmail(email);
     if (user && this.comparePassword(password, user.password)) {
       const { id, name, email } = user;
       return { id, name, email };
