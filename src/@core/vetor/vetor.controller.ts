@@ -1,6 +1,6 @@
-import { CreateOrderDto } from '@core/application/dto/createOrder.dto';
 import { GetOrderDto } from '@core/application/dto/getOrder.dto';
 import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { getWebhookDto } from '@core/application/dto/getWebhook.dto';
 import { CreateOrderInformationModelView } from '@core/application/mv/createOrderInformation.mv';
 import { GetProductInformationModelView } from '@core/application/mv/getProductInformation.mv';
 import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
@@ -27,7 +27,7 @@ export class VetorIntegrationController {
 
   @Post('/order')
   async createOrder(
-    @Body() body: CreateOrderDto,
+    @Body() body: getWebhookDto,
   ): Promise<CreateOrderInformationModelView> {
     return await this.createOrderUseCase.execute(body);
   }

@@ -1,5 +1,4 @@
 import { ConfigService } from '@config/configuration.config';
-import { CreateOrderDto } from '@core/application/dto/createOrder.dto';
 import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
 import { IProduct } from '@core/application/interface/product.interface';
 import { HttpService } from '@nestjs/axios';
@@ -82,7 +81,7 @@ export class VetorIntegrationGateway {
     }
   }
 
-  async createOrder(body: CreateOrderDto, endpoint: string): Promise<any> {
+  async createOrder(body: unknown, endpoint: string): Promise<any> {
     try {
       const { data } = await lastValueFrom(
         this.httpService.post(`${this.baseUrl}${endpoint}`, body, {

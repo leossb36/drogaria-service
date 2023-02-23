@@ -27,7 +27,7 @@ export class UpdateProductListUseCase {
         bodyFromVetor.sku,
       );
 
-      if (!!wooProduct.length) {
+      if (wooProduct.length) {
         await this.woocommerceIntegration.updateProductStock(
           wooProduct[0].id,
           bodyFromVetor,
