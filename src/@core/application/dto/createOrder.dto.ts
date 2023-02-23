@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class Item {
   @ApiProperty()
@@ -78,11 +78,13 @@ export class Cliente {
 
   @ApiProperty()
   @IsNumber()
-  cidadeIBGE: number;
+  @IsOptional()
+  cidadeIBGE?: number;
 
   @ApiProperty()
   @IsString()
-  referencia: string;
+  @IsOptional()
+  referencia?: string;
 
   @ApiProperty()
   @IsString()
@@ -90,11 +92,13 @@ export class Cliente {
 
   @ApiProperty()
   @IsString()
-  inscEstadual: string;
+  @IsOptional()
+  inscEstadual?: string;
 
   @ApiProperty()
   @IsString()
-  inscMunicipal: string;
+  @IsOptional()
+  inscMunicipal?: string;
 }
 
 export class CreateOrderDto {

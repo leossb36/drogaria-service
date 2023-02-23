@@ -6,8 +6,17 @@ import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/cr
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
 import { UpdateProductListUseCase } from '@core/application/use-cases/woocommerce/update-list-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Headers,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { WoocommerceService } from './woocomerce.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
@@ -19,6 +28,7 @@ export class WoocommerceController {
     private readonly createCategoryUseCase: CreateCategoryUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly updateProductListUseCase: UpdateProductListUseCase,
+    private readonly woocommerceService: WoocommerceService,
   ) {}
 
   @Post('/product')
@@ -47,6 +57,24 @@ export class WoocommerceController {
   ): Promise<createWooOrderModelView> {
     return await this.createOrderUseCase.execute(body);
   }
+
+  @Post('/order/webhook')
+  async handlerWebhookExecution(
+    @Body() webhook: any,
+    @Headers() headers,
+  ): Promise<any> {
+    return await this.woocommerceService.handlerWebhookExecution(
+      webhook,
+      headers,
+    );
+  }
+  /**
+   * QUESTION: How are vetor changes the status order?
+   * QUESTION: Is possible force some status on vetor to update the product data?
+   * TODO: send request to vetor then
+   * when the order is FATURED? or ON_SEPARETE (in vetor)
+   * send a webhook that update product stock in woocommerce stock as like vetor stock
+   */
 
   @Post('/category')
   async createCategory(): Promise<unknown> {

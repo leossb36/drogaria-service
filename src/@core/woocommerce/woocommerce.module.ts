@@ -7,6 +7,7 @@ import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/up
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
+import { WoocommerceService } from './woocomerce.service';
 import { WoocommerceController } from './woocommerce.controller';
 
 @Module({
@@ -19,6 +20,7 @@ import { WoocommerceController } from './woocommerce.controller';
     UpdateProductUseCase,
     UpdateProductListUseCase,
     WoocommerceIntegration,
+    WoocommerceService,
   ],
   controllers: [WoocommerceController],
 })
