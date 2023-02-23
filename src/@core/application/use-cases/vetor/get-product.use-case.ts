@@ -4,7 +4,6 @@ import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
 import * as messages from '@common/messages/response-messages.json';
-import { Product } from '@core/infra/integration/model/product.model';
 import { GoogleApiIntegrationGateway } from '@core/infra/integration/google-api.integration';
 
 @Injectable()
