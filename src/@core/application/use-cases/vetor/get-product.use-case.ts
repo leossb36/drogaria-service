@@ -1,48 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { GetProductInformationModelView } from '@core/application/mv/getProductInformation.mv';
 import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
-import * as messages from '@common/messages/response-messages.json';
-import { GoogleApiIntegrationGateway } from '@core/infra/integration/google-api.integration';
+import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
+import { Product } from '@core/infra/integration/model/product.model';
 
 @Injectable()
 export class GetProductUseCase {
   constructor(
     private readonly integration: VetorIntegrationGateway,
-    private readonly searchEngine: GoogleApiIntegrationGateway,
+    private readonly searchEngine: SerpApiIntegration,
   ) {}
 
-  async execute(
-    query?: GetProductVetorDto,
-  ): Promise<GetProductInformationModelView> {
+  async execute(query?: GetProductVetorDto): Promise<Product[]> {
     const request = await this.integration.getProductInfo(
       '/produtos/consulta',
       query,
     );
 
-    const { status, data, total } = request;
+    const { status, data } = request;
 
     if (!data.length || !ValidationHelper.isOk(status)) {
       return;
     }
 
-    // const products: Product[] = [];
-    // for (const product of data) {
-    //   // const productName = product.descricao.split(' ');
-    //   // const imageUrl = await this.searchEngine.getImageProduct(productName[0]);
+    const products: Product[] = [];
+    for (const product of data) {
+      const image = await this.searchEngine.getImageUrl(product.descricao);
 
-    //   products.push({
-    //     ...product,
-    //     // imageUrl,
-    //   });
-    // }
+      products.push({
+        ...product,
+        imageUrl: image,
+      });
+    }
 
-    return {
-      data: data,
-      msg: messages.vetor.integration.get.success,
-      status,
-      total,
-    };
+    return products;
   }
 }
