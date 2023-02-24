@@ -5,12 +5,14 @@ import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import FromTo from '@core/utils/mapper-helper';
+import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
 
 @Injectable()
 export class CreateProductUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly vetorIntegration: VetorIntegrationGateway,
+    private readonly searchEngine: SerpApiIntegration,
   ) {}
 
   async execute(): Promise<unknown> {
@@ -26,7 +28,9 @@ export class CreateProductUseCase {
     );
 
     for (const product of productsFromVetor?.data) {
-      const formatedProduct = FromTo(product);
+      const image = await this.searchEngine.getImageUrl(product.descricao);
+
+      const formatedProduct = FromTo({ ...product, imageUrl: image });
       const hasProductOnWoocommerce = await this.validateProduct(
         formatedProduct,
       );

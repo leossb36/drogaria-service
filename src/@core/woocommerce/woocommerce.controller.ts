@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
 import { createWooOrderDto } from '@core/application/dto/createWooOrder.dto';
 import { createWooOrderModelView } from '@core/application/mv/createWooOrder.mv';
 import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
@@ -14,12 +15,15 @@ import {
   Post,
   Put,
   Headers,
+  // UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { WoocommerceService } from './woocomerce.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 export class WoocommerceController {
   constructor(
     private readonly createProductUseCase: CreateProductUseCase,

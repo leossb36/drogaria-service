@@ -1,27 +1,39 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly httpService: HttpService,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.woocommerceIntegration.getUserByEmail(email);
-    if (user && this.comparePassword(password, user.password)) {
-      const { id, name, email } = user;
-      return { id, name, email };
+    const domain = 'https://farmacialuita.com.br/wp-json';
+    const params = {
+      email,
+      password,
+    };
+
+    const { data } = await lastValueFrom(
+      this.httpService.post(`${domain}/jwt-auth/v1/token`, {
+        params,
+      }),
+    );
+
+    if (data && this.comparePassword(password, data.password)) {
+      const { id, user_nicename, user_email } = data;
+      return { id, user_nicename, user_email };
     } else {
       throw new HttpException('Invalid Login params!', HttpStatus.UNAUTHORIZED);
     }
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { username: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
