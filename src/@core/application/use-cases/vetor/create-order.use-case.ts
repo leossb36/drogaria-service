@@ -1,15 +1,15 @@
-import {
-  Cliente,
-  CreateOrderDto,
-  Item,
-} from '@core/application/dto/createOrder.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import * as messages from '@common/messages/response-messages.json';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ValidationHelper } from '@core/utils/validation-helper';
-import { CreateOrderInformationModelView } from '@core/application/mv/createOrderInformation.mv';
-import { getWebhookDto } from '@core/application/dto/getWebhook.dto';
 import { ValidationClientHelper } from '@core/utils/validation-client-helper';
+import {
+  Cliente,
+  CreateOrderDto,
+  getWebhookDto,
+  Item,
+} from '@core/application/dto';
+import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
 
 @Injectable()
 export class CreateOrderUseCase {

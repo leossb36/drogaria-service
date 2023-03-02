@@ -1,7 +1,6 @@
 import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { createWooOrderDto } from '@core/application/dto/createWooOrder.dto';
-import { createWooOrderModelView } from '@core/application/mv/createWooOrder.mv';
-import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
+import { createWooOrderDto } from '@core/application/dto';
+import { createWooOrderModelView } from '@core/application/mv/create-woo-order.mv';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
@@ -29,7 +28,6 @@ export class WoocommerceController {
     private readonly createProductUseCase: CreateProductUseCase,
     private readonly getProductUseCase: GetProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
-    private readonly createCategoryUseCase: CreateCategoryUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly updateProductListUseCase: UpdateProductListUseCase,
     private readonly woocommerceService: WoocommerceService,
@@ -71,17 +69,5 @@ export class WoocommerceController {
       webhook,
       headers,
     );
-  }
-  /**
-   * QUESTION: How are vetor changes the status order?
-   * QUESTION: Is possible force some status on vetor to update the product data?
-   * TODO: send request to vetor then
-   * when the order is FATURED? or ON_SEPARETE (in vetor)
-   * send a webhook that update product stock in woocommerce stock as like vetor stock
-   */
-
-  @Post('/category')
-  async createCategory(): Promise<unknown> {
-    return await this.createCategoryUseCase.execute();
   }
 }

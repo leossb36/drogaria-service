@@ -1,5 +1,4 @@
 import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
-import { Product } from '@core/infra/integration/model/product.model';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';

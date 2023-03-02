@@ -1,11 +1,10 @@
 import { ConfigService } from '@config/configuration.config';
-import { GetProductVetorDto } from '@core/application/dto/getProductVetor.dto';
+import { GetProductVetorDto, GetOrderDto } from '@core/application/dto';
 import { IProduct } from '@core/application/interface/product.interface';
+import { GetCategoryViewModel } from '@core/application/mv/get-category.mv';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
-import { GetOrderDto } from '@core/application/dto/getOrder.dto';
-import { GetCategoryViewModel } from '@core/application/mv/getCategory.mv';
 
 @Injectable()
 export class VetorIntegrationGateway {

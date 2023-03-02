@@ -1,4 +1,3 @@
-import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
@@ -17,7 +16,6 @@ import { WoocommerceController } from './woocommerce.controller';
     CreateProductUseCase,
     GetProductUseCase,
     CreateOrderUseCase,
-    CreateCategoryUseCase,
     UpdateProductUseCase,
     UpdateProductListUseCase,
     WoocommerceIntegration,

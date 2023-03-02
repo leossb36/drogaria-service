@@ -1,6 +1,6 @@
+import { getWebhookDto } from '@core/application/dto';
 import { headersTopicEnum } from '@core/application/dto/enum/headers-topic.enum';
 import { webhookStatusEnum } from '@core/application/dto/enum/webhook-status.enum';
-import { getWebhookDto } from '@core/application/dto/getWebhook.dto';
 import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
 import { Injectable } from '@nestjs/common';
 

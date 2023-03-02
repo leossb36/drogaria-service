@@ -1,5 +1,5 @@
-import { createWooOrderDto } from '@core/application/dto/createWooOrder.dto';
-import { createWooOrderModelView } from '@core/application/mv/createWooOrder.mv';
+import { createWooOrderDto } from '@core/application/dto';
+import { createWooOrderModelView } from '@core/application/mv/create-woo-order.mv';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
 import { BadRequestException, Injectable } from '@nestjs/common';
