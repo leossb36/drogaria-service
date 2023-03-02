@@ -1,5 +1,5 @@
-import { GetOrderDto } from '@core/application/dto/getOrder.dto';
-import { GetOrderInformationModelView } from '@core/application/mv/getOrderInformation.mv';
+import { GetOrderDto } from '@core/application/dto';
+import { GetOrderInformationModelView } from '@core/application/mv/get-order-information.mv';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
 import { BadRequestException, Injectable } from '@nestjs/common';

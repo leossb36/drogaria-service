@@ -1,4 +1,4 @@
-export interface Billing {
+export interface WebhookBilling {
   first_name?: string;
   last_name?: string;
   company?: string;
@@ -22,7 +22,7 @@ export interface Billing {
   cellphone?: string;
 }
 
-export interface Shipping {
+export interface WebhookShipping {
   first_name?: string;
   last_name?: string;
   company?: string;
@@ -37,7 +37,7 @@ export interface Shipping {
   neighborhood?: string;
 }
 
-export interface LineItem {
+export interface WebhookLineItem {
   id?: number;
   name?: string;
   product_id?: number;
@@ -52,11 +52,11 @@ export interface LineItem {
   meta_data?: any[];
   sku?: string;
   price?: number;
-  image?: Image;
+  image?: WebhookImage;
   parent_name?: any;
 }
 
-export interface Image {
+export interface WebhookImage {
   id?: string;
   src?: string;
 }
@@ -79,9 +79,9 @@ export interface getWebhookDto {
   total_tax?: string;
   customer_id?: number;
   order_key?: string;
-  billing?: Billing;
-  shipping?: Shipping;
+  billing?: WebhookBilling;
+  shipping?: WebhookShipping;
   payment_method?: string;
   payment_method_title?: string;
-  line_items?: LineItem[];
+  line_items?: WebhookLineItem[];
 }
