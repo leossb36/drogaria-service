@@ -18,7 +18,7 @@ export class CreateOrderUseCase {
   async execute(dto: getWebhookDto): Promise<CreateOrderInformationModelView> {
     const sendToVetor = {
       cdFilial: +process.env.CD_FILIAL,
-      cgcFilial: 'farmacialuita',
+      cgcFilial: process.env.CGC_FILIAL || '',
       dtEmissao: new Date().toISOString(),
       cliente: this.getClient(dto),
       vlrProdutos: Number(dto.total),
@@ -27,9 +27,9 @@ export class CreateOrderUseCase {
       vlrOutros: undefined,
       vlrTotal: Number(dto.total),
       vlrTroco: undefined,
-      observacao: undefined,
+      observacao: 'Venda Online',
       nrPedido: dto.id.toString(),
-      retirar: false,
+      retirar: true,
       itens: this.getItems(dto),
     } as CreateOrderDto;
 
