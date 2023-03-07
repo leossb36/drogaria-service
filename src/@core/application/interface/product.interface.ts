@@ -1,4 +1,4 @@
-import { Product } from '@core/infra/integration/model/product.model';
+import { Product } from '../dto/product.dto';
 
 export interface IProduct {
   status: number;

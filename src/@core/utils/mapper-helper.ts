@@ -1,5 +1,5 @@
+import { Product } from '@core/application/dto/product.dto';
 import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
-import { Product } from '@core/infra/integration/model/product.model';
 
 export default function FromTo(
   productFromVetor: Product,

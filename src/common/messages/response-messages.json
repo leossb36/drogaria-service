@@ -29,5 +29,10 @@
         "error": "Invalid request or not found!"
       }
     }
+  },
+  "authentication": {
+    "post": {
+      "error": "Invalid request authentication user"
+    }
   }
 }
