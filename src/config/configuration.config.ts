@@ -38,6 +38,10 @@ export class ConfigService {
       consumerSecret: process.env.WOOCOMMERCE_SECRET,
       url: process.env.WOOCOMMERCE_URL,
     };
+    this.envConfig.wordpress = {
+      url: process.env.WOOCOMMERCE_URL,
+      secret_key: process.env.JWT_SECRET_KEY,
+    };
   }
   get(key: string): any {
     return this.envConfig[key];

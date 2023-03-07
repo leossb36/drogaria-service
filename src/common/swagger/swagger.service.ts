@@ -14,6 +14,7 @@ export class SwaggerService {
       .setTitle(this.configService.get('service').title)
       .setDescription(this.configService.get('service').description)
       .setVersion(this.configService.get('service').version)
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup(

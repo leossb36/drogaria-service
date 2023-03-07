@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "8000:8000"
+      - "${PORT}:${PORT}"
     networks:
       - backend
     env_file:
@@ -23,7 +23,7 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "8000:8000"
+      - "${PORT}:${PORT}"
     networks:
       - backend
     env_file:
@@ -37,7 +37,7 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "${SERVICE_PORT}:${SERVICE_PORT}"
+      - "${PORT}:${PORT}"
       - "9229:9229"
     networks:
       - backend

@@ -14,15 +14,15 @@ import {
   Post,
   Put,
   Headers,
-  // UseGuards,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { WoocommerceService } from './woocomerce.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
-// @ApiBearerAuth()
-// @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class WoocommerceController {
   constructor(
     private readonly createProductUseCase: CreateProductUseCase,
@@ -49,7 +49,7 @@ export class WoocommerceController {
   }
 
   @Get('/products')
-  async listProducts() {
+  async listProducts(): Promise<any[]> {
     return await this.getProductUseCase.execute();
   }
 
