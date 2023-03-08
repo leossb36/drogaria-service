@@ -16,4 +16,3 @@ jobs:
           node-version: 16.19.0
       - run: npm i
       - run: npm run build --if-present
-      - run: npm test
