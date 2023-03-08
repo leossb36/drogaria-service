@@ -20,5 +20,6 @@ jobs:
           cd /root/drogaria-service
           git pull origin master
           git status
-          npm install --only=prod
-          pm2 restart drogaria-service
+          npm ci
+          pm2 del drogaria-service
+          pm2 start dist/main.js --name drogaria-service
