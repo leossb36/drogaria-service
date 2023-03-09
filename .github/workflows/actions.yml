@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Building Node project
-        run: rm -rf dist && npm run build --if-present
+        run: npm run build --if-present
 
   deploy-pipeline:
     runs-on: ubuntu-latest
@@ -44,7 +44,6 @@ jobs:
           git pull origin master
           git status
           npm install
-          npm run build
           pm2 restart drogaria-service
 
 
