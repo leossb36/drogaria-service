@@ -43,7 +43,7 @@ jobs:
           cd /root/drogaria-service
           git pull origin master
           git status
-          npm ci
+          npm install
           npm run build
           pm2 restart drogaria-service
 
