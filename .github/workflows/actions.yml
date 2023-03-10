@@ -41,5 +41,5 @@ jobs:
       - name: Restart Pm2 process
         run: pm2 start dist/main.js --name drogaria-service --watch -i max
 
-      -name: saving context
+      - name: saving context
         run: pm2 save
