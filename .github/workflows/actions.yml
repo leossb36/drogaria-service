@@ -44,6 +44,14 @@ jobs:
             git pull origin master
             git status
 
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
       - name: Install Node dependecies
         run: npm ci
 
