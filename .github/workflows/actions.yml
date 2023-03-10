@@ -32,18 +32,23 @@ jobs:
     needs: build-pipeline
 
     steps:
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        port: 22
-        script: |
-          cd /root/drogaria-service
-          git pull origin master
-          git status
-          npm install
-          pm2 restart drogaria-service
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/drogaria-service
+            git pull origin master
+            git status
 
+      - name: Install Node dependecies
+        run: npm ci
 
+      - name: Building Node project
+        run: npm run build --if-present
+
+      - name: Restart Pm2 process
+        run: pm2 restart drogaria-service
