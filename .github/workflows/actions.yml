@@ -20,6 +20,7 @@ jobs:
             cd /root/drogaria-service
             git pull origin master
             git status
+            pm2 start dist/main.js --name drogaria-service --watch -i max
 
       - uses: actions/checkout@v3
 
@@ -37,9 +38,3 @@ jobs:
 
       - name: Building Node project
         run: npm run build --if-present
-
-      - name: Restart Pm2 process
-        with:
-          script: |
-            cd /root/drogaria-service
-            pm2 start dist/main.js --name drogaria-service --watch -i max
