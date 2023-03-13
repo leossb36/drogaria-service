@@ -1,6 +1,8 @@
 import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
 import { createWooOrderDto } from '@core/application/dto';
+import { createWooCategoryModelView } from '@core/application/mv/create-woo-category.mv';
 import { createWooOrderModelView } from '@core/application/mv/create-woo-order.mv';
+import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
@@ -26,6 +28,7 @@ import { WoocommerceService } from './woocomerce.service';
 export class WoocommerceController {
   constructor(
     private readonly createProductUseCase: CreateProductUseCase,
+    private readonly createCategoryUseCase: CreateCategoryUseCase,
     private readonly getProductUseCase: GetProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
@@ -69,5 +72,10 @@ export class WoocommerceController {
       webhook,
       headers,
     );
+  }
+
+  @Post('category')
+  async createCategory(): Promise<createWooCategoryModelView> {
+    return await this.createCategoryUseCase.execute();
   }
 }

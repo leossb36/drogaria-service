@@ -28,6 +28,12 @@
         "success": "Product updated successfully",
         "error": "Invalid request or not found!"
       }
+    },
+    "category": {
+      "create": {
+        "success": "Category created successfully!",
+        "error": "Cannot Create category on WooCommerce!"
+      }
     }
   },
   "authentication": {

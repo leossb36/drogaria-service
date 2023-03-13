@@ -5,6 +5,8 @@ import * as messages from '@common/messages/response-messages.json';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import FromTo from '@core/utils/mapper-helper';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
+import { chunckData, FetchVetorProducts } from '@core/utils/fetch-helper';
+import { createWooProductModelView } from '@core/application/mv/create-woo-product.mv';
 
 @Injectable()
 export class CreateProductUseCase {
@@ -14,34 +16,29 @@ export class CreateProductUseCase {
     private readonly searchEngine: SerpApiIntegration,
   ) {}
 
-  async execute(): Promise<unknown> {
-    let total = 0;
+  async execute(): Promise<createWooProductModelView> {
+    const products = [];
+    const productsFromVetor = await FetchVetorProducts(this.vetorIntegration);
 
-    const query = {
-      $filter: 'cdFilial eq 1',
-    };
-
-    const productsFromVetor = await this.vetorIntegration.getProductInfo(
-      '/produtos/consulta',
-      query,
-    );
-
-    for (const product of productsFromVetor?.data) {
+    for (const product of productsFromVetor) {
       const image = await this.searchEngine.getImageUrl(product.descricao);
 
       const formatedProduct = FromTo({ ...product, imageUrl: image });
       const hasProductOnWoocommerce = await this.validateProduct(
         formatedProduct,
       );
-      if (!hasProductOnWoocommerce) {
-        await this.woocommerceIntegration.createProduct(formatedProduct);
-        total += 1;
-      } else {
-        continue;
-      }
+      if (hasProductOnWoocommerce) continue;
+
+      products.push(formatedProduct);
+    }
+
+    const chunks = chunckData(products);
+
+    for (const chunk of chunks) {
+      await this.woocommerceIntegration.createProduct(chunk);
     }
     return {
-      total: total,
+      total: products.length,
       message: messages.woocommerce.product.create.success,
     };
   }

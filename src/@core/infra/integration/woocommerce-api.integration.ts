@@ -1,4 +1,6 @@
 import { ConfigService } from '@config/configuration.config';
+import { createCategoriesDto } from '@core/application/dto/create-category.dto';
+import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 import FetchAllProducts from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
@@ -70,9 +72,15 @@ export class WoocommerceIntegration {
     }
   }
 
-  async createProduct(body: unknown): Promise<any> {
+  async createProduct(products: getProductWooCommerce[]): Promise<any> {
+    const data = {
+      create: [...products],
+    };
     try {
-      const response = await this.woocommerceConfig.post('products', body);
+      const response = await this.woocommerceConfig.post(
+        'products/batch',
+        data,
+      );
       return response;
     } catch (error) {
       console.error(error.response.headers);
@@ -90,11 +98,14 @@ export class WoocommerceIntegration {
     }
   }
 
-  async createCategories(body: unknown): Promise<any> {
+  async createCategories(categories: createCategoriesDto[]): Promise<any> {
+    const data = {
+      create: [...categories],
+    };
     try {
       const response = await this.woocommerceConfig.post(
-        'products/categories',
-        body,
+        'products/categories/batch',
+        data,
       );
       return response;
     } catch (error) {

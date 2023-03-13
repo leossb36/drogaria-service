@@ -26,3 +26,43 @@ export default async function FetchAllProducts(instance: WooCommerceRestApi) {
 
   return returnData;
 }
+
+export async function FetchVetorProducts(instance: any) {
+  let products;
+  const returnData = [];
+  const queryTop = 500;
+  let querySkip = 0;
+
+  do {
+    try {
+      products = await instance.getProductInfo('/produtos/consulta', {
+        $top: queryTop,
+        $skip: querySkip,
+        $filter: 'cdFilial eq 1',
+      });
+
+      returnData.push(...products.data);
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+
+    querySkip = returnData.length;
+  } while (products.data.length > 0);
+
+  return returnData;
+}
+
+export function chunckData(data: any[]) {
+  const countChunks = Math.ceil(data.length / 100);
+  let begin = 0;
+  let limitChunks = 0;
+  const arrayChunks = [];
+
+  while (begin < data.length && limitChunks < countChunks) {
+    arrayChunks.push(data.slice(begin, begin + 99));
+    begin += 100;
+    limitChunks += 1;
+  }
+
+  return arrayChunks;
+}
