@@ -12,8 +12,14 @@ export class UpdateProductUseCase {
   ) {}
 
   async execute(id: string): Promise<unknown> {
+    const productFromWoocommerce =
+      await this.woocommerceIntegration.getProductById(id);
+
+    const productSku = productFromWoocommerce[0].sku.split('-');
+    const productId = productSku[0];
+
     const params = {
-      $filter: `cdProduto eq ${id} and cdFilial eq 1`,
+      $filter: `cdProduto eq ${productId} and cdFilial eq 1`,
     };
 
     const productFromVetor = await this.vetorIntegration.getProductInfo(
@@ -22,12 +28,9 @@ export class UpdateProductUseCase {
     );
 
     const bodyFromVetor = FromTo(productFromVetor.data[0]);
-    const wooProduct = await this.woocommerceIntegration.getProductBySku(
-      bodyFromVetor.sku,
-    );
 
     const product = await this.woocommerceIntegration.updateProductStock(
-      wooProduct[0].id,
+      productFromWoocommerce[0].id,
       bodyFromVetor,
     );
 
