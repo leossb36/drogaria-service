@@ -58,6 +58,21 @@ export class WoocommerceIntegration {
     }
   }
 
+  async getProductById(filter: string) {
+    try {
+      const product = await FetchAllProducts(this.woocommerceConfig).then(
+        (result) => {
+          return result.filter((product) => product.id === Number(filter));
+        },
+      );
+
+      return product;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async getAllProductsIds(): Promise<string[]> {
     try {
       const ids = await FetchAllProducts(this.woocommerceConfig).then(
@@ -107,6 +122,19 @@ export class WoocommerceIntegration {
         'products/categories/batch',
         data,
       );
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
+  async updateProductBatch(products: any) {
+    const data = {
+      update: [...products],
+    };
+    try {
+      const response = await this.woocommerceConfig.put('products/batch', data);
       return response;
     } catch (error) {
       console.error(error.response.headers);
