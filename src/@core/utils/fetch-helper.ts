@@ -52,7 +52,32 @@ export async function FetchVetorProducts(instance: any) {
   return returnData;
 }
 
-export function chunckData(data: any[]) {
+export async function FetchVetorCategories(instance: any) {
+  let products;
+  const returnData = [];
+  const queryTop = 500;
+  let querySkip = 0;
+
+  do {
+    try {
+      products = await instance.getProductInfo('/produtos/consulta', {
+        $top: queryTop,
+        $skip: querySkip,
+        $filter: 'cdFilial eq 1',
+      });
+
+      returnData.push(...products.data);
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+
+    querySkip = returnData.length;
+  } while (products.data.length > 0);
+
+  return returnData;
+}
+
+export function ChunckData(data: any[]) {
   const countChunks = Math.ceil(data.length / 100);
   let begin = 0;
   let limitChunks = 0;

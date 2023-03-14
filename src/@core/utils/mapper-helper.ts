@@ -40,6 +40,5 @@ export default function FromTo(
     ],
     stock_status: 'instock',
     has_options: false,
-    images: [{ src: productFromVetor.imageUrl }],
   };
 }
