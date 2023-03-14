@@ -1,7 +1,7 @@
 import { Product } from '@core/application/dto/product.dto';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
-import { chunckData, FetchVetorProducts } from '@core/utils/fetch-helper';
+import { ChunckData, FetchVetorCategories } from '@core/utils/fetch-helper';
 import * as messages from '@common/messages/response-messages.json';
 import { Injectable } from '@nestjs/common';
 import { createWooCategoryModelView } from '@core/application/mv/create-woo-category.mv';
@@ -14,7 +14,9 @@ export class CreateCategoryUseCase {
   ) {}
 
   async execute(): Promise<createWooCategoryModelView> {
-    const products: Product[] = await FetchVetorProducts(this.vetorIntegration);
+    const products: Product[] = await FetchVetorCategories(
+      this.vetorIntegration,
+    );
 
     if (!products.length) {
       return {
@@ -31,7 +33,7 @@ export class CreateCategoryUseCase {
         categories: [],
       };
     }
-    const chunks = chunckData(categories);
+    const chunks = ChunckData(categories);
 
     for (const chunk of chunks) {
       await this.woocommerceIntegration.createCategories(chunk);
