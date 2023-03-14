@@ -4,15 +4,14 @@ import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/cr
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
 import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
-import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
-import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
+import { IntegrationModule } from '@core/infra/integration.module';
 import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
 import { WoocommerceService } from './woocomerce.service';
 import { WoocommerceController } from './woocommerce.controller';
 
 @Module({
-  imports: [VetorModule],
+  imports: [VetorModule, IntegrationModule],
   providers: [
     CreateProductUseCase,
     CreateCategoryUseCase,
@@ -20,9 +19,7 @@ import { WoocommerceController } from './woocommerce.controller';
     CreateOrderUseCase,
     UpdateProductUseCase,
     UpdateProductBatchUseCase,
-    WoocommerceIntegration,
     WoocommerceService,
-    SerpApiIntegration,
   ],
   controllers: [WoocommerceController],
 })

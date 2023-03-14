@@ -13,6 +13,10 @@ export class SerpApiIntegration {
       tbm: 'isch',
       num: '10',
       safe: 'active',
+      google_domain: 'google.com.br',
+      hl: 'pt',
+      gl: 'br',
+      ijn: '0',
     };
     try {
       const response = await getJson('google', { ...params });
