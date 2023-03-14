@@ -39,6 +39,8 @@ export class CreateOrderUseCase {
       throw new BadRequestException('Cannot create order');
     }
 
+    console.log(order.data);
+
     return {
       data: order.data,
       msg: messages.vetor.integration.create.order.success,
