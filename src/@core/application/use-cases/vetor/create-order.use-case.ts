@@ -39,7 +39,7 @@ export class CreateOrderUseCase {
       throw new BadRequestException('Cannot create order');
     }
 
-    console.log(order.data);
+    console.info(order.data);
 
     return {
       data: order.data,
