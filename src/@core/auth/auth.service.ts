@@ -13,12 +13,11 @@ export class AuthService {
     const payload = {
       username: request.user_nicename,
       email: request.user_email,
+      token: request.token,
     };
 
-    const token = this.jwtService.sign(payload);
-
     return {
-      token: token,
+      token: payload.token,
     };
   }
 
