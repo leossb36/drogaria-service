@@ -6,7 +6,7 @@ import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/c
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
-import { UpdateProductListUseCase } from '@core/application/use-cases/woocommerce/update-list-product.use-case';
+import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import {
   Body,
@@ -32,7 +32,7 @@ export class WoocommerceController {
     private readonly getProductUseCase: GetProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
-    private readonly updateProductListUseCase: UpdateProductListUseCase,
+    private readonly updateProductBatchUseCase: UpdateProductBatchUseCase,
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
@@ -47,8 +47,8 @@ export class WoocommerceController {
   }
 
   @Put('/products')
-  async updateProductList(): Promise<unknown> {
-    return await this.updateProductListUseCase.execute();
+  async updateProductsBatch(): Promise<unknown> {
+    return await this.updateProductBatchUseCase.execute();
   }
 
   @Get('/products')
