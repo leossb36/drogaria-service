@@ -16,12 +16,13 @@ export class CreateOrderUseCase {
   constructor(private readonly integration: VetorIntegrationGateway) {}
 
   async execute(dto: getWebhookDto): Promise<CreateOrderInformationModelView> {
+    const [itens, totalPriceItens] = this.getItems(dto);
     const sendToVetor = {
       cdFilial: +process.env.CD_FILIAL,
       cgcFilial: process.env.CGC_FILIAL || '',
       dtEmissao: new Date().toISOString(),
       cliente: this.getClient(dto),
-      vlrProdutos: Number(dto.total),
+      vlrProdutos: totalPriceItens,
       vlrDescontos: Number(dto.discount_total),
       vlrFrete: Number(dto.shipping_total),
       vlrOutros: undefined,
@@ -30,7 +31,7 @@ export class CreateOrderUseCase {
       observacao: 'Venda Online',
       nrPedido: dto.id.toString(),
       retirar: true,
-      itens: this.getItems(dto),
+      itens,
     } as CreateOrderDto;
 
     const order = await this.integration.createOrder(sendToVetor, '/pedidos');
@@ -38,8 +39,6 @@ export class CreateOrderUseCase {
     if (!order || !ValidationHelper.isOk(order.status)) {
       throw new BadRequestException('Cannot create order');
     }
-
-    console.info(order.data);
 
     return {
       data: order.data,
@@ -66,20 +65,21 @@ export class CreateOrderUseCase {
       email: billing.email,
     };
   }
-  private getItems(dto: getWebhookDto): Item[] {
+  private getItems(dto: getWebhookDto): [Item[], number] {
     const { line_items } = dto;
 
     if (!line_items.length) {
-      return [];
+      return [[], null];
     }
 
     const items = [];
+    let totalPriceItems = 0;
 
     line_items?.map((item) => {
       const cdProduct = item.sku.split('-');
+      totalPriceItems = totalPriceItems + Number(item.total);
       const data = {
         cdProduto: Number(cdProduct[0]),
-        cdBarrasProduto: item.sku,
         quantidade: item.quantity,
         vlrUnitario: item.price,
         vlrDesconto: undefined,
@@ -87,6 +87,6 @@ export class CreateOrderUseCase {
       } as Item;
       items.push(data);
     });
-    return items;
+    return [items, totalPriceItems];
   }
 }
