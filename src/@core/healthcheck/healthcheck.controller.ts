@@ -8,6 +8,6 @@ export class HealthCheckController {
   @Get('health-check')
   @Public()
   getHealthCheck(): string {
-    return 'teste deployment';
+    return 'ok';
   }
 }
