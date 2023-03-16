@@ -54,7 +54,7 @@ export class CreateOrderUseCase {
       cpfCgc: billing?.cpf,
       telefone: ValidationClientHelper.validatePhone(billing.phone),
       sexo: billing?.sex,
-      dtNascimento: ValidationClientHelper.validateDate(billing?.birthdate),
+      dtNascimento: '01/01/2000', // ValidationClientHelper.validateDate(billing?.birthdate),
       endereco: billing?.address_1,
       numero: billing?.number,
       complemento: '',
