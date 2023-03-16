@@ -8,8 +8,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Vetor')
 @Controller('vetor')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 export class VetorIntegrationController {
   constructor(
     private readonly createOrderUseCase: CreateOrderUseCase,

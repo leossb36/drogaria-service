@@ -23,8 +23,8 @@ import { WoocommerceService } from './woocomerce.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 export class WoocommerceController {
   constructor(
     private readonly createProductUseCase: CreateProductUseCase,
