@@ -20,7 +20,8 @@ jobs:
             cd /root/drogaria-service
             git pull origin master
             git status
-            pm2 start dist/main.js --name drogaria-service --watch -i max
+            pm2 delete drogaria-service
+            pm2 start dist/main.js --name drogaria-service
 
       - uses: actions/checkout@v3
 
