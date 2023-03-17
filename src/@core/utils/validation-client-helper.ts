@@ -8,6 +8,7 @@ export class ValidationClientHelper {
   }
 
   static validateDate(date: string): string {
-    return date.replaceAll('/', '-').split('-').reverse().join('-').toString();
+    const formatedDate = date.split('T');
+    return formatedDate[0];
   }
 }
