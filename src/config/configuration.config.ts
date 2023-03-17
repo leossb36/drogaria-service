@@ -25,14 +25,6 @@ export class ConfigService {
       url: process.env.VETOR_API_URL,
       prefix: process.env.VETOR_API_PREFIX_KEY,
     };
-    this.envConfig.google = {
-      searchEngineId: process.env.GOOGLE_SEARCH_ENGINE_ID,
-      auth: process.env.GOOGLE_API_SECRET,
-    };
-    this.envConfig.reference = {
-      referenceName: process.env.REFERENCE_NAME,
-      url: process.env.REFERENCE_URL,
-    };
     this.envConfig.woocommerce = {
       consumerKey: process.env.WOOCOMMERCE_KEY,
       consumerSecret: process.env.WOOCOMMERCE_SECRET,

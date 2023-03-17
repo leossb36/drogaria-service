@@ -1,4 +1,3 @@
-import { GoogleApiIntegrationGateway } from '@core/infra/integration/google-api.integration';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { Module } from '@nestjs/common';
@@ -8,7 +7,6 @@ import { WordpressIntegration } from './integration/wordpress-api.Integration';
 @Module({
   providers: [
     VetorIntegrationGateway,
-    GoogleApiIntegrationGateway,
     SerpApiIntegration,
     WoocommerceIntegration,
     WordpressIntegration,
