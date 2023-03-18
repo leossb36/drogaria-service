@@ -1,4 +1,5 @@
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { QueryFilter } from './query-builder';
 
 export default async function FetchAllProducts(instance: WooCommerceRestApi) {
   let actualPage = 1;
@@ -28,26 +29,37 @@ export default async function FetchAllProducts(instance: WooCommerceRestApi) {
 }
 
 export async function FetchVetorProducts(instance: any) {
+  const queryFilter = new QueryFilter();
   let products;
   const returnData = [];
   const queryTop = 500;
   let querySkip = 0;
+  let queryCounter = 0;
 
   do {
     try {
+      const query = queryFilter
+        .setFilial()
+        .setActiveProduct()
+        .setCategory()
+        .setHasStock()
+        .getQuery();
+
       products = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,
         $skip: querySkip,
-        $filter: 'cdFilial eq 1',
+        $filter: query,
+        $count: 'true',
       });
 
+      queryCounter += products.data.length;
       returnData.push(...products.data);
     } catch (error) {
       console.error(error.response.data.message);
     }
 
     querySkip = returnData.length;
-  } while (products.data.length > 0);
+  } while (queryCounter < products.total);
 
   return returnData;
 }

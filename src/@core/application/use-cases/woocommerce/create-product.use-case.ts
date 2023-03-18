@@ -7,18 +7,18 @@ import FromTo from '@core/utils/mapper-helper';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
 import { ChunckData, FetchVetorProducts } from '@core/utils/fetch-helper';
 import { createWooProductModelView } from '@core/application/mv/create-woo-product.mv';
+import { GetDataFromJsonFile } from '@core/utils/get-data-from-json-file';
 
 @Injectable()
 export class CreateProductUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
-    private readonly vetorIntegration: VetorIntegrationGateway,
     private readonly searchEngine: SerpApiIntegration,
   ) {}
 
   async execute(): Promise<createWooProductModelView> {
     const products = [];
-    const productsFromVetor = await FetchVetorProducts(this.vetorIntegration);
+    const productsFromVetor = GetDataFromJsonFile();
 
     for (const product of productsFromVetor) {
       const formatedProduct = FromTo(product);

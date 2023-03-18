@@ -2,6 +2,7 @@ import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
 import { getWebhookDto, GetOrderDto } from '@core/application/dto';
 import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
 import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
+import { CreateProductsJsonUseCase } from '@core/application/use-cases/vetor/create-products-json.use-case';
 import { GetOrderUseCase } from '@core/application/use-cases/vetor/get-order.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/vetor/get-product.use-case';
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
@@ -16,7 +17,13 @@ export class VetorIntegrationController {
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly getOrderUseCase: GetOrderUseCase,
     private readonly getProductUseCase: GetProductUseCase,
+    private readonly createProductsJsonUseCase: CreateProductsJsonUseCase,
   ) {}
+
+  @Post('/products')
+  async createProducts(): Promise<any> {
+    return await this.createProductsJsonUseCase.execute();
+  }
 
   @Get('/products')
   async getProducts(): Promise<any> {

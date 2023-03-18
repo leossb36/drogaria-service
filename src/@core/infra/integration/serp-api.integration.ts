@@ -11,7 +11,6 @@ export class SerpApiIntegration {
       api_key: this.configService.get('serpApi').secret_key,
       q: query,
       tbm: 'isch',
-      num: '10',
       safe: 'active',
       google_domain: 'google.com.br',
       hl: 'pt',

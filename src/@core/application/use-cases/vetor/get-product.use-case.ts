@@ -9,16 +9,20 @@ export class GetProductUseCase {
     const products = await this.vetorIntegration.getProductInfo(
       '/produtos/consulta',
       {
-        $filter: 'cdFilial eq 1',
+        $filter: `cdFilial eq 1 and nomeCategoria ne 'NAO DEFINIDO' and qtdEstoque gt 0`,
+        $count: 'true',
       },
     );
 
-    const { data } = products;
+    const { data, total } = products;
 
     if (!data.length) {
       throw new BadRequestException('Cannot find any product');
     }
 
-    return data;
+    return {
+      total,
+      data,
+    };
   }
 }
