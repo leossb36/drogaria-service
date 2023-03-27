@@ -9,7 +9,7 @@ export class GetProductUseCase {
     const products = await this.vetorIntegration.getProductInfo(
       '/produtos/consulta',
       {
-        $filter: `cdFilial eq 1 and nomeCategoria ne 'NAO DEFINIDO' and qtdEstoque gt 0`,
+        $filter: `cdFilial eq 1 and qtdEstoque gt 0 and inativo eq false`,
         $count: 'true',
       },
     );

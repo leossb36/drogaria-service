@@ -8,7 +8,11 @@ export class QueryFilter {
   }
 
   setCategory() {
-    this.filters.push(`nomeCategoria ne 'NAO DEFINIDO'`);
+    this.filters.push(
+      `nomeLinha eq 'Perfumes' nomeLinha eq 'Maquiagens' or
+      nomeLinha eq 'Dermocosméticos' or nomeLinha eq 'Linha infantil' or
+      nomeLinha 'Cabelos' or nomeLinha eq 'Higiene e beleza'`,
+    );
     return this;
   }
 

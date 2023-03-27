@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "charge": "node ./src/@core/infra/db/charge-product.js",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -37,6 +38,7 @@
     "class-validator": "^0.14.0",
     "google-search-results-nodejs": "^2.1.0",
     "googleapis": "^110.0.0",
+    "JSONStream": "^1.3.5",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

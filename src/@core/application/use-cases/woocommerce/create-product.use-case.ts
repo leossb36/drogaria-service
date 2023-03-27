@@ -1,53 +1,50 @@
-import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
-import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
-import FromTo from '@core/utils/mapper-helper';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
-import { ChunckData, FetchVetorProducts } from '@core/utils/fetch-helper';
+import { ChunckData } from '@core/utils/fetch-helper';
 import { createWooProductModelView } from '@core/application/mv/create-woo-product.mv';
-import { GetDataFromJsonFile } from '@core/utils/get-data-from-json-file';
+import { ReadStreamService } from '@core/utils/read-stream';
 
 @Injectable()
 export class CreateProductUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly searchEngine: SerpApiIntegration,
+    private readonly readStreamService: ReadStreamService,
   ) {}
 
   async execute(): Promise<createWooProductModelView> {
-    const products = [];
-    const productsFromVetor = GetDataFromJsonFile();
+    try {
+      const wooproducts = (
+        await this.readStreamService.filterProductsVetor()
+      ).slice(1, 2);
 
-    for (const product of productsFromVetor) {
-      const formatedProduct = FromTo(product);
-      const hasProductOnWoocommerce = await this.validateProduct(
-        formatedProduct,
-      );
-      if (hasProductOnWoocommerce) continue;
+      // const images = await Promise.all(
+      //   wooproducts.map((product) =>
+      //     this.searchEngine.getImageUrl(product.description),
+      //   ),
+      // );
+      const products = [];
 
-      const image = await this.searchEngine.getImageUrl(product.descricao);
-      products.push({ ...formatedProduct, imageUrl: image });
+      wooproducts.forEach(async (product, index) => {
+        products.push({
+          ...product,
+          // images: [{ src: images[index] }],
+        });
+      });
+
+      const chunks = ChunckData(products);
+
+      for (const chunk of chunks) {
+        await this.woocommerceIntegration.createProduct(chunk);
+      }
+      return {
+        total: products.length,
+        message: messages.woocommerce.product.create.success,
+      };
+    } catch (error) {
+      return null;
     }
-
-    const chunks = ChunckData(products);
-
-    for (const chunk of chunks) {
-      await this.woocommerceIntegration.createProduct(chunk);
-    }
-    return {
-      total: products.length,
-      message: messages.woocommerce.product.create.success,
-    };
-  }
-  private async validateProduct(
-    newProduct: getProductWooCommerce,
-  ): Promise<boolean> {
-    const productsSkus = await this.woocommerceIntegration.getAllProductsSku();
-
-    const hasProduct = productsSkus.filter((sku) => sku === newProduct.sku);
-
-    return hasProduct.length > 0;
   }
 }

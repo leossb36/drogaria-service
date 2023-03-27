@@ -20,11 +20,6 @@ export class VetorIntegrationController {
     private readonly createProductsJsonUseCase: CreateProductsJsonUseCase,
   ) {}
 
-  @Post('/products')
-  async createProducts(): Promise<any> {
-    return await this.createProductsJsonUseCase.execute();
-  }
-
   @Get('/products')
   async getProducts(): Promise<any> {
     return await this.getProductUseCase.execute();

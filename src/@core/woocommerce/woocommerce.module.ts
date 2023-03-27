@@ -5,6 +5,7 @@ import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-p
 import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import { IntegrationModule } from '@core/infra/integration.module';
+import { ReadStreamService } from '@core/utils/read-stream';
 import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
 import { WoocommerceService } from './woocomerce.service';
@@ -20,6 +21,7 @@ import { WoocommerceController } from './woocommerce.controller';
     UpdateProductUseCase,
     UpdateProductBatchUseCase,
     WoocommerceService,
+    ReadStreamService,
   ],
   controllers: [WoocommerceController],
 })
