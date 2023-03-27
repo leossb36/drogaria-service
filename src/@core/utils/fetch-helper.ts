@@ -38,12 +38,7 @@ export async function FetchVetorProducts(instance: any) {
 
   do {
     try {
-      const query = queryFilter
-        .setFilial()
-        .setActiveProduct()
-        .setCategory()
-        .setHasStock()
-        .getQuery();
+      const query = queryFilter.setFilial().setActiveProduct().getQuery();
 
       products = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,
@@ -89,17 +84,9 @@ export async function FetchVetorCategories(instance: any) {
   return returnData;
 }
 
-export function ChunckData(data: any[]) {
-  const countChunks = Math.ceil(data.length / 100);
-  let begin = 0;
-  let limitChunks = 0;
-  const arrayChunks = [];
-
-  while (begin < data.length && limitChunks < countChunks) {
-    arrayChunks.push(data.slice(begin, begin + 99));
-    begin += 100;
-    limitChunks += 1;
-  }
-
-  return arrayChunks;
+export function ChunckData(data: any[], size = 100) {
+  const chunks = [];
+  for (let i = 0; i < Math.max(1, data.length / 100); i++)
+    chunks.push(data.slice(i * size, i * size + size));
+  return chunks;
 }

@@ -1,5 +1,6 @@
 import { ConfigService } from '@config/configuration.config';
 import { createCategoriesDto } from '@core/application/dto/create-category.dto';
+import { CategoryIdsEnum } from '@core/application/dto/enum/category.enum';
 import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
 import FetchAllProducts from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
@@ -39,6 +40,17 @@ export class WoocommerceIntegration {
       return skus;
     } catch (err) {
       console.error(err.response.headers);
+      console.error(err.response.data);
+    }
+  }
+
+  async getAllCategories(): Promise<any[]> {
+    try {
+      const categories = await this.woocommerceConfig.get(
+        `products/categories?include=${Object.values(CategoryIdsEnum)}`,
+      );
+      return categories.data;
+    } catch (err) {
       console.error(err.response.data);
     }
   }

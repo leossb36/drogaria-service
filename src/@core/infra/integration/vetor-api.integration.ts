@@ -25,16 +25,16 @@ export class VetorIntegrationGateway {
   async getProductInfo(
     endpoint: string,
     params?: GetProductVetorDto,
-  ): Promise<IProduct> {
+  ): Promise<any> {
     try {
-      const { data } = await lastValueFrom(
-        this.httpService.get<IProduct>(`${this.baseUrl}${endpoint}`, {
+      const response = await lastValueFrom(
+        this.httpService.get(`${this.baseUrl}${endpoint}`, {
           headers: this.headerRequest,
           params: params,
         }),
       );
 
-      return data;
+      return response.data;
     } catch (err) {
       console.error(err.data);
     }

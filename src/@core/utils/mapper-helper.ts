@@ -33,9 +33,9 @@ export default function FromTo(
     reviews_allowed: true,
     categories: [
       {
-        id: productFromVetor.cdCategoria,
-        name: productFromVetor.nomeCategoria,
-        slug: productFromVetor.nomeCategoria.toLowerCase(),
+        id: productFromVetor.cdLinha,
+        name: productFromVetor.nomeLinha,
+        slug: productFromVetor.nomeLinha.toLowerCase(),
       },
     ],
     stock_status: 'instock',
