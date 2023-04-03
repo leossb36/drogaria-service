@@ -38,7 +38,11 @@ export async function FetchVetorProducts(instance: any) {
 
   do {
     try {
-      const query = queryFilter.setFilial().setActiveProduct().getQuery();
+      const query = queryFilter
+        .setFilial()
+        .setActiveProduct()
+        .setCategory()
+        .getQuery();
 
       products = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,

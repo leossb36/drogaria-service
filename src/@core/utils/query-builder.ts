@@ -1,3 +1,5 @@
+import { CategoryEnum } from '@core/application/dto/enum/category.enum';
+
 export class QueryFilter {
   private query: string;
   private filters: string[] = [];
@@ -8,11 +10,21 @@ export class QueryFilter {
   }
 
   setCategory() {
-    this.filters.push(
-      `nomeLinha eq 'Perfumes' nomeLinha eq 'Maquiagens' or
-      nomeLinha eq 'Dermocosméticos' or nomeLinha eq 'Linha infantil' or
-      nomeLinha 'Cabelos' or nomeLinha eq 'Higiene e beleza'`,
-    );
+    const filters = Object.values(CategoryEnum);
+    const categories = [];
+    let result: string;
+    let query: string;
+    for (let index = 0; index < filters.length; index++) {
+      query = `nomeLinha eq ${filters[index]}`;
+      if (index === filters.length - 1) {
+        result = query;
+      } else {
+        result = query + ' or ';
+      }
+      categories.push(result);
+      query = categories.join('');
+    }
+    this.filters.push(query);
     return this;
   }
 
