@@ -1,3 +1,4 @@
+import { CategoryEnum } from '@core/application/dto/enum/category.enum';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { QueryFilter } from './query-builder';
 
@@ -40,8 +41,8 @@ export async function FetchVetorProducts(instance: any) {
     try {
       const query = queryFilter
         .setFilial()
+        .setHasStock()
         .setActiveProduct()
-        .setCategory()
         .getQuery();
 
       products = await instance.getProductInfo('/produtos/consulta', {
@@ -60,7 +61,11 @@ export async function FetchVetorProducts(instance: any) {
     querySkip = returnData.length;
   } while (queryCounter < products.total);
 
-  return returnData;
+  const filteredListProducts = returnData.filter((product) =>
+    Object.values(CategoryEnum).includes(product.nomeLinha),
+  );
+
+  return filteredListProducts;
 }
 
 export async function FetchVetorCategories(instance: any) {

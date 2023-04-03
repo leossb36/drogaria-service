@@ -21,6 +21,6 @@ export class CreateProductsJsonUseCase {
 
     writeFileSync(fileName, jsonData);
 
-    return { success: true };
+    return { success: true, count: products.length };
   }
 }

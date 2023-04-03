@@ -15,7 +15,7 @@ export class QueryFilter {
     let result: string;
     let query: string;
     for (let index = 0; index < filters.length; index++) {
-      query = `nomeLinha eq ${filters[index]}`;
+      query = `nomeLinha eq '${filters[index]}'`;
       if (index === filters.length - 1) {
         result = query;
       } else {
