@@ -10,10 +10,14 @@ import {
   Item,
 } from '@core/application/dto';
 import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
+import { OrderRepository } from '@core/infra/db/repositories/order.repository';
 
 @Injectable()
 export class CreateOrderUseCase {
-  constructor(private readonly integration: VetorIntegrationGateway) {}
+  constructor(
+    private readonly integration: VetorIntegrationGateway,
+    private readonly orderRepository: OrderRepository,
+  ) {}
 
   async execute(dto: getWebhookDto): Promise<CreateOrderInformationModelView> {
     const [itens, totalPriceItens] = this.getItems(dto);
@@ -38,6 +42,20 @@ export class CreateOrderUseCase {
 
     if (!order || !ValidationHelper.isOk(order.status)) {
       throw new BadRequestException('Cannot create order');
+    }
+
+    const { data } = order;
+
+    const createOnDataBase = await this.orderRepository.create({
+      cdOrcamento: data.cdOrcamento,
+      numeroPedido: dto.id,
+      situacao: data.situacao,
+    });
+
+    if (!createOnDataBase) {
+      throw new BadRequestException(
+        'Cannot save on database the vetor register',
+      );
     }
 
     return {
