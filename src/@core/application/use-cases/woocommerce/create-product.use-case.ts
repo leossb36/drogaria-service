@@ -16,21 +16,19 @@ export class CreateProductUseCase {
 
   async execute(): Promise<createWooProductModelView> {
     try {
-      const wooproducts = (
-        await this.readStreamService.filterProductsVetor()
-      ).slice(1, 2);
+      const wooproducts = await this.readStreamService.filterProductsVetor();
 
-      // const images = await Promise.all(
-      //   wooproducts.map((product) =>
-      //     this.searchEngine.getImageUrl(product.description),
-      //   ),
-      // );
+      const images = await Promise.all(
+        wooproducts.map((product) =>
+          this.searchEngine.getImageUrl(product.description),
+        ),
+      );
       const products = [];
 
       wooproducts.forEach(async (product, index) => {
         products.push({
           ...product,
-          // images: [{ src: images[index] }],
+          images: [{ src: images[index] }],
         });
       });
 
