@@ -3,6 +3,9 @@ export class ConfigService {
 
   constructor() {
     this.envConfig = {};
+    this.envConfig.mongo = {
+      url: process.env.MONGO_URL,
+    };
     this.envConfig.auth = {
       secretKey: process.env.JWT_SECRET_KEY,
     };
