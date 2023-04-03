@@ -1,45 +1,44 @@
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
-import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
-import FromTo from '@core/utils/mapper-helper';
+import { ReadStreamService } from '@core/utils/read-stream';
+import { ChunckData } from '@core/utils/fetch-helper';
 
 @Injectable()
 export class UpdateProductUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
-    private readonly vetorIntegration: VetorIntegrationGateway,
+    private readonly readStreamService: ReadStreamService,
   ) {}
 
-  async execute(id: string): Promise<unknown> {
-    const productFromWoocommerce =
-      await this.woocommerceIntegration.getProductById(id);
+  async execute(): Promise<any> {
+    const updatedProducts = [];
+    const wooProducts = await this.woocommerceIntegration.getAllProducts();
 
-    const productSku = productFromWoocommerce[0].sku.split('-');
-    const productId = productSku[0];
+    if (!wooProducts.length) {
+      throw new BadRequestException('Cannot find any products');
+    }
 
-    const params = {
-      $filter: `cdProduto eq ${productId} and cdFilial eq 1`,
-    };
+    const formatedProductsFromVetor =
+      await this.readStreamService.filterProductsVetor();
 
-    const productFromVetor = await this.vetorIntegration.getProductInfo(
-      '/produtos/consulta',
-      params,
-    );
+    wooProducts.map((product) => {
+      const formatedProduct = formatedProductsFromVetor.find(
+        (formatedProduct) => formatedProduct.name === product.name,
+      );
+      updatedProducts.push({
+        id: product.id,
+        stock_quantity: formatedProduct.stock_quantity,
+      });
+    });
+    const chunks = ChunckData(updatedProducts);
 
-    const bodyFromVetor = FromTo(productFromVetor.data[0]);
-
-    const product = await this.woocommerceIntegration.updateProductStock(
-      productFromWoocommerce[0].id,
-      bodyFromVetor,
-    );
-
-    if (!product.data) {
-      throw new BadRequestException('Cannot update product!');
+    for (const chunk of chunks) {
+      await this.woocommerceIntegration.updateProductBatch(chunk);
     }
 
     return {
-      status: product.status,
+      count: updatedProducts.length,
       message: messages.woocommerce.product.update.success,
     };
   }

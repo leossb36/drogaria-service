@@ -41,9 +41,9 @@ export class WoocommerceController {
     return await this.createProductUseCase.execute();
   }
 
-  @Put('/product/:id')
-  async updateProductById(@Param('id') id: string): Promise<unknown> {
-    return await this.updateProductUseCase.execute(id);
+  @Put('/products/fetch')
+  async updateProductFetch(): Promise<unknown> {
+    return await this.updateProductUseCase.execute();
   }
 
   @Put('/products')

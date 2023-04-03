@@ -163,4 +163,17 @@ export class WoocommerceIntegration {
       console.error(error.response.data);
     }
   }
+
+  async updateOrderBatch(body: any) {
+    const data = {
+      update: [...body],
+    };
+    try {
+      const response = await this.woocommerceConfig.post(`orders/batch`, data);
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
 }
