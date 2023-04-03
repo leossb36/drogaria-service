@@ -34,6 +34,16 @@
         "success": "Category created successfully!",
         "error": "Cannot Create category on WooCommerce!"
       }
+    },
+    "order": {
+      "create": {
+        "success": "Order created successfully!",
+        "error": "Cannot Create category on WooCommerce!"
+      },
+      "update": {
+        "success": "Order updated successfully",
+        "error": "Invalid request or not found!"
+      }
     }
   },
   "authentication": {

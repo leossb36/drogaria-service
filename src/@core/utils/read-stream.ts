@@ -16,7 +16,7 @@ export class ReadStreamService {
 
     return new Promise((resolve, reject) => {
       const stream = createReadStream(
-        '.src/@core/infra/db/vetor-data.json',
+        './src/@core/infra/db/vetor-data.json',
       ).pipe(parse('*'));
 
       stream
@@ -45,7 +45,7 @@ export class ReadStreamService {
 
     return new Promise((resolve, reject) => {
       const stream = createReadStream(
-        '.src/@core/infra/db/vetor-data.json',
+        './src/@core/infra/db/vetor-data.json',
       ).pipe(parse('*'));
 
       stream
