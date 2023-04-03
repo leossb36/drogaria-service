@@ -25,6 +25,11 @@ export class VetorIntegrationController {
     return await this.getProductUseCase.execute();
   }
 
+  @Get('/products/fetch')
+  async fetchAllProducts(): Promise<any> {
+    return await this.createProductsJsonUseCase.execute();
+  }
+
   @Post('/order')
   async createOrder(
     @Body() body: getWebhookDto,

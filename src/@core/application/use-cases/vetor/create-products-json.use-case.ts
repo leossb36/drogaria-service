@@ -15,7 +15,7 @@ export class CreateProductsJsonUseCase {
       throw new BadRequestException('Cannot find any product');
     }
 
-    const fileName = './src/@core/infra/db/vetor-data.csv';
+    const fileName = './src/@core/infra/db/vetor-data.json';
 
     const jsonData = JSON.stringify(products, null, 2);
 
