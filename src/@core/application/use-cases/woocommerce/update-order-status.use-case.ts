@@ -16,6 +16,13 @@ export class UpdatedOrderStatus {
 
   async execute(): Promise<any> {
     const ordersFromDb = await this.orderRepository.findAll();
+    if (!ordersFromDb.length) {
+      return {
+        count: ordersFromDb.length,
+        status: 200,
+        message: 'Cannot find any order to update',
+      };
+    }
     const ordersToUpdate = [];
 
     for (const order of ordersFromDb) {
