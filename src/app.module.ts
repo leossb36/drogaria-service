@@ -5,8 +5,14 @@ import { InfraModule } from '@config/infra.module';
 import { WoocommerceModule } from '@core/woocommerce/woocommerce.module';
 import { AuthModule } from '@core/auth/auth.module';
 import { HealthCheckController } from '@core/healthcheck/healthcheck.controller';
+import { ConfigService } from '@config/configuration.config';
+import { MongooseModule } from '@nestjs/mongoose';
 
+const mongoConfig = new ConfigService().get('mongo');
 const restImports = [
+  MongooseModule.forRoot(
+    `mongodb+srv://${mongoConfig.user}:${mongoConfig.password}@${mongoConfig.host}/${mongoConfig.db}?retryWrites=true&w=majority`,
+  ),
   SwaggerModule,
   InfraModule,
   VetorModule,

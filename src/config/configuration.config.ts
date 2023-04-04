@@ -4,7 +4,10 @@ export class ConfigService {
   constructor() {
     this.envConfig = {};
     this.envConfig.mongo = {
-      url: process.env.MONGO_URL,
+      db: process.env.MONGO_DATABASE,
+      user: process.env.MONGO_USER,
+      host: process.env.MONGO_HOST,
+      password: process.env.MONGO_PASSWORD,
     };
     this.envConfig.auth = {
       secretKey: process.env.JWT_SECRET_KEY,

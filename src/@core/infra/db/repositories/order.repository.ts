@@ -23,7 +23,7 @@ export class OrderRepository {
 
   async findAll() {
     try {
-      const orders = this.orderModel.find().exec();
+      const orders = this.orderModel.find({});
       return orders;
     } catch (error) {
       throw new BadRequestException('Cannot find orders on database');
