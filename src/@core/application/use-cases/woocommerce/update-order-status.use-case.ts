@@ -18,11 +18,15 @@ export class UpdatedOrderStatus {
     const ordersFromDb = await this.orderRepository.findAll();
     const ordersToUpdate = [];
 
-    ordersFromDb.forEach(async (order) => {
+    for (const order of ordersFromDb) {
       const orderFromVetor = await this.vetorIntegration.getOrderInfo(
         { numeroPedido: order.numeroPedido, cdOrcamento: order.cdOrcamento },
         '/pedidos/status',
       );
+      if (orderFromVetor.data.cdOrcamento === 0) {
+        continue;
+      }
+
       const { data } = orderFromVetor;
       if (orderFromVetor.data.situacao === 6) {
         ordersToUpdate.push({
@@ -36,8 +40,18 @@ export class UpdatedOrderStatus {
       for (const chunk of chunks) {
         await this.woocommerceIntegration.updateOrderBatch(chunk);
       }
-    });
+    }
+
+    if (!ordersToUpdate.length) {
+      return {
+        count: ordersToUpdate.length,
+        status: 200,
+        message: 'Cannot find any order to update',
+      };
+    }
+
     return {
+      count: ordersToUpdate.length,
       status: 200,
       message: messages.woocommerce.order.update.success,
     };

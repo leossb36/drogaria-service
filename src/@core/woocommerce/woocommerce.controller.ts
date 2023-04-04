@@ -7,6 +7,7 @@ import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/crea
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
 import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
+import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import {
   Body,
@@ -34,6 +35,7 @@ export class WoocommerceController {
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly updateProductBatchUseCase: UpdateProductBatchUseCase,
     private readonly woocommerceService: WoocommerceService,
+    private readonly updatedOrderStatus: UpdatedOrderStatus,
   ) {}
 
   @Post('/product')
@@ -74,6 +76,10 @@ export class WoocommerceController {
     );
   }
 
+  @Put('/order/update')
+  async updateOrderBatch(): Promise<unknown> {
+    return await this.updatedOrderStatus.execute();
+  }
   @Post('category')
   async createCategory(): Promise<createWooCategoryModelView> {
     return await this.createCategoryUseCase.execute();

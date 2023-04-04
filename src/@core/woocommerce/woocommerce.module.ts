@@ -3,6 +3,7 @@ import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/crea
 import { CreateProductUseCase } from '@core/application/use-cases/woocommerce/create-product.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
 import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
+import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import { IntegrationModule } from '@core/infra/integration.module';
 import { ReadStreamService } from '@core/utils/read-stream';
@@ -22,6 +23,7 @@ import { WoocommerceController } from './woocommerce.controller';
     UpdateProductBatchUseCase,
     WoocommerceService,
     ReadStreamService,
+    UpdatedOrderStatus,
   ],
   controllers: [WoocommerceController],
 })
