@@ -22,6 +22,6 @@ import { VetorIntegrationController } from './vetor.controller';
     OrderRepository,
   ],
   controllers: [VetorIntegrationController],
-  exports: [CreateOrderUseCase, OrderRepository],
+  exports: [CreateOrderUseCase, OrderRepository, CreateProductsJsonUseCase],
 })
 export class VetorModule {}

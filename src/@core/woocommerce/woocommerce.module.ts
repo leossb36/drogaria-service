@@ -11,9 +11,12 @@ import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
 import { WoocommerceService } from './woocomerce.service';
 import { WoocommerceController } from './woocommerce.controller';
+import { OrderService } from '@core/schedule/order.service';
+import { ProductService } from '@core/schedule/product.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [VetorModule, IntegrationModule],
+  imports: [ScheduleModule.forRoot(), VetorModule, IntegrationModule],
   providers: [
     CreateProductUseCase,
     CreateCategoryUseCase,
@@ -24,6 +27,8 @@ import { WoocommerceController } from './woocommerce.controller';
     WoocommerceService,
     ReadStreamService,
     UpdatedOrderStatus,
+    OrderService,
+    ProductService,
   ],
   controllers: [WoocommerceController],
 })
