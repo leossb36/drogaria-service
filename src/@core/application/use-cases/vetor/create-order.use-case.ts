@@ -11,6 +11,7 @@ import {
 } from '@core/application/dto';
 import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
 import { OrderRepository } from '@core/infra/db/repositories/order.repository';
+import { OrderStatusEnum } from '@core/application/dto/enum/orderStatus.enum';
 
 @Injectable()
 export class CreateOrderUseCase {
@@ -50,6 +51,7 @@ export class CreateOrderUseCase {
       cdOrcamento: data.cdOrcamento,
       numeroPedido: dto.id,
       situacao: data.situacao,
+      status: OrderStatusEnum.PROCESSING,
     });
 
     if (!createOnDataBase) {

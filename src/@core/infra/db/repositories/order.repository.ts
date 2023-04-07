@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order, OrderDocument } from '../schema/order.schema';
+import { OrderStatusEnum } from '@core/application/dto/enum/orderStatus.enum';
 
 @Injectable()
 export class OrderRepository {
@@ -34,6 +35,22 @@ export class OrderRepository {
     try {
       const order = await this.orderModel.findById(id);
       return order;
+    } catch (error) {
+      throw new BadRequestException('Cannot find order with this id');
+    }
+  }
+
+  async updateOrderBatch(orders: any[]) {
+    try {
+      const result = await this.orderModel.updateMany(
+        {
+          numeroPedido: {
+            $in: [...orders.map((order) => order.id)],
+          },
+        },
+        { $set: { status: OrderStatusEnum.TERMINATED } },
+      );
+      return result;
     } catch (error) {
       throw new BadRequestException('Cannot find order with this id');
     }

@@ -46,6 +46,7 @@ export class UpdatedOrderStatus {
 
       for (const chunk of chunks) {
         await this.woocommerceIntegration.updateOrderBatch(chunk);
+        await this.orderRepository.updateOrderBatch(chunk);
       }
     }
 

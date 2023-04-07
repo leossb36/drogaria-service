@@ -13,6 +13,9 @@ export class Order {
 
   @Prop()
   situacao: number;
+
+  @Prop()
+  status: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
