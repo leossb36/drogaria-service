@@ -24,7 +24,13 @@ export class OrderRepository {
 
   async findAll() {
     try {
-      const orders = this.orderModel.find({});
+      const orders = await this.orderModel.aggregate([
+        {
+          $match: {
+            status: OrderStatusEnum.PROCESSING,
+          },
+        },
+      ]);
       return orders;
     } catch (error) {
       throw new BadRequestException('Cannot find orders on database');
@@ -45,10 +51,14 @@ export class OrderRepository {
       const result = await this.orderModel.updateMany(
         {
           numeroPedido: {
-            $in: [...orders.map((order) => order.id)],
+            $in: [...orders.map((order) => order.numeroPedido)],
           },
         },
-        { $set: { status: OrderStatusEnum.TERMINATED } },
+        {
+          $set: {
+            status: OrderStatusEnum.TERMINATED,
+          },
+        },
       );
       return result;
     } catch (error) {

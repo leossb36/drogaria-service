@@ -17,14 +17,10 @@ export class UpdatedOrderStatus {
   async execute(): Promise<any> {
     const ordersFromDb = await this.orderRepository.findAll();
     if (!ordersFromDb.length) {
-      return {
-        count: ordersFromDb.length,
-        status: 200,
-        message: 'Cannot find any order to update',
-      };
+      return this.emptyCallbackResponse(ordersFromDb.length);
     }
-    const ordersToUpdate = [];
 
+    const ordersToUpdate = [];
     for (const order of ordersFromDb) {
       const orderFromVetor = await this.vetorIntegration.getOrderInfo(
         { numeroPedido: order.numeroPedido, cdOrcamento: order.cdOrcamento },
@@ -41,27 +37,29 @@ export class UpdatedOrderStatus {
           status: webhookStatusEnum.COMPLETED,
         });
       }
-
-      const chunks = ChunckData(ordersToUpdate);
-
-      for (const chunk of chunks) {
-        await this.woocommerceIntegration.updateOrderBatch(chunk);
-        await this.orderRepository.updateOrderBatch(chunk);
-      }
     }
 
+    const chunks = ChunckData(ordersToUpdate);
+    for (const chunk of chunks) {
+      await this.woocommerceIntegration.updateOrderBatch(chunk);
+      await this.orderRepository.updateOrderBatch(chunk);
+    }
     if (!ordersToUpdate.length) {
-      return {
-        count: ordersToUpdate.length,
-        status: 200,
-        message: 'Cannot find any order to update',
-      };
+      return this.emptyCallbackResponse(ordersToUpdate.length);
     }
 
     return {
       count: ordersToUpdate.length,
       status: 200,
       message: messages.woocommerce.order.update.success,
+    };
+  }
+
+  private emptyCallbackResponse(count: number) {
+    return {
+      count,
+      status: 200,
+      message: 'Cannot find any order to update',
     };
   }
 }
