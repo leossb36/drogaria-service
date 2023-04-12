@@ -20,9 +20,35 @@ export class ProductRepository {
     }
   }
 
+  async createProductBatch(products: any[]) {
+    try {
+      const result = await this.productModel.insertMany(products);
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Cannot save order on database');
+    }
+  }
+
   async findAll() {
     try {
       const orders = await this.productModel.find({});
+      return orders;
+    } catch (error) {
+      throw new BadRequestException('Cannot find orders on database');
+    }
+  }
+
+  async findProductsWithoutImage() {
+    try {
+      const orders = await this.productModel
+        .find(
+          {
+            images: { $size: 0 },
+          },
+          undefined,
+          { limit: 5 },
+        )
+        .lean();
       return orders;
     } catch (error) {
       throw new BadRequestException('Cannot find orders on database');
@@ -48,6 +74,22 @@ export class ProductRepository {
 
       const insertMany = await this.productModel.insertMany(products);
       return insertMany;
+    } catch (error) {
+      throw new BadRequestException('Cannot find order with this id');
+    }
+  }
+
+  async getProductsBySku(skus: any[]) {
+    try {
+      const result = await this.productModel
+        .find({
+          sku: {
+            $in: [...skus.map((sku) => sku.sku)],
+          },
+        })
+        .lean();
+
+      return result;
     } catch (error) {
       throw new BadRequestException('Cannot find order with this id');
     }
