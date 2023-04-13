@@ -38,20 +38,43 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithoutImage() {
+  async findProductsWithoutImage(limit: number) {
     try {
-      const orders = await this.productModel
+      const products = await this.productModel
         .find(
           {
             images: { $size: 0 },
           },
           undefined,
-          { limit: 5 },
+          { limit },
         )
         .lean();
-      return orders;
+      return products;
     } catch (error) {
-      throw new BadRequestException('Cannot find orders on database');
+      throw new BadRequestException('Cannot find products on database');
+    }
+  }
+
+  async findProductsWithoutImageAndNotInWooCommerce(
+    skus: any[],
+    limit: number,
+  ) {
+    try {
+      const products = await this.productModel
+        .find(
+          {
+            sku: {
+              $nin: [...skus.map((sku) => sku)],
+            },
+            images: { $size: 0 },
+          },
+          undefined,
+          { limit },
+        )
+        .lean();
+      return products;
+    } catch (error) {
+      throw new BadRequestException('Cannot find products on database');
     }
   }
 
@@ -67,8 +90,8 @@ export class ProductRepository {
   async updateProductBatch(products: any[]) {
     try {
       await this.productModel.deleteMany({
-        _id: {
-          $in: [...products.map((product) => product._id)],
+        sku: {
+          $in: [...products.map((product) => product.sku)],
         },
       });
 
@@ -86,6 +109,7 @@ export class ProductRepository {
           sku: {
             $in: [...skus.map((sku) => sku.sku)],
           },
+          images: { $size: 1 },
         })
         .lean();
 
