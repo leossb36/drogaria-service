@@ -30,14 +30,16 @@ export class CreateOrderUseCase {
       vlrProdutos: totalPriceItens,
       vlrDescontos: Number(dto.discount_total),
       vlrFrete: Number(dto.shipping_total),
-      vlrOutros: undefined,
+      vlrOutros: 0,
       vlrTotal: Number(dto.total),
-      vlrTroco: undefined,
+      vlrTroco: 0,
       observacao: 'Venda Online',
       nrPedido: dto.id.toString(),
       retirar: true,
       itens,
     } as CreateOrderDto;
+
+    console.log(sendToVetor);
 
     const order = await this.integration.createOrder(sendToVetor, '/pedidos');
 
@@ -83,6 +85,10 @@ export class CreateOrderUseCase {
       cidade: billing?.city,
       uf: billing?.state,
       email: billing.email,
+      cidadeIBGE: 0,
+      referencia: '',
+      inscEstadual: '',
+      inscMunicipal: '',
     };
   }
   private getItems(dto: getWebhookDto): [Item[], number] {
@@ -102,7 +108,7 @@ export class CreateOrderUseCase {
         cdProduto: Number(cdProduct[0]),
         quantidade: item.quantity,
         vlrUnitario: item.price,
-        vlrDesconto: undefined,
+        vlrDesconto: 0,
         vlrTotal: Number(item.total),
       } as Item;
       items.push(data);
