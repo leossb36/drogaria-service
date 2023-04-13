@@ -28,6 +28,35 @@ export default async function FetchAllProducts(instance: WooCommerceRestApi) {
 
   return returnData;
 }
+export async function getProductsWithoutImages(instance: WooCommerceRestApi) {
+  let actualPage = 1;
+
+  let products = [];
+  const returnData = [];
+
+  do {
+    try {
+      products = await instance
+        .get('products', {
+          per_page: 100,
+          page: actualPage,
+        })
+        .then((result) => {
+          return result.data.filter((product) => !product.images.length);
+        });
+    } catch (e) {
+      console.error(e.response.data.message);
+    }
+
+    returnData.push(...products);
+    actualPage += 1;
+  } while (products.length > 0);
+
+  const reverse = returnData.reverse();
+  return reverse.slice(0, 2);
+
+  // return [(await instance.get('products/5009')).data];
+}
 
 export async function FetchVetorProducts(instance: any) {
   const queryFilter = new QueryFilter();
