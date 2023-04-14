@@ -31,7 +31,7 @@ export class UpdatedOrderStatus {
       }
 
       const { data } = orderFromVetor;
-      if (orderFromVetor.data.situacao === 6) {
+      if (orderFromVetor.data?.situacao === 6) {
         ordersToUpdate.push({
           id: data.numeroPedido,
           status: webhookStatusEnum.COMPLETED,

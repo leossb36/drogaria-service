@@ -21,13 +21,13 @@ export class CreateOrderUseCase {
   ) {}
 
   async execute(dto: getWebhookDto): Promise<CreateOrderInformationModelView> {
-    const [itens, totalPriceItens] = this.getItems(dto);
+    const itens = this.getItems(dto);
     const sendToVetor = {
       cdFilial: +process.env.CD_FILIAL,
       cgcFilial: process.env.CGC_FILIAL || '',
       dtEmissao: new Date().toISOString(),
       cliente: this.getClient(dto),
-      vlrProdutos: totalPriceItens,
+      vlrProdutos: Number(dto.total),
       vlrDescontos: Number(dto.discount_total),
       vlrFrete: Number(dto.shipping_total),
       vlrOutros: 0,
@@ -38,8 +38,6 @@ export class CreateOrderUseCase {
       retirar: true,
       itens,
     } as CreateOrderDto;
-
-    console.log(sendToVetor);
 
     const order = await this.integration.createOrder(sendToVetor, '/pedidos');
 
@@ -91,19 +89,18 @@ export class CreateOrderUseCase {
       inscMunicipal: '',
     };
   }
-  private getItems(dto: getWebhookDto): [Item[], number] {
+  private getItems(dto: getWebhookDto): Item[] {
     const { line_items } = dto;
 
     if (!line_items.length) {
-      return [[], null];
+      return [];
     }
 
     const items = [];
-    let totalPriceItems = 0;
 
     line_items?.map((item) => {
       const cdProduct = item.sku.split('-');
-      totalPriceItems = totalPriceItems + Number(item.total);
+
       const data = {
         cdProduto: Number(cdProduct[0]),
         quantidade: item.quantity,
@@ -113,6 +110,6 @@ export class CreateOrderUseCase {
       } as Item;
       items.push(data);
     });
-    return [items, totalPriceItems];
+    return items;
   }
 }
