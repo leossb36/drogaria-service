@@ -54,7 +54,7 @@ export class WoocommerceService {
     };
   }
 
-  @Cron('0 */8 * * * *')
+  // @Cron('0 */8 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
     const productsOnWoocommerce =

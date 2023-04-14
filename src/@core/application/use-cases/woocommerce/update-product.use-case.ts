@@ -24,11 +24,11 @@ export class UpdateProductUseCase {
 
     wooProducts.map((product) => {
       const formatedProduct = formatedProductsFromVetor.find(
-        (formatedProduct) => formatedProduct.name === product.name,
+        (formatedProduct) => formatedProduct.nome === product.name,
       );
       updatedProducts.push({
         id: product.id,
-        stock_quantity: formatedProduct.stock_quantity,
+        stock_quantity: formatedProduct.qtdEstoque,
       });
     });
     const chunks = ChunckData(updatedProducts);
