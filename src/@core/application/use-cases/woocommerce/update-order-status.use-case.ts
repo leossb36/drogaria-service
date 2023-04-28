@@ -1,6 +1,6 @@
 import * as messages from '@common/messages/response-messages.json';
 import { webhookStatusEnum } from '@core/application/dto/enum/webhook-status.enum';
-import { OrderRepository } from '@core/infra/db/repositories/order.repository';
+import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { ChunckData } from '@core/utils/fetch-helper';
@@ -36,7 +36,11 @@ export class UpdatedOrderStatus {
           id: data.numeroPedido,
           status: webhookStatusEnum.COMPLETED,
         });
-      }
+      } else if (orderFromVetor.data?.situacao === 8)
+        ordersToUpdate.push({
+          id: data.numeroPedido,
+          status: webhookStatusEnum.CANCELLED,
+        });
     }
 
     const chunks = ChunckData(ordersToUpdate);

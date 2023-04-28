@@ -3,17 +3,19 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { ReadStreamService } from '@core/utils/read-stream';
 import { ChunckData } from '@core/utils/fetch-helper';
+import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-from-woocommerce.use-case';
 
 @Injectable()
 export class UpdateProductUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly readStreamService: ReadStreamService,
+    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
   ) {}
 
   async execute(): Promise<any> {
     const updatedProducts = [];
-    const wooProducts = await this.woocommerceIntegration.getAllProducts();
+    const wooProducts = await this.getProductsFromWoocommerceUseCase.execute();
 
     if (!wooProducts.length) {
       throw new BadRequestException('Cannot find any products');
