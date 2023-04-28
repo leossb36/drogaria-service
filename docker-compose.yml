@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "${PORT}:${PORT}"
+      - '${PORT}:${PORT}'
     networks:
       - backend
     env_file:
@@ -23,7 +23,7 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "${PORT}:${PORT}"
+      - '${PORT}:${PORT}'
     networks:
       - backend
     env_file:
@@ -37,26 +37,15 @@ services:
     volumes:
       - .:/var/www/server
     ports:
-      - "${PORT}:${PORT}"
-      - "9229:9229"
+      - '${PORT}:${PORT}'
+      - '9229:9229'
     networks:
       - backend
     env_file:
       - .env
 
-  # mongo:
-  #   image: mongo
-  #   volumes:
-  #     - mongo_data:/data/db
-  #   ports:
-  #     - 27017:27017
-  #   networks:
-  #     - backend
 
 networks:
   backend:
     name: drogaria_network
     driver: bridge
-
-# volumes:
-#   mongo_data:
