@@ -3,6 +3,7 @@ import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integ
 import { Module } from '@nestjs/common';
 import { WoocommerceIntegration } from './integration/woocommerce-api.integration';
 import { WordpressIntegration } from './integration/wordpress-api.Integration';
+import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
 
 @Module({
   providers: [
@@ -10,6 +11,7 @@ import { WordpressIntegration } from './integration/wordpress-api.Integration';
     SerpApiIntegration,
     WoocommerceIntegration,
     WordpressIntegration,
+    CreateImageOnWordpressUseCase,
     {
       provide: 'axiosSerp',
       useFactory: () => ({
