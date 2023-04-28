@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
 import { ChunckData } from '@core/utils/fetch-helper';
-import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
 
 @Injectable()
 export class ScrapImagesUseCase {
