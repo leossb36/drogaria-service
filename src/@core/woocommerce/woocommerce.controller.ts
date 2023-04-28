@@ -5,7 +5,6 @@ import { createWooOrderModelView } from '@core/application/mv/create-woo-order.m
 import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
-import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
 import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import {
@@ -31,7 +30,6 @@ export class WoocommerceController {
     private readonly getProductUseCase: GetProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
-    private readonly updateProductBatchUseCase: UpdateProductBatchUseCase,
     private readonly woocommerceService: WoocommerceService,
     private readonly updatedOrderStatus: UpdatedOrderStatus,
   ) {}
@@ -54,11 +52,6 @@ export class WoocommerceController {
   @Put('/products/fetch')
   async updateProductFetch(): Promise<unknown> {
     return await this.updateProductUseCase.execute();
-  }
-
-  @Put('/products')
-  async updateProductsBatch(): Promise<unknown> {
-    return await this.updateProductBatchUseCase.execute();
   }
 
   @Get('/products')

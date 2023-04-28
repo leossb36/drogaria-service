@@ -1,7 +1,6 @@
 import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
 import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
 import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
-import { UpdateProductBatchUseCase } from '@core/application/use-cases/woocommerce/update-batch-product.use-case';
 import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
 import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
 import { IntegrationModule } from '@core/infra/integration.module';
@@ -17,8 +16,12 @@ import { ScrapImagesUseCase } from '@core/application/use-cases/woocommerce/scra
 import { CreateProductOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-woocommerce.use-case';
 import { CreateProductUseCaseOnMongo } from '@core/application/use-cases/woocommerce/create-product-mongo.use-case';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Product, ProductSchema } from '@core/infra/db/schema/product.schema';
-import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { Product } from '@core/application/dto/product.dto';
+import { ProductSchema } from '@core/infra/db/schema/mongo/product.schema';
+import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
+import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
+import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
+import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
 
 @Module({
   imports: [
@@ -32,7 +35,6 @@ import { ProductRepository } from '@core/infra/db/repositories/product.repositor
     GetProductUseCase,
     CreateOrderUseCase,
     UpdateProductUseCase,
-    UpdateProductBatchUseCase,
     WoocommerceService,
     ReadStreamService,
     UpdatedOrderStatus,
@@ -42,7 +44,11 @@ import { ProductRepository } from '@core/infra/db/repositories/product.repositor
     CreateProductOnWoocommerce,
     CreateProductUseCaseOnMongo,
     ProductRepository,
+    CreateProductWithImagesOnWoocommerce,
+    CreateImageOnWordpressUseCase,
+    GetProductsFromWoocommerceUseCase,
   ],
   controllers: [WoocommerceController],
+  exports: [CreateImageOnWordpressUseCase],
 })
 export class WoocommerceModule {}

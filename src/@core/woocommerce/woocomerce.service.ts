@@ -1,13 +1,17 @@
 import CustomLogger from '@common/logger/logger';
+import MysqlConnection from '@config/mysql.config';
 import { headersTopicEnum } from '@core/application/dto/enum/headers-topic.enum';
 import { webhookStatusEnum } from '@core/application/dto/enum/webhook-status.enum';
 import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
+import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
 import { CreateProductOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-woocommerce.use-case';
 import { ScrapImagesUseCase } from '@core/application/use-cases/woocommerce/scrap-image-to-product.use-case';
-import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
+import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+import * as mysql from 'mysql2/promise';
 
 @Injectable()
 export class WoocommerceService {
@@ -15,6 +19,8 @@ export class WoocommerceService {
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly vetorCreateOrderUseCase: CreateOrderUseCase,
     private readonly createProductOnWoocommerce: CreateProductOnWoocommerce,
+    private readonly createProductWithImagesOnWoocommerce: CreateProductWithImagesOnWoocommerce,
+    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
     private readonly productRepository: ProductRepository,
   ) {}
@@ -35,11 +41,12 @@ export class WoocommerceService {
     CustomLogger.info(
       `[WoocommerceService - createProductRoutineOnWoocommerce]  Start job`,
     );
-    const [products] = await Promise.all([
+    const [products, productsWithImages] = await Promise.all([
       this.createProductOnWoocommerce.execute(),
+      this.createProductWithImagesOnWoocommerce.execute(),
     ]);
 
-    if (!products.length) {
+    if (!products.length && !productsWithImages.length) {
       return {
         data: [],
         message: 'Cannot find any products to create on woocommerce',
@@ -49,56 +56,46 @@ export class WoocommerceService {
       `[WoocommerceService - createProductRoutineOnWoocommerce]  End job`,
     );
     return {
-      mongo: products.length,
+      data: products.length + productsWithImages.length,
       message: 'product created successfully',
     };
   }
 
-  // @Cron('0 */8 * * * *')
+  @Cron('0 */8 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
-    const productsOnWoocommerce =
-      await this.woocommerceIntegration.getProductsWithoutImage();
 
-    const getProductsBySku = await this.productRepository.getProductsBySku(
-      productsOnWoocommerce.map((product) => {
-        return { sku: product.sku };
-      }),
+    const pool: mysql.Pool = await MysqlConnection.connect();
+
+    const productsFromWooCommerce =
+      await this.getProductsFromWoocommerceUseCase.execute();
+
+    const getProductsWithoutImage = productsFromWooCommerce.filter(
+      (product) => !product.thumbnail,
     );
 
-    const updates = getProductsBySku.map((mongoProduct) => {
-      const wooProduct = productsOnWoocommerce.find(
-        (wooProd) => wooProd.sku === mongoProduct.sku,
+    const mongoProducts = (
+      await this.productRepository.getProductsBySku(
+        getProductsWithoutImage.map((prod) => prod.sku),
+      )
+    ).slice(0, 5);
+    const updateDocs = mongoProducts.map((mongoPrd) => {
+      const wooProduct = getProductsWithoutImage.find(
+        (wooPrd) => wooPrd.sku === mongoPrd.sku,
       );
       return {
         id: wooProduct.id,
-        images: mongoProduct.images,
+        images: mongoPrd.images,
+        name: mongoPrd.name,
+        description: mongoPrd.description,
       };
     });
+    for (const product of updateDocs) {
+      await this.woocommerceIntegration.createMedia(product, pool);
+    }
 
-    const insertData = await this.woocommerceIntegration.updateProductBatch(
-      updates,
-    );
-
-    const errors = insertData.data.update.filter((row) => row.error);
-
-    const notfound = await this.woocommerceIntegration.updateProductBatch(
-      errors.map((row) => ({
-        id: row.id,
-        images: [
-          {
-            src: 'https://farmacialuita.com.br/wp-content/uploads/2023/04/558-5585968_thumb-image-not-found-icon-png-transparent-png.png',
-          },
-        ],
-      })),
-    );
-
-    await this.productRepository.updateProductBatch(
-      notfound.data.update.map((row) => row),
-    );
-    CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
+    CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
     return {
-      woocommerce: insertData.data.length,
       message: 'product created successfully',
     };
   }

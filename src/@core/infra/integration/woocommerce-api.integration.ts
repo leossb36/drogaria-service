@@ -7,12 +7,20 @@ import FetchAllProducts, {
 } from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { lastValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import * as mysql from 'mysql2/promise';
+import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
 
 @Injectable()
 export class WoocommerceIntegration {
   private readonly woocommerceConfig;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+    private readonly createImageOnWordpressUseCase: CreateImageOnWordpressUseCase,
+  ) {
     this.woocommerceConfig = new WooCommerceRestApi({
       url: this.configService.get('woocommerce').url,
       consumerKey: this.configService.get('woocommerce').consumerKey,
@@ -170,6 +178,22 @@ export class WoocommerceIntegration {
     }
   }
 
+  async updateProductImage(product: any) {
+    const data = {
+      images: [{ src: product.images[0].src }],
+    };
+    try {
+      const response = await this.woocommerceConfig.put(
+        `products/${product.id}`,
+        data,
+      );
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async updateProductStock(id: number, body: unknown) {
     try {
       const response = await this.woocommerceConfig.put(`products/${id}`, body);
@@ -190,6 +214,38 @@ export class WoocommerceIntegration {
     } catch (error) {
       console.error(error.response.headers);
       console.error(error.response.data);
+    }
+  }
+
+  async createMedia(product: any, pool: mysql.Pool) {
+    const consumerKey = this.configService.get('woocommerce').consumerKey;
+    const consumerSecret = this.configService.get('woocommerce').consumerSecret;
+    const url = `${this.configService.get('woocommerce').url}/wp-json/wc/v3`;
+    const endpoint = 'products';
+
+    const body = {
+      images: [{ src: product.images[0].src }],
+    };
+
+    try {
+      const response = await lastValueFrom(
+        this.httpService.patch(
+          `${url}/${endpoint}/${product.id}`,
+          { ...body },
+          {
+            auth: {
+              username: consumerKey,
+              password: consumerSecret,
+            },
+            timeout: 15000,
+          },
+        ),
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log('Timeout:::', error.message || error.response?.data?.message);
+      await this.createImageOnWordpressUseCase.addImage(pool, product.id);
     }
   }
 }
