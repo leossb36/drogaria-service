@@ -7,7 +7,7 @@ import { RowDataPacket } from 'mysql2/promise';
 import MysqlConnection from '@config/mysql.config';
 
 @Injectable()
-export class CreateProductOnWoocommerce {
+export class CreateProductWithImagesOnWoocommerce {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly productRepository: ProductRepository,
@@ -20,22 +20,25 @@ export class CreateProductOnWoocommerce {
         pool,
       );
 
-      const getProductsWithoutImage = productsFromWooCommerce.filter(
-        (product) => !product.thumbnail,
-      );
-
       const productsOnDataBase =
-        await this.productRepository.findProductsWithoutImageAndNotInWooCommerce(
-          getProductsWithoutImage.map((prd) => prd.sku),
+        await this.productRepository.findProductsWithImageAndNotInWooCommerce(
+          productsFromWooCommerce.map((prd) => prd.sku),
           100,
         );
 
-      if (!productsOnDataBase.length) {
+      const filtered = JSON.parse(JSON.stringify(productsOnDataBase)).filter(
+        (product) => {
+          if (product.images.length) delete product.images;
+          return product;
+        },
+      );
+
+      if (!filtered.length) {
         MysqlConnection.endConnection(pool);
         return [];
       }
 
-      const chunks = ChunckData(productsOnDataBase);
+      const chunks = ChunckData(filtered);
 
       const result = [];
       for (const chunk of chunks) {
@@ -69,7 +72,7 @@ export class CreateProductOnWoocommerce {
             sku: prd.meta_value,
             title: prd.post_title,
             description: prd.post_content,
-            thumbnail: prd.meta_key === '_thumbnail' ? prd.meta_value : null,
+            thumbnail: prd.meta_key === '_thumbnail_id' ? prd.meta_value : null,
           };
         }),
     );
