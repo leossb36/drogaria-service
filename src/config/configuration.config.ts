@@ -9,6 +9,12 @@ export class ConfigService {
       host: process.env.MONGO_HOST,
       password: process.env.MONGO_PASSWORD,
     };
+    this.envConfig.mysql = {
+      db: process.env.MYSQL_DB,
+      user: process.env.MYSQL_USER,
+      host: process.env.MYSQL_HOST,
+      password: process.env.MYSQL_PASSWORD,
+    };
     this.envConfig.auth = {
       secretKey: process.env.JWT_SECRET_KEY,
     };
