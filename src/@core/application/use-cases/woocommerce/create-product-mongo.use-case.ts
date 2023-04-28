@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ReadStreamService } from '@core/utils/read-stream';
-import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
 
 @Injectable()
 export class CreateProductUseCaseOnMongo {

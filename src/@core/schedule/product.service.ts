@@ -21,7 +21,7 @@ export class ProductService {
     return result;
   }
 
-  // @Cron('0 0 0 20 * *')
+  // @Cron('0 */4 * * * *')
   async createProductJsonData() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     const promiseFile = this.createProductsJsonUseCase.execute();

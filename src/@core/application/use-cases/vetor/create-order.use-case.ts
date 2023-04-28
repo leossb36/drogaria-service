@@ -10,8 +10,8 @@ import {
   Item,
 } from '@core/application/dto';
 import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
-import { OrderRepository } from '@core/infra/db/repositories/order.repository';
 import { OrderStatusEnum } from '@core/application/dto/enum/orderStatus.enum';
+import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
 
 @Injectable()
 export class CreateOrderUseCase {

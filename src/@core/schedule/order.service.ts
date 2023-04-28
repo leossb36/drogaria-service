@@ -7,7 +7,7 @@ import { Cron } from '@nestjs/schedule';
 export class OrderService {
   constructor(private readonly updatedOrderStatus: UpdatedOrderStatus) {}
 
-  // @Cron('0 */5 * * * *')
+  @Cron('0 */5 * * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrder]  Start job`);
     const orderStatus = this.updatedOrderStatus.execute();
