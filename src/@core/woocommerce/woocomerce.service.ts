@@ -61,14 +61,14 @@ export class WoocommerceService {
     };
   }
 
-  @Cron('0 */8 * * * *')
+  @Cron('0 */3 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
 
     const pool: mysql.Pool = await MysqlConnection.connect();
 
     const productsFromWooCommerce =
-      await this.getProductsFromWoocommerceUseCase.execute();
+      await this.getProductsFromWoocommerceUseCase.execute(pool);
 
     const getProductsWithoutImage = productsFromWooCommerce.filter(
       (product) => !product.thumbnail,
@@ -93,7 +93,7 @@ export class WoocommerceService {
     for (const product of updateDocs) {
       await this.woocommerceIntegration.createMedia(product, pool);
     }
-
+    MysqlConnection.endConnection(pool);
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
     return {
       message: 'product created successfully',

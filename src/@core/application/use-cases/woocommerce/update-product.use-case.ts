@@ -4,6 +4,8 @@ import * as messages from '@common/messages/response-messages.json';
 import { ReadStreamService } from '@core/utils/read-stream';
 import { ChunckData } from '@core/utils/fetch-helper';
 import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-from-woocommerce.use-case';
+import MysqlConnection from '@config/mysql.config';
+import * as mysql from 'mysql2/promise';
 
 @Injectable()
 export class UpdateProductUseCase {
@@ -14,8 +16,11 @@ export class UpdateProductUseCase {
   ) {}
 
   async execute(): Promise<any> {
+    const pool: mysql.Pool = await MysqlConnection.connect();
     const updatedProducts = [];
-    const wooProducts = await this.getProductsFromWoocommerceUseCase.execute();
+    const wooProducts = await this.getProductsFromWoocommerceUseCase.execute(
+      pool,
+    );
 
     if (!wooProducts.length) {
       throw new BadRequestException('Cannot find any products');

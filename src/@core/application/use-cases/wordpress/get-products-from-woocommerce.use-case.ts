@@ -1,16 +1,11 @@
 import * as mysql from 'mysql2/promise';
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2/promise';
-import MysqlConnection from '@config/mysql.config';
 
 @Injectable()
 export class GetProductsFromWoocommerceUseCase {
-  async execute() {
-    const pool: mysql.Pool = await MysqlConnection.connect();
-
-    const productsFromWooCommerce = await this.getProductsFromWoocommerce(pool);
-
-    return productsFromWooCommerce;
+  async execute(pool: mysql.Pool) {
+    return await this.getProductsFromWoocommerce(pool);
   }
 
   private async getProductsFromWoocommerce(pool: mysql.Pool): Promise<any[]> {
