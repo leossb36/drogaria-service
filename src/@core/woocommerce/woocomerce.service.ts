@@ -61,7 +61,7 @@ export class WoocommerceService {
     };
   }
 
-  @Cron('0 */3 * * * *')
+  // @Cron('0 */3 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
 
@@ -74,11 +74,9 @@ export class WoocommerceService {
       (product) => !product.thumbnail,
     );
 
-    const mongoProducts = (
-      await this.productRepository.getProductsBySku(
-        getProductsWithoutImage.map((prod) => prod.sku),
-      )
-    ).slice(0, 5);
+    const mongoProducts = await this.productRepository.getProductsBySku(
+      getProductsWithoutImage.map((prod) => prod.sku),
+    );
     const updateDocs = mongoProducts.map((mongoPrd) => {
       const wooProduct = getProductsWithoutImage.find(
         (wooPrd) => wooPrd.sku === mongoPrd.sku,
