@@ -14,7 +14,7 @@ export class CreateImageOnWordpressUseCase {
       );
 
       await connection.commit();
-      return { success: true };
+      return productId;
     } catch (err) {
       await connection.rollback();
       return { success: false, message: err.message };

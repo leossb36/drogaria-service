@@ -55,18 +55,14 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithoutImageAndNotInWooCommerce(
-    skus: any[],
-    limit: number,
-  ) {
+  async findProductsBySku(skus: any[], limit: number) {
     try {
       const products = await this.productModel
         .find(
           {
             sku: {
-              $nin: [...skus.map((sku) => sku)],
+              $in: [...skus.map((sku) => sku)],
             },
-            images: { $size: 0 },
           },
           undefined,
           { limit },

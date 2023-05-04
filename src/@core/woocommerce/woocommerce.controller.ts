@@ -34,19 +34,19 @@ export class WoocommerceController {
     private readonly updatedOrderStatus: UpdatedOrderStatus,
   ) {}
 
-  @Put('/product/update')
+  @Post('/product/create')
   async createProduct(): Promise<unknown> {
+    return await this.woocommerceService.createProductService();
+  }
+
+  @Put('/product/update')
+  async updateProduct(): Promise<unknown> {
     return await this.woocommerceService.updateProductRoutine();
   }
 
-  @Post('/product/create/woo')
-  async createProductRoutineOnWoocommerce(): Promise<unknown> {
-    return await this.woocommerceService.createProductRoutineOnWoocommerce();
-  }
-
-  @Post('/product/create/mongo')
-  async createProductRoutineOnMongo(): Promise<unknown> {
-    return await this.woocommerceService.createProductRoutineOnMongo();
+  @Put('/product/update/retry')
+  async retryScrapNewImage(): Promise<unknown> {
+    return await this.woocommerceService.retryScrapNewImage();
   }
 
   @Put('/products/fetch')

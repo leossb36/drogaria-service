@@ -6,7 +6,7 @@ import { getJson } from 'serpapi';
 export class SerpApiIntegration {
   constructor(private readonly configService: ConfigService) {}
 
-  async getImageUrl(query: string) {
+  async getImageUrl(query: string, retry: number) {
     const params = {
       api_key: this.configService.get('serpApi').secret_key,
       q: query,
@@ -19,7 +19,10 @@ export class SerpApiIntegration {
     };
     try {
       const response = await getJson('google', { ...params });
-      return response.images_results[0].original;
+      return (
+        response.images_results[retry].original ||
+        response.images_results[retry].thumbnail
+      );
     } catch (error) {
       console.error(error.response.data);
     }
