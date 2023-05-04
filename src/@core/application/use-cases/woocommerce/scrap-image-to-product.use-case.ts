@@ -19,7 +19,7 @@ export class ScrapImagesUseCase {
       );
       const products = [];
 
-      productOnWoocommerce.forEach(async (product, index) => {
+      productOnWoocommerce.forEach((product, index) => {
         products.push({
           ...product,
           images: [{ src: images[index] }],

@@ -26,7 +26,7 @@ export class WoocommerceService {
   ) {}
 
   async createProductRoutineOnMongo() {
-    const products = await this.productRepository.findProductsWithoutImage(20);
+    const products = await this.productRepository.findProductsWithoutImage(100);
 
     const scrapImagesProducts = await this.scrapImagesUseCase.execute(products);
 
@@ -36,17 +36,19 @@ export class WoocommerceService {
     };
   }
 
-  // @Cron('0 */5 * * * *')
+  // @Cron('0 */3 * * * *')
   async createProductRoutineOnWoocommerce() {
     CustomLogger.info(
       `[WoocommerceService - createProductRoutineOnWoocommerce]  Start job`,
     );
-    const [products, productsWithImages] = await Promise.all([
-      this.createProductOnWoocommerce.execute(),
+    const [productsWithImages] = await Promise.all([
       this.createProductWithImagesOnWoocommerce.execute(),
     ]);
 
-    if (!products.length && !productsWithImages.length) {
+    if (!productsWithImages.length) {
+      CustomLogger.info(
+        `[WoocommerceService - createProductRoutineOnWoocommerce]  End job - no products`,
+      );
       return {
         data: [],
         message: 'Cannot find any products to create on woocommerce',
@@ -56,12 +58,12 @@ export class WoocommerceService {
       `[WoocommerceService - createProductRoutineOnWoocommerce]  End job`,
     );
     return {
-      data: products.length + productsWithImages.length,
+      data: productsWithImages.length,
       message: 'product created successfully',
     };
   }
 
-  // @Cron('0 */3 * * * *')
+  // @Cron('0 */2 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
 
@@ -74,9 +76,11 @@ export class WoocommerceService {
       (product) => !product.thumbnail,
     );
 
-    const mongoProducts = await this.productRepository.getProductsBySku(
-      getProductsWithoutImage.map((prod) => prod.sku),
-    );
+    const mongoProducts = (
+      await this.productRepository.getProductsBySku(
+        getProductsWithoutImage.map((prod) => prod.sku),
+      )
+    ).slice(0, 5);
     const updateDocs = mongoProducts.map((mongoPrd) => {
       const wooProduct = getProductsWithoutImage.find(
         (wooPrd) => wooPrd.sku === mongoPrd.sku,
@@ -89,7 +93,9 @@ export class WoocommerceService {
       };
     });
     for (const product of updateDocs) {
-      await this.woocommerceIntegration.createMedia(product, pool);
+      await Promise.all([
+        this.woocommerceIntegration.createMedia(product, pool),
+      ]);
     }
     MysqlConnection.endConnection(pool);
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
@@ -99,10 +105,7 @@ export class WoocommerceService {
   }
 
   async handlerWebhookExecution(webhook: any, headers: Headers): Promise<any> {
-    if (
-      headers['x-wc-webhook-topic'] === headersTopicEnum.UPDATED &&
-      webhook.status === webhookStatusEnum.PROCESSING
-    ) {
+    if (headers['x-wc-webhook-topic'] === headersTopicEnum.UPDATED) {
       return await this.vetorCreateOrderUseCase.execute(webhook);
     }
 

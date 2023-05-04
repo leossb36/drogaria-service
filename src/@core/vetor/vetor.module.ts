@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { VetorIntegrationController } from './vetor.controller';
 import { Order, OrderSchema } from '@core/infra/db/schema/mongo/order.schema';
 import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
+import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { OrderRepository } from '@core/infra/db/repositories/mongo/order.reposit
     GetProductUseCase,
     CreateProductsJsonUseCase,
     OrderRepository,
+    GetProductsFromWoocommerceUseCase,
   ],
   controllers: [VetorIntegrationController],
   exports: [CreateOrderUseCase, OrderRepository, CreateProductsJsonUseCase],

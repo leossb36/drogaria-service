@@ -37,6 +37,24 @@ export class OrderRepository {
     }
   }
 
+  async findProductCompleted() {
+    try {
+      const orders = await this.orderModel.aggregate([
+        {
+          $match: {
+            status: OrderStatusEnum.TERMINATED,
+          },
+        },
+        {
+          $unset: ['cdOrcamento', 'numeroPedido', 'situacao', 'status', '__v'],
+        },
+      ]);
+      return orders;
+    } catch (error) {
+      throw new BadRequestException('Cannot find orders on database');
+    }
+  }
+
   async findById(id: string) {
     try {
       const order = await this.orderModel.findById(id);
@@ -57,6 +75,26 @@ export class OrderRepository {
         {
           $set: {
             status: OrderStatusEnum.TERMINATED,
+          },
+        },
+      );
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Cannot find order with this id');
+    }
+  }
+
+  async updateOrderStatus(orders: any[]) {
+    try {
+      const result = await this.orderModel.updateMany(
+        {
+          _id: {
+            $in: [...orders.map((order) => order._id)],
+          },
+        },
+        {
+          $set: {
+            status: OrderStatusEnum.FINISHED,
           },
         },
       );

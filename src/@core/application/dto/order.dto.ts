@@ -5,4 +5,5 @@ export class OrderDto {
   cdOrcamento: number;
   situacao: number;
   status: `${OrderStatusEnum}`;
+  items?: any[];
 }

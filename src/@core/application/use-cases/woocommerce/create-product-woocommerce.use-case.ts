@@ -27,7 +27,7 @@ export class CreateProductOnWoocommerce {
       const productsOnDataBase =
         await this.productRepository.findProductsWithoutImageAndNotInWooCommerce(
           getProductsWithoutImage.map((prd) => prd.sku),
-          100,
+          50,
         );
 
       if (!productsOnDataBase.length) {

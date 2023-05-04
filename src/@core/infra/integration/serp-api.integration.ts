@@ -19,7 +19,11 @@ export class SerpApiIntegration {
     };
     try {
       const response = await getJson('google', { ...params });
-      return response.images_results[0].original;
+      if (response.images_results[0].original)
+        return response.images_results[0].original;
+      else {
+        return response.images_results[0].thumbnail;
+      }
     } catch (error) {
       console.error(error.response.data);
     }

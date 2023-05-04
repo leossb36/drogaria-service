@@ -12,12 +12,16 @@ import {
 import { CreateOrderInformationModelView } from '@core/application/mv/create-order-information.mv';
 import { OrderStatusEnum } from '@core/application/dto/enum/orderStatus.enum';
 import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
+import * as mysql from 'mysql2/promise';
+import MysqlConnection from '@config/mysql.config';
+import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-from-woocommerce.use-case';
 
 @Injectable()
 export class CreateOrderUseCase {
   constructor(
     private readonly integration: VetorIntegrationGateway,
     private readonly orderRepository: OrderRepository,
+    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
   ) {}
 
   async execute(dto: getWebhookDto): Promise<CreateOrderInformationModelView> {
@@ -29,13 +33,13 @@ export class CreateOrderUseCase {
       cliente: this.getClient(dto),
       vlrProdutos: Number(dto.total),
       vlrDescontos: Number(dto.discount_total),
-      vlrFrete: Number(dto.shipping_total),
+      vlrFrete: dto.shipping_total !== '' ? Number(dto.shipping_total) : 0,
       vlrOutros: 0,
       vlrTotal: Number(dto.total),
       vlrTroco: 0,
       observacao: 'Venda Online',
       nrPedido: dto.id.toString(),
-      retirar: true,
+      retirar: false,
       itens,
     } as CreateOrderDto;
 
@@ -47,11 +51,27 @@ export class CreateOrderUseCase {
 
     const { data } = order;
 
+    const pool: mysql.Pool = await MysqlConnection.connect();
+    const productsFromWooCommerce =
+      await this.getProductsFromWoocommerceUseCase.execute(pool);
+
+    const items = [];
+    itens.filter((product) => {
+      const filteredItem = productsFromWooCommerce.filter(
+        (item) => Number(item.sku.split('-')[0]) === product.cdProduto,
+      )[0];
+      items.push({
+        woocommerceId: filteredItem.id,
+        vetorId: product.cdProduto,
+      });
+    });
+
     const createOnDataBase = await this.orderRepository.create({
       cdOrcamento: data.cdOrcamento,
       numeroPedido: dto.id,
       situacao: data.situacao,
       status: OrderStatusEnum.PROCESSING,
+      items: items,
     });
 
     if (!createOnDataBase) {

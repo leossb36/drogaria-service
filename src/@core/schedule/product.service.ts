@@ -12,7 +12,7 @@ export class ProductService {
     private readonly createProductsJsonUseCase: CreateProductsJsonUseCase,
   ) {}
 
-  // @Cron('0 */5 * * * *')
+  // @Cron('0 */1 * * * *')
   async updateProductStock() {
     CustomLogger.info(`[ProductService - updateProductData]  Start job`);
     const products = this.updateProductUseCase.execute();
@@ -21,7 +21,7 @@ export class ProductService {
     return result;
   }
 
-  // @Cron('0 */4 * * * *')
+  // @Cron('0 */3 * * * *')
   async createProductJsonData() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     const promiseFile = this.createProductsJsonUseCase.execute();

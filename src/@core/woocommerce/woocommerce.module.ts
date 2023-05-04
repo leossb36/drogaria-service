@@ -49,6 +49,6 @@ import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/w
     GetProductsFromWoocommerceUseCase,
   ],
   controllers: [WoocommerceController],
-  exports: [CreateImageOnWordpressUseCase],
+  exports: [CreateImageOnWordpressUseCase, GetProductsFromWoocommerceUseCase],
 })
 export class WoocommerceModule {}

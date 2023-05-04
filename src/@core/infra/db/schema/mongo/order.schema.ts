@@ -16,6 +16,9 @@ export class Order {
 
   @Prop()
   status: string;
+
+  @Prop()
+  items: any[];
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
