@@ -53,7 +53,7 @@ export class CreateOrderUseCase {
 
     const pool: mysql.Pool = await MysqlConnection.connect();
     const productsFromWooCommerce =
-      await this.getProductsFromWoocommerceUseCase.execute(pool);
+      await this.getProductsFromWoocommerceUseCase.execute(pool, []);
 
     const items = [];
     itens.filter((product) => {

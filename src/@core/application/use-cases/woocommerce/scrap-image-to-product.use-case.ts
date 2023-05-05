@@ -10,11 +10,11 @@ export class ScrapImagesUseCase {
     private readonly searchEngine: SerpApiIntegration,
   ) {}
 
-  async execute(productOnWoocommerce: any[]): Promise<any> {
+  async execute(productOnWoocommerce: any[], retry: number): Promise<any> {
     try {
       const images = await Promise.all(
         productOnWoocommerce.map((product) =>
-          this.searchEngine.getImageUrl(product.description),
+          this.searchEngine.getImageUrl(product.description, retry),
         ),
       );
       const products = [];

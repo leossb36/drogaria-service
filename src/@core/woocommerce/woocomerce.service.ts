@@ -17,8 +17,6 @@ import * as mysql from 'mysql2/promise';
 export class WoocommerceService {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
-    private readonly vetorCreateOrderUseCase: CreateOrderUseCase,
-    private readonly createProductOnWoocommerce: CreateProductOnWoocommerce,
     private readonly createProductWithImagesOnWoocommerce: CreateProductWithImagesOnWoocommerce,
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
@@ -28,7 +26,10 @@ export class WoocommerceService {
   async createProductRoutineOnMongo() {
     const products = await this.productRepository.findProductsWithoutImage(100);
 
-    const scrapImagesProducts = await this.scrapImagesUseCase.execute(products);
+    const scrapImagesProducts = await this.scrapImagesUseCase.execute(
+      products,
+      0,
+    );
 
     return {
       mongo: scrapImagesProducts.length,
@@ -63,18 +64,26 @@ export class WoocommerceService {
     };
   }
 
-  // @Cron('0 */2 * * * *')
+  // @Cron('0 */3 * * * *')
   async updateProductRoutine() {
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  Start job`);
 
     const pool: mysql.Pool = await MysqlConnection.connect();
 
     const productsFromWooCommerce =
-      await this.getProductsFromWoocommerceUseCase.execute(pool);
+      await this.getProductsFromWoocommerceUseCase.execute(pool, []);
 
     const getProductsWithoutImage = productsFromWooCommerce.filter(
       (product) => !product.thumbnail,
     );
+
+    if (!getProductsWithoutImage.length) {
+      MysqlConnection.endConnection(pool);
+      CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
+      return {
+        message: `There's no product to update image`,
+      };
+    }
 
     const mongoProducts = (
       await this.productRepository.getProductsBySku(
@@ -104,11 +113,70 @@ export class WoocommerceService {
     };
   }
 
-  async handlerWebhookExecution(webhook: any, headers: Headers): Promise<any> {
-    if (headers['x-wc-webhook-topic'] === headersTopicEnum.UPDATED) {
-      return await this.vetorCreateOrderUseCase.execute(webhook);
-    }
+  async retryScrapNewImage() {
+    CustomLogger.info(`[WoocommerceService - retryScrapNewImage]  Start job`);
+    const pool: mysql.Pool = await MysqlConnection.connect();
 
-    return;
+    const productsFromWooCommerce =
+      await this.getProductsFromWoocommerceUseCase.execute(pool, []);
+
+    const getProductsWithoutImageWrongImage = productsFromWooCommerce
+      .filter((product) => product.thumbnail === '5934')
+      .slice(0, 5);
+
+    const mongoProducts = await this.productRepository.getProductsBySku(
+      getProductsWithoutImageWrongImage.map((prod) => prod.sku),
+    );
+
+    let retry = 1;
+    while (retry < 3) {
+      const notFoundProducts =
+        await this.getProductsFromWoocommerceUseCase.execute(
+          pool,
+          getProductsWithoutImageWrongImage.map((product) => product.sku),
+        );
+      const needRetry = JSON.parse(
+        JSON.stringify(
+          notFoundProducts.some((product) => product.thumbnail === '5934'),
+        ),
+      );
+      if (needRetry) {
+        const retryMongoProducts =
+          await this.productRepository.getProductsBySku(
+            notFoundProducts
+              .filter((prod) => prod.thumbnail === '5934')
+              .map((prd) => prd.sku),
+          );
+        const scrapImageToProductOnWoocommerce =
+          await this.scrapImagesUseCase.execute(retryMongoProducts, retry);
+
+        const updateDocs = scrapImageToProductOnWoocommerce.map((mongoPrd) => {
+          const wooProduct = getProductsWithoutImageWrongImage.find(
+            (wooPrd) => wooPrd.sku === mongoPrd.sku,
+          );
+          return {
+            id: wooProduct.id,
+            images: mongoPrd.images,
+            name: mongoPrd.name,
+            description: mongoPrd.description,
+          };
+        });
+
+        for (const product of updateDocs) {
+          await Promise.all([
+            this.woocommerceIntegration.createMedia(product, pool),
+          ]);
+        }
+      }
+      retry++;
+    }
+    CustomLogger.info(`[WoocommerceService - retryScrapNewImage]  End job`);
+    MysqlConnection.endConnection(pool);
+
+    return {
+      count: mongoProducts.length,
+      ids: getProductsWithoutImageWrongImage.map((product) => product.id),
+      message: 'Products updated successfully!',
+    };
   }
 }
