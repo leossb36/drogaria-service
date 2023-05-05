@@ -37,6 +37,21 @@ export class OrderRepository {
     }
   }
 
+  async findOrders(ids: any[]) {
+    try {
+      const orders = await this.orderModel
+        .find({
+          numeroPedido: {
+            $in: [...ids],
+          },
+        })
+        .lean();
+      return orders;
+    } catch (error) {
+      throw new BadRequestException('Cannot find orders on database');
+    }
+  }
+
   async findProductCompleted() {
     try {
       const orders = await this.orderModel.aggregate([

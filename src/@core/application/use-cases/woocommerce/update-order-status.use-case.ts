@@ -26,19 +26,19 @@ export class UpdatedOrderStatus {
         { numeroPedido: order.numeroPedido, cdOrcamento: order.cdOrcamento },
         '/pedidos/status',
       );
-      if (orderFromVetor.data.cdOrcamento === 0) {
+      const { data } = orderFromVetor;
+      if (data.cdOrcamento === 0) {
         continue;
       }
 
-      const { data } = orderFromVetor;
-      if (orderFromVetor.data?.situacao === 6) {
+      if (data.situacao === 6) {
         ordersToUpdate.push({
-          id: data.numeroPedido,
+          id: order.numeroPedido,
           status: webhookStatusEnum.COMPLETED,
         });
-      } else if (orderFromVetor.data?.situacao === 8)
+      } else if (data.situacao === 8)
         ordersToUpdate.push({
-          id: data.numeroPedido,
+          id: order.numeroPedido,
           status: webhookStatusEnum.CANCELLED,
         });
     }
@@ -46,7 +46,9 @@ export class UpdatedOrderStatus {
     const chunks = ChunckData(ordersToUpdate);
     for (const chunk of chunks) {
       await this.woocommerceIntegration.updateOrderBatch(chunk);
-      await this.orderRepository.updateOrderBatch(chunk);
+      await this.orderRepository.updateOrderBatch(
+        chunk.map((ck) => this.changeKey(ck, 'numeroPedido', 'id')),
+      );
     }
     if (!ordersToUpdate.length) {
       return this.emptyCallbackResponse(ordersToUpdate.length);
@@ -65,5 +67,12 @@ export class UpdatedOrderStatus {
       status: 200,
       message: 'Cannot find any order to update',
     };
+  }
+
+  private changeKey(obj: any, newKey: string, oldKey: string) {
+    obj[newKey] = obj[oldKey];
+    delete obj[oldKey];
+
+    return obj;
   }
 }

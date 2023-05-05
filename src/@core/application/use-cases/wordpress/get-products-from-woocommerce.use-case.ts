@@ -4,11 +4,14 @@ import { RowDataPacket } from 'mysql2/promise';
 
 @Injectable()
 export class GetProductsFromWoocommerceUseCase {
-  async execute(pool: mysql.Pool) {
-    return await this.getProductsFromWoocommerce(pool);
+  async execute(pool: mysql.Pool, productsSkus?: any[]) {
+    return await this.getProductsFromWoocommerce(pool, productsSkus);
   }
 
-  private async getProductsFromWoocommerce(pool: mysql.Pool): Promise<any[]> {
+  private async getProductsFromWoocommerce(
+    pool: mysql.Pool,
+    productsSkus?: any[],
+  ): Promise<any[]> {
     const [rows, _] = await pool.query(
       `SELECT
         wp.ID as id,
@@ -46,6 +49,15 @@ export class GetProductsFromWoocommerceUseCase {
         thumbnail: thumbnail.length ? thumbnail[0].meta_value : undefined,
       };
     });
+
+    if (productsSkus.length) {
+      const filteredProducts = productCallBack.filter(
+        (prod) =>
+          prod.sku === productsSkus.filter((sku) => sku === prod.sku)[0],
+      );
+
+      return filteredProducts;
+    }
 
     return productCallBack;
   }

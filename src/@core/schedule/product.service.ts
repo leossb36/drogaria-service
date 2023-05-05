@@ -12,7 +12,7 @@ export class ProductService {
     private readonly createProductsJsonUseCase: CreateProductsJsonUseCase,
   ) {}
 
-  // @Cron('0 */1 * * * *')
+  @Cron('20 */1 * * * *')
   async updateProductStock() {
     CustomLogger.info(`[ProductService - updateProductData]  Start job`);
     const products = this.updateProductUseCase.execute();
