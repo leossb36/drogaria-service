@@ -146,6 +146,18 @@ export class WoocommerceIntegration {
     }
   }
 
+  async getOrdersByStatus(): Promise<any> {
+    try {
+      const response = await this.woocommerceConfig.get(
+        'orders?status=completed',
+      );
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async createCategories(categories: createCategoriesDto[]): Promise<any> {
     const data = {
       create: [...categories],

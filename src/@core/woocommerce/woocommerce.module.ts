@@ -22,6 +22,7 @@ import { ProductRepository } from '@core/infra/db/repositories/mongo/product.rep
 import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
 import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
 import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
+import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-order-to-vetor.use-case';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/w
     CreateProductWithImagesOnWoocommerce,
     CreateImageOnWordpressUseCase,
     GetProductsFromWoocommerceUseCase,
+    SendOrderToVetorUseCase,
   ],
   controllers: [WoocommerceController],
   exports: [CreateImageOnWordpressUseCase, GetProductsFromWoocommerceUseCase],

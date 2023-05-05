@@ -19,6 +19,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { WoocommerceService } from './woocomerce.service';
+import { OrderService } from '@core/schedule/order.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
@@ -32,11 +33,17 @@ export class WoocommerceController {
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly woocommerceService: WoocommerceService,
     private readonly updatedOrderStatus: UpdatedOrderStatus,
+    private readonly orderService: OrderService,
   ) {}
 
   @Put('/product/update')
   async createProduct(): Promise<unknown> {
     return await this.woocommerceService.updateProductRoutine();
+  }
+
+  @Put('/product/retry')
+  async retryScrapNewImage(): Promise<unknown> {
+    return await this.woocommerceService.retryScrapNewImage();
   }
 
   @Post('/product/create/woo')
@@ -66,15 +73,9 @@ export class WoocommerceController {
     return await this.createOrderUseCase.execute(body);
   }
 
-  @Post('/order/webhook')
-  async handlerWebhookExecution(
-    @Body() webhook: any,
-    @Headers() headers,
-  ): Promise<any> {
-    return await this.woocommerceService.handlerWebhookExecution(
-      webhook,
-      headers,
-    );
+  @Post('/order/send/vetor')
+  async sendOrderToVetor(): Promise<any> {
+    return await this.orderService.sendOrderToVetor();
   }
 
   @Put('/order/update')

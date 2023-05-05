@@ -1,0 +1,180 @@
+import MysqlConnection from '@config/mysql.config';
+import {
+  Cliente,
+  CreateOrderDto,
+  Item,
+  getWebhookDto,
+} from '@core/application/dto';
+import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
+import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
+import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
+import { ValidationHelper } from '@core/utils/validation-helper';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import * as mysql from 'mysql2/promise';
+import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-from-woocommerce.use-case';
+import { OrderStatusEnum } from '@core/application/dto/enum/orderStatus.enum';
+import * as messages from '@common/messages/response-messages.json';
+import { ValidationClientHelper } from '@core/utils/validation-client-helper';
+
+@Injectable()
+export class SendOrderToVetorUseCase {
+  constructor(
+    private readonly integration: VetorIntegrationGateway,
+    private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly orderRepository: OrderRepository,
+    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
+  ) {}
+
+  async execute() {
+    const ordersFromWoocommerce =
+      await this.woocommerceIntegration.getOrdersByStatus();
+
+    if (!ordersFromWoocommerce.data.length) {
+      return {
+        data: 0,
+        msg: `There's no order to send to vetor - 1`,
+        status: 200,
+      };
+    }
+
+    const orders = await this.validateIfOrderWasSent(
+      ordersFromWoocommerce.data,
+    );
+
+    if (!orders.length) {
+      return {
+        data: 0,
+        msg: `There's no order to send to vetor - 2`,
+        status: 200,
+      };
+    }
+
+    for (const order of orders) {
+      const itens = this.getItems(order);
+      const sendToVetor = {
+        cdFilial: +process.env.CD_FILIAL,
+        cgcFilial: process.env.CGC_FILIAL || '',
+        dtEmissao: new Date().toISOString(),
+        cliente: this.getClient(order),
+        vlrProdutos: Number(order.total),
+        vlrDescontos: Number(order.discount_total),
+        vlrFrete:
+          order.shipping_total !== '' ? Number(order.shipping_total) : 0,
+        vlrOutros: 0,
+        vlrTotal: Number(order.total),
+        vlrTroco: 0,
+        observacao: 'Venda Online',
+        nrPedido: order.id.toString(),
+        retirar: false,
+        itens,
+      } as CreateOrderDto;
+
+      const result = await this.integration.createOrder(
+        sendToVetor,
+        '/pedidos',
+      );
+
+      if (!result || !ValidationHelper.isOk(result.status)) {
+        throw new BadRequestException('Cannot create order');
+      }
+
+      const { data } = result;
+
+      const pool: mysql.Pool = await MysqlConnection.connect();
+      const productsFromWooCommerce =
+        await this.getProductsFromWoocommerceUseCase.execute(pool, []);
+
+      const items = [];
+      itens.filter((product) => {
+        const filteredItem = productsFromWooCommerce.filter(
+          (item) => Number(item.sku.split('-')[0]) === product.cdProduto,
+        )[0];
+        items.push({
+          woocommerceId: filteredItem.id,
+          vetorId: product.cdProduto,
+        });
+      });
+
+      const createOnDataBase = await this.orderRepository.create({
+        cdOrcamento: data.cdOrcamento,
+        numeroPedido: order.id,
+        situacao: data.situacao,
+        status: OrderStatusEnum.PROCESSING,
+        items: items,
+      });
+
+      if (!createOnDataBase) {
+        MysqlConnection.endConnection(pool);
+        throw new BadRequestException(
+          'Cannot save on database the vetor register',
+        );
+      }
+
+      MysqlConnection.endConnection(pool);
+
+      return {
+        data: order.data,
+        msg: messages.vetor.integration.create.order.success,
+        status: order.status,
+      };
+    }
+  }
+  private getClient(dto: getWebhookDto): Cliente {
+    const { billing } = dto;
+    return {
+      nome: `${billing?.first_name} ${dto.billing?.last_name}`,
+      cpfCgc: billing?.cpf,
+      telefone: ValidationClientHelper.validatePhone(billing.phone),
+      sexo: billing?.sex,
+      dtNascimento: ValidationClientHelper.validateDate(billing?.birthdate),
+      endereco: billing?.address_1,
+      numero: billing?.number,
+      complemento: '',
+      cep: billing?.postcode,
+      bairro: billing?.neighborhood,
+      cidade: billing?.city,
+      uf: billing?.state,
+      email: billing.email,
+      cidadeIBGE: 0,
+      referencia: '',
+      inscEstadual: '',
+      inscMunicipal: '',
+    };
+  }
+  private getItems(dto: getWebhookDto): Item[] {
+    const { line_items } = dto;
+
+    if (!line_items.length) {
+      return [];
+    }
+
+    const items = [];
+
+    line_items?.map((item) => {
+      const cdProduct = item.sku.split('-');
+
+      const data = {
+        cdProduto: Number(cdProduct[0]),
+        quantidade: item.quantity,
+        vlrUnitario: item.price,
+        vlrDesconto: 0,
+        vlrTotal: Number(item.total),
+      } as Item;
+      items.push(data);
+    });
+    return items;
+  }
+
+  private async validateIfOrderWasSent(orders: any[]) {
+    const sentOrders = await this.orderRepository.findOrders(
+      orders.map((order) => order.id),
+    );
+
+    const ordersNotSent = orders.filter(
+      (order) =>
+        !sentOrders.some((mongoOrder) => order.id === mongoOrder.numeroPedido),
+    );
+
+    return ordersNotSent;
+  }
+}
