@@ -113,6 +113,7 @@ export class WoocommerceService {
     };
   }
 
+  // @Cron('0 */3 * * * *')
   async retryScrapNewImage() {
     CustomLogger.info(`[WoocommerceService - retryScrapNewImage]  Start job`);
     const pool: mysql.Pool = await MysqlConnection.connect();
@@ -129,33 +130,39 @@ export class WoocommerceService {
     );
 
     let retry = 1;
-    while (retry < 3) {
-      const notFoundProducts =
+    while (retry < 6) {
+      const refreshProducts =
         await this.getProductsFromWoocommerceUseCase.execute(
           pool,
           getProductsWithoutImageWrongImage.map((product) => product.sku),
         );
-      const needRetry = JSON.parse(
-        JSON.stringify(
-          notFoundProducts.some((product) => product.thumbnail === '5934'),
-        ),
+
+      const productsToRetry = refreshProducts.filter(
+        (product) => product.thumbnail === '5934',
       );
+
+      if (!productsToRetry.length) {
+        break;
+      }
+
+      const needRetry = productsToRetry.some(
+        (product) => product.thumbnail === '5934',
+      );
+
       if (needRetry) {
-        const retryMongoProducts =
+        const productsToRetryOnMongo =
           await this.productRepository.getProductsBySku(
-            notFoundProducts
-              .filter((prod) => prod.thumbnail === '5934')
-              .map((prd) => prd.sku),
+            productsToRetry.map((product) => product.sku),
           );
         const scrapImageToProductOnWoocommerce =
-          await this.scrapImagesUseCase.execute(retryMongoProducts, retry);
+          await this.scrapImagesUseCase.execute(productsToRetryOnMongo, retry);
 
         const updateDocs = scrapImageToProductOnWoocommerce.map((mongoPrd) => {
-          const wooProduct = getProductsWithoutImageWrongImage.find(
+          const wooProduct = getProductsWithoutImageWrongImage.filter(
             (wooPrd) => wooPrd.sku === mongoPrd.sku,
           );
           return {
-            id: wooProduct.id,
+            id: wooProduct[0].id,
             images: mongoPrd.images,
             name: mongoPrd.name,
             description: mongoPrd.description,
