@@ -1,11 +1,7 @@
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
-import { ReadStreamService } from '@core/utils/read-stream';
 import { ChunckData } from '@core/utils/fetch-helper';
-import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-from-woocommerce.use-case';
-import MysqlConnection from '@config/mysql.config';
-import * as mysql from 'mysql2/promise';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
 
@@ -22,7 +18,7 @@ export class UpdateProductUseCase {
     if (!productsByOrder.length) {
       return {
         count: 0,
-        message: 'Not Product to update stock',
+        message: 'Does not have product to update stock',
       };
     }
     const updateProductOnWoocommerceStock = [];

@@ -1,10 +1,6 @@
 import CustomLogger from '@common/logger/logger';
 import MysqlConnection from '@config/mysql.config';
-import { headersTopicEnum } from '@core/application/dto/enum/headers-topic.enum';
-import { webhookStatusEnum } from '@core/application/dto/enum/webhook-status.enum';
-import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
 import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
-import { CreateProductOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-woocommerce.use-case';
 import { ScrapImagesUseCase } from '@core/application/use-cases/woocommerce/scrap-image-to-product.use-case';
 import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
 import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
