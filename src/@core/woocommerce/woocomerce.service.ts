@@ -130,7 +130,7 @@ export class WoocommerceService {
     );
 
     let retry = 1;
-    while (retry < 6) {
+    while (retry < 3) {
       const refreshProducts =
         await this.getProductsFromWoocommerceUseCase.execute(
           pool,
