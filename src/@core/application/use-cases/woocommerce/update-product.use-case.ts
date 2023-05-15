@@ -40,6 +40,7 @@ export class UpdateProductUseCase {
       updateProductOnWoocommerceStock.push({
         id: item.woocommerceId,
         stock_quantity: product.qtdEstoque,
+        categories: item.categories,
       });
     }
 
