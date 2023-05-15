@@ -149,7 +149,7 @@ export class WoocommerceIntegration {
   async getOrdersByStatus(): Promise<any> {
     try {
       const response = await this.woocommerceConfig.get(
-        'orders?status=completed',
+        'orders?status=processing',
       );
       return response;
     } catch (error) {
