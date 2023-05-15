@@ -37,11 +37,11 @@ export class SendOrderToVetorUseCase {
       };
     }
 
-    const orders = await this.validateIfOrderWasSent(
+    const ordersNotSent = await this.validateIfOrderWasSent(
       ordersFromWoocommerce.data,
     );
 
-    if (!orders.length) {
+    if (!ordersNotSent.length) {
       return {
         data: 0,
         msg: `There's no order to send to vetor - 2`,
@@ -49,17 +49,18 @@ export class SendOrderToVetorUseCase {
       };
     }
 
-    for (const order of orders) {
+    for (const order of ordersNotSent) {
       const itens = this.getItems(order);
+      const vlrFrete =
+        order.shipping_total !== '' ? Number(order.shipping_total) : 0;
       const sendToVetor = {
         cdFilial: +process.env.CD_FILIAL,
         cgcFilial: process.env.CGC_FILIAL || '',
         dtEmissao: new Date().toISOString(),
         cliente: this.getClient(order),
-        vlrProdutos: Number(order.total),
+        vlrProdutos: Number(order.total) - vlrFrete,
         vlrDescontos: Number(order.discount_total),
-        vlrFrete:
-          order.shipping_total !== '' ? Number(order.shipping_total) : 0,
+        vlrFrete,
         vlrOutros: 0,
         vlrTotal: Number(order.total),
         vlrTroco: 0,
