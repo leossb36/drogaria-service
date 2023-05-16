@@ -59,7 +59,9 @@ export class SendOrderToVetorUseCase {
         cgcFilial: process.env.CGC_FILIAL || '',
         dtEmissao: new Date().toISOString(),
         cliente: this.getClient(order),
-        vlrProdutos: Number(order.total) - vlrFrete,
+        vlrProdutos: Number(
+          parseFloat((Number(order.total) - vlrFrete).toString()).toFixed(2),
+        ),
         vlrDescontos: Number(order.discount_total),
         vlrFrete,
         vlrOutros: 0,
