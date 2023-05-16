@@ -1,9 +1,7 @@
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
-import { ChunckData, FetchVetorProducts } from '@core/utils/fetch-helper';
-import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
-import { OrderRepository } from '@core/infra/db/repositories/mongo/order.repository';
+import { ChunckData } from '@core/utils/fetch-helper';
 import { ReadStreamService } from '@core/utils/read-stream';
 import MysqlConnection from '@config/mysql.config';
 import * as mysql from 'mysql2/promise';
@@ -13,8 +11,6 @@ import { GetProductsFromWoocommerceUseCase } from '../wordpress/get-products-fro
 export class UpdateAllProductsFromVetor {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
-    private readonly vetorIntegration: VetorIntegrationGateway,
-    private readonly orderRepository: OrderRepository,
     private readonly readStreamService: ReadStreamService,
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
   ) {}
