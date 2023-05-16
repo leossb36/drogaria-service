@@ -1,5 +1,4 @@
 import CustomLogger from '@common/logger/logger';
-import { CreateOrderUseCase } from '@core/application/use-cases/vetor/create-order.use-case';
 import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-order-to-vetor.use-case';
 import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
 import { Injectable } from '@nestjs/common';
