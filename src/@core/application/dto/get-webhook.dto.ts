@@ -54,6 +54,16 @@ export interface WebhookLineItem {
   price?: number;
   image?: WebhookImage;
   parent_name?: any;
+  attributes: [
+    {
+      id: number;
+      name: string;
+      options: [string];
+      position: number;
+      visible: boolean;
+      variation: boolean;
+    },
+  ];
 }
 
 export interface WebhookImage {
