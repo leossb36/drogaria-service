@@ -40,6 +40,35 @@ export class ReadStreamService {
         });
     });
   }
+
+  public async getAll(): Promise<any> {
+    const result = [];
+    const categories = await this.getAllCategories();
+
+    return new Promise((resolve, reject) => {
+      const stream = createReadStream(
+        './src/@core/infra/db/vetor-data.json',
+      ).pipe(parse('*'));
+
+      stream
+        .on('data', (data) => {
+          if (Object.values(CategoryEnum).includes(data['nomeLinha'])) {
+            const category = categories.find(
+              (category) => category.name === data['nomeLinha'],
+            );
+            const product = this.buildProducts(data, category?.id);
+            result.push(product);
+          }
+        })
+        .on('end', () => {
+          resolve(result);
+        })
+        .on('error', (err) => {
+          reject(err.message);
+        });
+    });
+  }
+
   async filterCategoriesVetor(): Promise<any> {
     const result = [];
 
@@ -71,8 +100,8 @@ export class ReadStreamService {
     const product = {
       name: data['descricao'],
       slug: data['descricao'].replaceAll(' ', '-'),
-      virtual: true,
-      downloadable: true,
+      virtual: false,
+      downloadable: false,
       description: data['descricao'],
       short_description: data['descricao'],
       sku: sku.toLowerCase(),
@@ -94,6 +123,16 @@ export class ReadStreamService {
       categories: [{ id: categoryId }],
       stock_status: 'instock',
       has_options: false,
+      attributes: [
+        {
+          id: 0,
+          name: 'codeBar',
+          options: [data['codigoBarras']],
+          position: 0,
+          visible: false,
+          variation: true,
+        },
+      ],
     };
 
     return product;

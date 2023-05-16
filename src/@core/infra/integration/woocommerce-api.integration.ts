@@ -39,6 +39,16 @@ export class WoocommerceIntegration {
     }
   }
 
+  async productById(id: string): Promise<any> {
+    try {
+      const response = await this.woocommerceConfig.get(`products/${id}`);
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async getAllProductsSku(): Promise<string[]> {
     try {
       const skus = await FetchAllProducts(this.woocommerceConfig).then(

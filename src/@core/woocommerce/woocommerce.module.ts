@@ -23,6 +23,7 @@ import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-case
 import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
 import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
 import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-order-to-vetor.use-case';
+import { UpdateAllProductsFromVetor } from '@core/application/use-cases/woocommerce/update-all-products.use-case';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-
     CreateImageOnWordpressUseCase,
     GetProductsFromWoocommerceUseCase,
     SendOrderToVetorUseCase,
+    UpdateAllProductsFromVetor,
   ],
   controllers: [WoocommerceController],
   exports: [CreateImageOnWordpressUseCase, GetProductsFromWoocommerceUseCase],

@@ -7,12 +7,12 @@ export class GetProductUseCase {
   constructor(private readonly integration: WoocommerceIntegration) {}
 
   async execute(): Promise<getProductWooCommerce[]> {
-    const products = await this.integration.getAllProducts();
+    const products = await this.integration.productById('11041');
 
-    if (!products.length) {
+    if (!products.data) {
       throw new BadRequestException('Cannot list products!');
     }
 
-    return products;
+    return products.data;
   }
 }

@@ -50,7 +50,8 @@ export class SendOrderToVetorUseCase {
     }
 
     for (const order of ordersNotSent) {
-      const itens = this.getItems(order);
+      const itens = await this.getItems(order);
+      const paymentInfo = this.formateStringObservation(order);
       const vlrFrete =
         order.shipping_total !== '' ? Number(order.shipping_total) : 0;
       const sendToVetor = {
@@ -64,7 +65,7 @@ export class SendOrderToVetorUseCase {
         vlrOutros: 0,
         vlrTotal: Number(order.total),
         vlrTroco: 0,
-        observacao: 'Venda Online',
+        observacao: paymentInfo,
         nrPedido: order.id.toString(),
         retirar: false,
         itens,
@@ -142,7 +143,7 @@ export class SendOrderToVetorUseCase {
       inscMunicipal: '',
     };
   }
-  private getItems(dto: getWebhookDto): Item[] {
+  private async getItems(dto: getWebhookDto): Promise<Item[]> {
     const { line_items } = dto;
 
     if (!line_items.length) {
@@ -151,18 +152,22 @@ export class SendOrderToVetorUseCase {
 
     const items = [];
 
-    line_items?.map((item) => {
+    for (const item of line_items) {
+      const product = await this.woocommerceIntegration.productById(
+        item.product_id.toString(),
+      );
       const cdProduct = item.sku.split('-');
 
       const data = {
         cdProduto: Number(cdProduct[0]),
+        cdBarrasProduto: product.data.attributes[0].options[0].toString(),
         quantidade: item.quantity,
         vlrUnitario: item.price,
         vlrDesconto: 0,
         vlrTotal: Number(item.total),
       } as Item;
       items.push(data);
-    });
+    }
     return items;
   }
 
@@ -177,5 +182,17 @@ export class SendOrderToVetorUseCase {
     );
 
     return ordersNotSent;
+  }
+
+  private formateStringObservation(order: any) {
+    const transaction = order.transaction_id
+      ? `(${order.transaction_id.toString()})`
+      : '';
+    const date = new Intl.DateTimeFormat('pt-br', {
+      dateStyle: 'full',
+      timeStyle: 'long',
+    }).format(new Date(order.date_paid));
+
+    return `Pagamento via ${order.payment_method_title.toString()} ${transaction}. Pago em ${date}.`;
   }
 }
