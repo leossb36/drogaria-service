@@ -74,7 +74,7 @@ export class WoocommerceService {
     );
 
     if (!getProductsWithoutImage.length) {
-      MysqlConnection.endConnection(pool);
+      await MysqlConnection.endConnection(pool);
       CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
       return {
         message: `There's no product to update image`,
@@ -102,7 +102,7 @@ export class WoocommerceService {
         this.woocommerceIntegration.createMedia(product, pool),
       ]);
     }
-    MysqlConnection.endConnection(pool);
+    await MysqlConnection.endConnection(pool);
     CustomLogger.info(`[WoocommerceService - updateProductRoutine]  end job`);
     return {
       message: 'product created successfully',
@@ -174,7 +174,7 @@ export class WoocommerceService {
       retry++;
     }
     CustomLogger.info(`[WoocommerceService - retryScrapNewImage]  End job`);
-    MysqlConnection.endConnection(pool);
+    await MysqlConnection.endConnection(pool);
 
     return {
       count: mongoProducts.length,

@@ -34,7 +34,7 @@ export class CreateProductWithImagesOnWoocommerce {
       );
 
       if (!filtered.length) {
-        MysqlConnection.endConnection(pool);
+        await MysqlConnection.endConnection(pool);
         return [];
       }
 
@@ -47,7 +47,7 @@ export class CreateProductWithImagesOnWoocommerce {
         );
         result.push(...products.data?.create);
       }
-      MysqlConnection.endConnection(pool);
+      await MysqlConnection.endConnection(pool);
       return result;
     } catch (error) {
       return null;

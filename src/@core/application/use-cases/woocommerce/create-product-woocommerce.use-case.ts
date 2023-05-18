@@ -31,7 +31,7 @@ export class CreateProductOnWoocommerce {
         );
 
       if (!productsOnDataBase.length) {
-        MysqlConnection.endConnection(pool);
+        await MysqlConnection.endConnection(pool);
         return [];
       }
 
@@ -44,7 +44,7 @@ export class CreateProductOnWoocommerce {
         );
         result.push(...products.data?.create);
       }
-      MysqlConnection.endConnection(pool);
+      await MysqlConnection.endConnection(pool);
       return result;
     } catch (error) {
       return null;

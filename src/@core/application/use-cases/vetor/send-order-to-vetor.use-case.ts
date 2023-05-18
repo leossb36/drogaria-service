@@ -108,13 +108,13 @@ export class SendOrderToVetorUseCase {
       });
 
       if (!createOnDataBase) {
-        MysqlConnection.endConnection(pool);
+        await MysqlConnection.endConnection(pool);
         throw new BadRequestException(
           'Cannot save on database the vetor register',
         );
       }
 
-      MysqlConnection.endConnection(pool);
+      await MysqlConnection.endConnection(pool);
 
       return {
         data: order.data,

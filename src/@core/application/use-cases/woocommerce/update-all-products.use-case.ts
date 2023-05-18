@@ -16,24 +16,41 @@ export class UpdateAllProductsFromVetor {
   ) {}
 
   async execute(): Promise<any> {
-    const readStreamProducts = await this.readStreamService.getAll();
-
     const pool: mysql.Pool = await MysqlConnection.connect();
 
-    const productsFromWooCommerce =
-      await this.getProductsFromWoocommerceUseCase.execute(pool, []);
+    const [readStreamProducts, productsFromWooCommerce] = await Promise.all([
+      this.readStreamService.filterProductsVetor(),
+      this.getProductsFromWoocommerceUseCase.execute(pool, []),
+    ]);
+
+    await MysqlConnection.endConnection(pool);
 
     const updateProductOnWoocommerceStock = [];
 
-    for (const item of productsFromWooCommerce) {
+    const productsWithoutStock = productsFromWooCommerce.filter((product) => {
+      return !readStreamProducts.some((stream) => stream.sku === product.sku);
+    });
+
+    for (const item of productsWithoutStock) {
+      updateProductOnWoocommerceStock.push({
+        id: item.id,
+        stock_quantity: 0,
+      });
+    }
+
+    const productsWithStock = productsFromWooCommerce.filter((product) => {
+      return readStreamProducts.some((stream) => stream.sku === product.sku);
+    });
+
+    for (const item of productsWithStock) {
       const filterStream = readStreamProducts.filter(
         (stream) => stream.sku === item.sku,
       );
-      if (!filterStream.length) continue;
+
       updateProductOnWoocommerceStock.push({
         id: item.id,
         stock_quantity: filterStream[0].stock_quantity,
-        categories: filterStream[0].categories,
+        categories: [...filterStream[0].categories],
         attributes: filterStream[0].attributes,
       });
     }
