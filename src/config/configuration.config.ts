@@ -46,6 +46,11 @@ export class ConfigService {
       url: process.env.WOOCOMMERCE_URL,
       secret_key: process.env.JWT_SECRET_KEY,
     };
+    this.envConfig.cloudinary = {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    };
   }
   get(key: string): any {
     return this.envConfig[key];

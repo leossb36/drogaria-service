@@ -1,40 +1,28 @@
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { createWooOrderDto } from '@core/application/dto';
-import { createWooCategoryModelView } from '@core/application/mv/create-woo-category.mv';
-import { createWooOrderModelView } from '@core/application/mv/create-woo-order.mv';
-import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
-import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
-import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
-import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
-import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Headers,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { createWooCategoryModelView } from './mv/create-woo-category.mv';
+import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
+import { createWooOrderModelView } from './mv/create-woo-order.mv';
+import { CreateCategoryUseCase } from './use-case/create-category.use-case';
+import { UpdateProductUseCase } from './use-case/update-product.use-case';
 import { WoocommerceService } from './woocomerce.service';
+import { CreateOrderUseCase } from './use-case/create-order.use-case';
+import { UpdatedOrderStatus } from './use-case/update-order-status.use-case';
+import { GetProductUseCase } from './use-case/get-product.use-case';
+import { createWooOrderDto } from './dto/create-woo-order.dto';
 import { OrderService } from '@core/schedule/order.service';
-import { UpdateAllProductsFromVetor } from '@core/application/use-cases/woocommerce/update-all-products.use-case';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
-// @ApiBearerAuth()
-// @UseGuards(JwtAuthGuard)
 export class WoocommerceController {
   constructor(
+    private readonly updateAllProductsFromVetor: UpdateAllProductsFromVetor,
     private readonly createCategoryUseCase: CreateCategoryUseCase,
-    private readonly getProductUseCase: GetProductUseCase,
-    private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly woocommerceService: WoocommerceService,
     private readonly updatedOrderStatus: UpdatedOrderStatus,
-    private readonly updateAllProductsFromVetor: UpdateAllProductsFromVetor,
+    private readonly getProductUseCase: GetProductUseCase,
     private readonly orderService: OrderService,
   ) {}
 

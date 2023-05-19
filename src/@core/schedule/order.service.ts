@@ -1,6 +1,6 @@
 import CustomLogger from '@common/logger/logger';
-import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-order-to-vetor.use-case';
-import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
+import { SaveOrderVetorUseCase } from '@core/vetor/use-case/save-order-vetor.use-case';
+import { UpdatedOrderStatus } from '@core/woocommerce/use-case/update-order-status.use-case';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
@@ -8,10 +8,10 @@ import { Cron } from '@nestjs/schedule';
 export class OrderService {
   constructor(
     private readonly updatedOrderStatus: UpdatedOrderStatus,
-    private readonly sendOrderToVetorUseCase: SendOrderToVetorUseCase,
+    private readonly saveOrderVetorUseCase: SaveOrderVetorUseCase,
   ) {}
 
-  @Cron('0 */5 * * * *')
+  // @Cron('0 */5 * * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrder]  Start job`);
     const orderStatus = this.updatedOrderStatus.execute();
@@ -20,10 +20,10 @@ export class OrderService {
     return result;
   }
 
-  @Cron('40 */1 * * * *')
+  // @Cron('40 */1 * * * *')
   async sendOrderToVetor(): Promise<any> {
     CustomLogger.info(`[OrderService - sendOrderToVetor]  Start job`);
-    const result = await this.sendOrderToVetorUseCase.execute();
+    const result = await this.saveOrderVetorUseCase.execute();
     CustomLogger.info(`[OrderService - sendOrderToVetor]  End job`);
     return result;
   }

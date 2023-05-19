@@ -1,7 +1,8 @@
 import { ConfigService } from '@config/configuration.config';
-import { GetProductVetorDto, GetOrderDto } from '@core/application/dto';
-import { IProduct } from '@core/application/interface/product.interface';
-import { GetCategoryViewModel } from '@core/application/mv/get-category.mv';
+import { GetOrderDto } from '@core/vetor/dto/get-order.dto';
+import { GetProductVetorDto } from '@core/vetor/dto/query-select.dto';
+import { GetCategoryViewModel } from '@core/vetor/mv/get-category.mv';
+import { IProduct } from '@core/vetor/mv/product.mv';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
@@ -11,8 +12,8 @@ export class VetorIntegrationGateway {
   private baseUrl: string;
   private headerRequest;
   constructor(
-    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {
     this.baseUrl = this.configService.get('api').url;
     this.headerRequest = {

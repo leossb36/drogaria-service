@@ -1,4 +1,4 @@
-import { CategoryEnum } from '@core/application/dto/enum/category.enum';
+import { CategoryEnum } from '@core/common/enum/category.enum';
 
 export class QueryFilter {
   private query: string;

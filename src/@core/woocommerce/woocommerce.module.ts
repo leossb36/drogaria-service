@@ -1,58 +1,46 @@
-import { CreateCategoryUseCase } from '@core/application/use-cases/woocommerce/create-category.use-case';
-import { CreateOrderUseCase } from '@core/application/use-cases/woocommerce/create-order.use-case';
-import { GetProductUseCase } from '@core/application/use-cases/woocommerce/get-product.use-case';
-import { UpdatedOrderStatus } from '@core/application/use-cases/woocommerce/update-order-status.use-case';
-import { UpdateProductUseCase } from '@core/application/use-cases/woocommerce/update-product.use-case';
+import { CreateProductWithImagesOnWoocommerce } from './use-case/create-product-with-images-woocommerce.use-case';
+import { CreateProductUseCaseOnMongo } from './use-case/create-product-mongo.use-case';
+import { CreateProductOnWoocommerce } from './use-case/create-product-woocommerce.use-case';
+import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
+import { CreateCategoryUseCase } from './use-case/create-category.use-case';
+import { WoocommerceController } from './woocommerce.controller';
+import { UpdateProductUseCase } from './use-case/update-product.use-case';
+import { CreateOrderUseCase } from './use-case/create-order.use-case';
+import { WoocommerceService } from './woocomerce.service';
+import { UpdatedOrderStatus } from './use-case/update-order-status.use-case';
+import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
 import { IntegrationModule } from '@core/infra/integration.module';
-import { ReadStreamService } from '@core/utils/read-stream';
+import { GetProductUseCase } from './use-case/get-product.use-case';
+import { WordpressModule } from '@core/wordpress/wordpress.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ProductService } from '@core/schedule/product.service';
+import { OrderService } from '@core/schedule/order.service';
 import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
-import { WoocommerceService } from './woocomerce.service';
-import { WoocommerceController } from './woocommerce.controller';
-import { OrderService } from '@core/schedule/order.service';
-import { ProductService } from '@core/schedule/product.service';
-import { ScheduleModule } from '@nestjs/schedule';
-import { ScrapImagesUseCase } from '@core/application/use-cases/woocommerce/scrap-image-to-product.use-case';
-import { CreateProductOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-woocommerce.use-case';
-import { CreateProductUseCaseOnMongo } from '@core/application/use-cases/woocommerce/create-product-mongo.use-case';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Product } from '@core/application/dto/product.dto';
-import { ProductSchema } from '@core/infra/db/schema/mongo/product.schema';
-import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
-import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
-import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
-import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
-import { SendOrderToVetorUseCase } from '@core/application/use-cases/vetor/send-order-to-vetor.use-case';
-import { UpdateAllProductsFromVetor } from '@core/application/use-cases/woocommerce/update-all-products.use-case';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    VetorModule,
     IntegrationModule,
-    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    WordpressModule,
+    VetorModule,
   ],
   providers: [
-    CreateCategoryUseCase,
-    GetProductUseCase,
-    CreateOrderUseCase,
-    UpdateProductUseCase,
-    WoocommerceService,
-    ReadStreamService,
-    UpdatedOrderStatus,
-    OrderService,
-    ProductService,
-    ScrapImagesUseCase,
-    CreateProductOnWoocommerce,
-    CreateProductUseCaseOnMongo,
-    ProductRepository,
     CreateProductWithImagesOnWoocommerce,
-    CreateImageOnWordpressUseCase,
-    GetProductsFromWoocommerceUseCase,
-    SendOrderToVetorUseCase,
+    CreateProductUseCaseOnMongo,
+    CreateProductOnWoocommerce,
     UpdateAllProductsFromVetor,
+    CreateCategoryUseCase,
+    UpdateProductUseCase,
+    CreateOrderUseCase,
+    WoocommerceService,
+    UpdatedOrderStatus,
+    ScrapImagesUseCase,
+    GetProductUseCase,
+    ProductService,
+    OrderService,
   ],
   controllers: [WoocommerceController],
-  exports: [CreateImageOnWordpressUseCase, GetProductsFromWoocommerceUseCase],
+  exports: [],
 })
 export class WoocommerceModule {}

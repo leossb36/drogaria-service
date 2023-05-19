@@ -1,20 +1,20 @@
-import CustomLogger from '@common/logger/logger';
-import MysqlConnection from '@config/mysql.config';
-import { CreateProductWithImagesOnWoocommerce } from '@core/application/use-cases/woocommerce/create-product-with-images-woocommerce.use-case';
-import { ScrapImagesUseCase } from '@core/application/use-cases/woocommerce/scrap-image-to-product.use-case';
-import { GetProductsFromWoocommerceUseCase } from '@core/application/use-cases/wordpress/get-products-from-woocommerce.use-case';
-import { ProductRepository } from '@core/infra/db/repositories/mongo/product.repository';
+import { CreateProductWithImagesOnWoocommerce } from './use-case/create-product-with-images-woocommerce.use-case';
+import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
+import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
+import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import MysqlConnection from '@config/mysql.config';
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import CustomLogger from '@common/logger/logger';
 import * as mysql from 'mysql2/promise';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class WoocommerceService {
   constructor(
-    private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly createProductWithImagesOnWoocommerce: CreateProductWithImagesOnWoocommerce,
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
+    private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
     private readonly productRepository: ProductRepository,
   ) {}

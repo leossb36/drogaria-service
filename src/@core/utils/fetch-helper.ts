@@ -1,4 +1,4 @@
-import { CategoryEnum } from '@core/application/dto/enum/category.enum';
+import { CategoryEnum } from '@core/common/enum/category.enum';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { QueryFilter } from './query-builder';
 

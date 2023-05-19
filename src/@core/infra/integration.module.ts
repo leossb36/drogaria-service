@@ -1,17 +1,17 @@
-import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
+import { CreateImageOnWordpressUseCase } from '@core/wordpress/use-case/create-image-on-wordpress.use-case';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
-import { Module } from '@nestjs/common';
 import { WoocommerceIntegration } from './integration/woocommerce-api.integration';
 import { WordpressIntegration } from './integration/wordpress-api.Integration';
-import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
+import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
+import { Module } from '@nestjs/common';
 
 @Module({
   providers: [
+    CreateImageOnWordpressUseCase,
     VetorIntegrationGateway,
-    SerpApiIntegration,
     WoocommerceIntegration,
     WordpressIntegration,
-    CreateImageOnWordpressUseCase,
+    SerpApiIntegration,
     {
       provide: 'axiosSerp',
       useFactory: () => ({

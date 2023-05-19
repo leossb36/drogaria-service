@@ -1,7 +1,5 @@
 import { ConfigService } from '@config/configuration.config';
-import { createCategoriesDto } from '@core/application/dto/create-category.dto';
-import { CategoryIdsEnum } from '@core/application/dto/enum/category.enum';
-import { getProductWooCommerce } from '@core/application/interface/get-product-woo.interface';
+import { CategoryIdsEnum } from '@core/common/enum/category.enum';
 import FetchAllProducts, {
   getProductsWithoutImages,
 } from '@core/utils/fetch-helper';
@@ -10,7 +8,9 @@ import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import * as mysql from 'mysql2/promise';
-import { CreateImageOnWordpressUseCase } from '@core/application/use-cases/wordpress/create-image-on-wordpress.use-case';
+import { CreateImageOnWordpressUseCase } from '@core/wordpress/use-case/create-image-on-wordpress.use-case';
+import { getProductWooCommerceModelView } from '@core/woocommerce/mv/get-product-woo.mv';
+import { createCategoriesDto } from '@core/woocommerce/dto/create-category.dto';
 
 @Injectable()
 export class WoocommerceIntegration {
@@ -130,7 +130,9 @@ export class WoocommerceIntegration {
     }
   }
 
-  async createProductBatch(products: getProductWooCommerce[]): Promise<any> {
+  async createProductBatch(
+    products: getProductWooCommerceModelView[],
+  ): Promise<any> {
     const data = {
       create: [...products],
     };
