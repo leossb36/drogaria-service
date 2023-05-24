@@ -13,7 +13,7 @@ export class VetorService {
    * pegar os itens; ok
    * pra cada item eu faço o scrap ok
    * salvar no mongodb de acordo com o codigo de barra;
-   * faço o recize das imagens pra 500x500; tenho que ajustar o script para poder puxar a imagem pela url
+   * faço o recize das imagens pra 500x500 - propriamente no cloudinary
    * upload do arquivo no cloudinary;
    * faço o cadastro dos produtos no woocommerce sem imagem; ok
    * faço o update dos produtos utilizando a url do cloudinary; partial

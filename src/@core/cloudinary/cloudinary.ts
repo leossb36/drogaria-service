@@ -11,10 +11,11 @@ export class Cloudinary {
 
   async upload(
     file: Express.Multer.File,
+    query: string,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {
       const upload = v2.uploader.upload_stream(
-        { resource_type: 'auto' },
+        { resource_type: 'auto', public_id: query },
         (error, result) => {
           if (error) return reject(error);
           resolve(result);
@@ -54,5 +55,13 @@ export class Cloudinary {
 
   async getFileUrlCorrect(fileId: string) {
     return v2.api.resource(fileId);
+  }
+
+  async generateRecizedUrl(fileId: string) {
+    return v2.url(fileId, {
+      width: 500,
+      height: 500,
+      Crop: 'fill',
+    });
   }
 }
