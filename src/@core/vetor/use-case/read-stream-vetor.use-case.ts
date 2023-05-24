@@ -17,7 +17,7 @@ export class ReadStreamVetorUseCase {
 
     return new Promise((resolve, reject) => {
       const stream = createReadStream(
-        path.join(__dirname, '..', 'infra', 'seed', 'data.json'),
+        path.join('./src', '@core', 'infra', 'seed', 'data.json'),
       ).pipe(parse('*'));
 
       stream

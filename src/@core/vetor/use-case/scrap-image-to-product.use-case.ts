@@ -10,16 +10,20 @@ export class ScrapImagesUseCase {
     private readonly searchEngine: SerpApiIntegration,
   ) {}
 
-  async execute(productOnWoocommerce: any[], retry: number): Promise<any> {
+  async execute(streamProducts: any[], retry: number): Promise<any> {
     try {
       const images = await Promise.all(
-        productOnWoocommerce.map((product) =>
-          this.searchEngine.getImageUrl(product.description, retry),
-        ),
+        streamProducts.map((product) => {
+          const query =
+            product.atributtes[0].options[0] !== null
+              ? product.atributtes[0].options[0].toString()
+              : product.description;
+          return this.searchEngine.getImageUrl(query, retry);
+        }),
       );
       const products = [];
 
-      productOnWoocommerce.forEach((product, index) => {
+      streamProducts.forEach((product, index) => {
         products.push({
           ...product,
           images: [{ src: images[index] }],

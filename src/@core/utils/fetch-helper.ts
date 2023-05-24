@@ -1,6 +1,9 @@
 import { CategoryEnum } from '@core/common/enum/category.enum';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { QueryFilter } from './query-builder';
+import * as path from 'path';
+import { createWriteStream } from 'fs';
+import { Readable } from 'stream';
 
 export default async function FetchAllProducts(instance: WooCommerceRestApi) {
   let actualPage = 1;
@@ -57,41 +60,56 @@ export async function getProductsWithoutImages(instance: WooCommerceRestApi) {
 
 export async function FetchVetorProducts(instance: any) {
   const queryFilter = new QueryFilter();
-  let products;
-  const returnData = [];
-  const queryTop = 500;
+  const productStream = [];
+  const queryTop = 100;
   let querySkip = 0;
   let queryCounter = 0;
 
+  const writebleStream = createWriteStream(
+    path.join(__dirname, '..', 'infra', 'seed', 'data.json'),
+    { flags: 'w' },
+  );
+
+  const query = queryFilter
+    .setFilial()
+    .setHasStock()
+    .setActiveProduct()
+    .getQuery();
+
+  const { total } = await instance.getProductInfo('/produtos/consulta', {
+    $filter: query,
+    $count: 'true',
+  });
+
   do {
     try {
-      const query = queryFilter
-        .setFilial()
-        .setHasStock()
-        .setActiveProduct()
-        .getQuery();
-
-      products = await instance.getProductInfo('/produtos/consulta', {
+      const { data } = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,
         $skip: querySkip,
         $filter: query,
-        $count: 'true',
       });
 
-      queryCounter += products.data.length;
-      returnData.push(...products.data);
+      const readStream = Readable.from(data, { objectMode: true });
+      readStream
+        .on('data', (response) => {
+          if (Object.values(CategoryEnum).includes(response.nomeLinha)) {
+            productStream.push(response);
+          }
+        })
+        .on('error', (error) => {
+          console.error('error while trying resolve file', error);
+        });
+
+      queryCounter += data.length;
     } catch (error) {
       console.error(error.response.data.message);
     }
 
-    querySkip = returnData.length;
-  } while (queryCounter < products.total);
+    querySkip += queryTop;
+  } while (queryCounter < total);
+  writebleStream.write(JSON.stringify(productStream, null, 2));
 
-  const filteredListProducts = returnData.filter((product) =>
-    Object.values(CategoryEnum).includes(product.nomeLinha),
-  );
-
-  return filteredListProducts;
+  return productStream.length;
 }
 
 export async function FetchVetorCategories(instance: any) {
