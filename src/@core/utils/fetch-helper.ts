@@ -66,7 +66,7 @@ export async function FetchVetorProducts(instance: any) {
   let queryCounter = 0;
 
   const writebleStream = createWriteStream(
-    path.join(__dirname, '..', 'infra', 'seed', 'data.json'),
+    path.join('./src', '@core', 'infra', 'seed', 'data.json'),
     { flags: 'w' },
   );
 

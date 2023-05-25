@@ -26,6 +26,26 @@ export class Cloudinary {
     });
   }
 
+  async uploadFromUrl(
+    product: any,
+    query: string,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.uploader.upload(
+        product.images[0].src,
+        {
+          resource_type: 'image',
+          public_id: query,
+          transformation: [{ width: 500, height: 500, crop: 'scale' }],
+        },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        },
+      );
+    });
+  }
+
   async delete(fileId: string) {
     return new Promise((resolve, reject) => {
       v2.uploader.destroy(fileId, (error, result) => {
@@ -41,7 +61,7 @@ export class Cloudinary {
     let response: any = null;
 
     try {
-      response = await v2.api.resource(fileId);
+      response = await v2.api.resource(fileId, { resource_type: 'auto' });
     } catch {
       try {
         response = await v2.api.resource(fileId, { resource_type: 'image' });
@@ -55,13 +75,5 @@ export class Cloudinary {
 
   async getFileUrlCorrect(fileId: string) {
     return v2.api.resource(fileId);
-  }
-
-  async generateRecizedUrl(fileId: string) {
-    return v2.url(fileId, {
-      width: 500,
-      height: 500,
-      Crop: 'fill',
-    });
   }
 }

@@ -5,9 +5,19 @@ import { Cloudinary } from './cloudinary';
 export class CloudinaryService {
   constructor(private cloudinary: Cloudinary) {}
 
-  async create(fileTransferable: Express.Multer.File, query: string) {
+  async create(product: any, query: string) {
     try {
-      return await this.cloudinary.upload(fileTransferable, query);
+      await this.cloudinary.uploadFromUrl(product, query);
+      const resource = await this.cloudinary.getFileUrlCorrect(query);
+
+      return {
+        ...product,
+        images: [
+          {
+            src: resource.url,
+          },
+        ],
+      };
     } catch (error) {
       throw new BadRequestException(
         `Erro ao realizar upload do arquivo:: ${error.message}`,

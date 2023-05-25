@@ -32,7 +32,7 @@ export class VetorIntegrationController {
   }
 
   @Post('/product/save/cloudinary')
-  async getProductsCodeBar() {
-    return await this.vetorService.saveProductInfo();
+  async saveOnBlobStorage() {
+    return await this.vetorService.saveOnBlobStorage();
   }
 }

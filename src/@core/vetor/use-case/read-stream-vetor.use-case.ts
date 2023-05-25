@@ -1,3 +1,4 @@
+import { CloudinaryService } from '@core/cloudinary/cloudinary.service';
 import { CategoryEnum } from '@core/common/enum/category.enum';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
@@ -9,6 +10,7 @@ import * as path from 'path';
 export class ReadStreamVetorUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   public async readFromJson(): Promise<any> {
@@ -29,7 +31,13 @@ export class ReadStreamVetorUseCase {
             const category = categories.find(
               (category) => category.name === data['nomeLinha'],
             );
-            const product = this.buildProducts(data, category?.id);
+            const sku = `${data['cdProduto']}-${data['descricao'].replaceAll(
+              ' ',
+              '-',
+            )}`;
+            // const fileId = data['codigoBarras'] ? data['codigoBarras'] : sku;
+            // const imageUrl = await this.cloudinaryService.getFileUrl(fileId);
+            const product = this.buildProducts(data, category?.id, sku);
             result.push(product);
           }
         })
@@ -64,12 +72,7 @@ export class ReadStreamVetorUseCase {
         });
     });
   }
-  private buildProducts(data, categoryId) {
-    const sku = `${data['cdProduto']}-${data['descricao'].replaceAll(
-      ' ',
-      '-',
-    )}`;
-
+  private buildProducts(data, categoryId, sku) {
     const product = {
       name: data['descricao'],
       slug: data['descricao'].replaceAll(' ', '-'),
@@ -106,6 +109,7 @@ export class ReadStreamVetorUseCase {
           variation: true,
         },
       ],
+      images: [],
     };
 
     return product;

@@ -1158,12 +1158,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 209.9,
     "percDesconto": 0,
     "vlrOferta": 209.9,
-    "dtUltimaAlteracao": "2023/05/13 14:55:39",
-    "nsuRegistro": 1769215
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -1450,6 +1450,28 @@
     "vlrOferta": 125.6,
     "dtUltimaAlteracao": "2023/04/11 00:24:54",
     "nsuRegistro": 1722264
+  },
+  {
+    "cdFilial": 1,
+    "cdProduto": 46349,
+    "descricao": "LA ROCHE REDERMIC R  OLHOS 15ML",
+    "descricaoUsual": "LA ROCHE REDERMIC R  OLHOS 15ML",
+    "codigoBarras": "3337872414039",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 51,
+    "nomeFabricante": "LA ROCHE-POSAY",
+    "cdLinha": 10,
+    "nomeLinha": "DERMOCOSMETICOS",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 1,
+    "vlrTabela": 259.9,
+    "percDesconto": 0,
+    "vlrOferta": 259.9,
+    "dtUltimaAlteracao": "2023/05/24 10:58:13",
+    "nsuRegistro": 1784818
   },
   {
     "cdFilial": 1,
@@ -2016,12 +2038,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 244.3,
     "percDesconto": 0,
     "vlrOferta": 244.3,
-    "dtUltimaAlteracao": "2023/05/23 16:58:19",
-    "nsuRegistro": 1783738
+    "dtUltimaAlteracao": "2023/05/24 11:27:59",
+    "nsuRegistro": 1784847
   },
   {
     "cdFilial": 1,
@@ -2038,12 +2060,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 89.99,
     "percDesconto": 0,
     "vlrOferta": 89.99,
-    "dtUltimaAlteracao": "2023/05/17 11:48:43",
-    "nsuRegistro": 1774788
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -2368,12 +2390,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 94.9,
     "percDesconto": 0,
     "vlrOferta": 94.9,
-    "dtUltimaAlteracao": "2023/05/16 13:18:17",
-    "nsuRegistro": 1773438
+    "dtUltimaAlteracao": "2023/05/24 11:27:59",
+    "nsuRegistro": 1784847
   },
   {
     "cdFilial": 1,
@@ -2632,12 +2654,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
+    "qtdEstoque": 2,
     "vlrTabela": 237,
     "percDesconto": 0,
     "vlrOferta": 237,
-    "dtUltimaAlteracao": "2023/05/20 16:27:50",
-    "nsuRegistro": 1779387
+    "dtUltimaAlteracao": "2023/05/24 08:30:24",
+    "nsuRegistro": 1784670
   },
   {
     "cdFilial": 1,
@@ -2852,12 +2874,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 5,
+    "qtdEstoque": 4,
     "vlrTabela": 89.99,
     "percDesconto": 7.8787,
     "vlrOferta": 82.9,
-    "dtUltimaAlteracao": "2023/05/16 04:20:12",
-    "nsuRegistro": 1772900
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -3732,12 +3754,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 79.9,
     "percDesconto": 0,
     "vlrOferta": 79.9,
-    "dtUltimaAlteracao": "2023/05/18 16:18:50",
-    "nsuRegistro": 1776498
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -7208,12 +7230,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 149.4,
     "percDesconto": 0,
     "vlrOferta": 149.4,
-    "dtUltimaAlteracao": "2023/05/17 11:48:43",
-    "nsuRegistro": 1774788
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -7318,12 +7340,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 174.4,
     "percDesconto": 0,
     "vlrOferta": 174.4,
-    "dtUltimaAlteracao": "2023/05/05 17:05:32",
-    "nsuRegistro": 1757825
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -7588,6 +7610,28 @@
     "vlrOferta": 58.99,
     "dtUltimaAlteracao": "2023/04/11 00:24:54",
     "nsuRegistro": 1722264
+  },
+  {
+    "cdFilial": 1,
+    "cdProduto": 728441,
+    "descricao": "PRO SOLAR ACTINE 40G FPS60 COR",
+    "descricaoUsual": "PRO SOLAR ACTINE 40G FPS60 COR",
+    "codigoBarras": "3282770206050",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 164,
+    "nomeFabricante": "DARROW",
+    "cdLinha": 10,
+    "nomeLinha": "DERMOCOSMETICOS",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 1,
+    "vlrTabela": 61.9,
+    "percDesconto": 0,
+    "vlrOferta": 61.9,
+    "dtUltimaAlteracao": "2023/05/24 08:30:24",
+    "nsuRegistro": 1784670
   },
   {
     "cdFilial": 1,
@@ -8163,28 +8207,6 @@
   },
   {
     "cdFilial": 1,
-    "cdProduto": 1287,
-    "descricao": "OLEO AMENDOA FARMAX 100ML",
-    "descricaoUsual": "OLEO AMENDOA FARMAX 100ML",
-    "codigoBarras": "7896902280724",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 205,
-    "nomeFabricante": "FARMAX",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 0,
-    "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
-    "vlrTabela": 7.99,
-    "percDesconto": 0,
-    "vlrOferta": 7.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
-  },
-  {
-    "cdFilial": 1,
     "cdProduto": 1819,
     "descricao": "ACETONA 100ML FARMAX",
     "descricaoUsual": "ACETONA 100ML FARMAX",
@@ -8198,12 +8220,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 7,
+    "qtdEstoque": 6,
     "vlrTabela": 3.99,
     "percDesconto": 0,
     "vlrOferta": 3.99,
-    "dtUltimaAlteracao": "2023/05/20 16:57:51",
-    "nsuRegistro": 1779417
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -8396,12 +8418,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 8,
+    "qtdEstoque": 7,
     "vlrTabela": 8.99,
     "percDesconto": 0,
     "vlrOferta": 8.99,
-    "dtUltimaAlteracao": "2023/05/23 14:27:56",
-    "nsuRegistro": 1783587
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -9584,12 +9606,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 22.99,
     "percDesconto": 0,
     "vlrOferta": 22.99,
-    "dtUltimaAlteracao": "2023/05/22 20:27:49",
-    "nsuRegistro": 1782507
+    "dtUltimaAlteracao": "2023/05/23 22:27:54",
+    "nsuRegistro": 1784067
   },
   {
     "cdFilial": 1,
@@ -9936,12 +9958,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 17.99,
     "percDesconto": 0,
     "vlrOferta": 17.99,
-    "dtUltimaAlteracao": "2023/05/04 14:05:29",
-    "nsuRegistro": 1756205
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -10266,12 +10288,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 17.99,
     "percDesconto": 0,
     "vlrOferta": 17.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -10534,8 +10556,8 @@
     "vlrTabela": 6.99,
     "percDesconto": 0,
     "vlrOferta": 6.99,
-    "dtUltimaAlteracao": "2023/05/23 11:28:07",
-    "nsuRegistro": 1783408
+    "dtUltimaAlteracao": "2023/05/24 04:30:04",
+    "nsuRegistro": 1784430
   },
   {
     "cdFilial": 1,
@@ -11634,28 +11656,6 @@
     "vlrTabela": 29.99,
     "percDesconto": 0,
     "vlrOferta": 29.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 595451,
-    "descricao": "ED COLGATE 360 BLACK L2 P1",
-    "descricaoUsual": "ED COLGATE 360 BLACK L2 P1",
-    "codigoBarras": "7509546065465",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 245,
-    "nomeFabricante": "COLGATE-PALMOLIVE",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 0,
-    "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
-    "vlrTabela": 29.9,
-    "percDesconto": 0,
-    "vlrOferta": 29.9,
     "dtUltimaAlteracao": "2023/04/24 00:19:38",
     "nsuRegistro": 1740979
   },
@@ -14446,12 +14446,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 9,
+    "qtdEstoque": 8,
     "vlrTabela": 19.99,
     "percDesconto": 0,
     "vlrOferta": 19.99,
-    "dtUltimaAlteracao": "2023/04/24 21:13:06",
-    "nsuRegistro": 1742233
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -18714,12 +18714,12 @@
     "nomeLinha": "HIGIENE&BELEZA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 6,
+    "qtdEstoque": 5,
     "vlrTabela": 1.49,
     "percDesconto": 0,
     "vlrOferta": 1.49,
-    "dtUltimaAlteracao": "2023/05/15 12:55:52",
-    "nsuRegistro": 1771975
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -18758,12 +18758,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 15,
+    "qtdEstoque": 14,
     "vlrTabela": 3.99,
     "percDesconto": 0,
     "vlrOferta": 3.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -18912,12 +18912,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
+    "qtdEstoque": 2,
     "vlrTabela": 84.9,
     "percDesconto": 0,
     "vlrOferta": 84.9,
-    "dtUltimaAlteracao": "2023/05/22 20:57:49",
-    "nsuRegistro": 1782537
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -22441,6 +22441,28 @@
   },
   {
     "cdFilial": 1,
+    "cdProduto": 18069,
+    "descricao": "ABS INTIMUS NOT SECA 8UN C/ABAS",
+    "descricaoUsual": "ABS INTIMUS NOT SECA 8UN C/ABAS",
+    "codigoBarras": "7896007542437",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 342,
+    "nomeFabricante": "KIMBERLY CLARK BRASIL",
+    "cdLinha": 13,
+    "nomeLinha": "PERFUMARIA",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 5,
+    "vlrTabela": 7.99,
+    "percDesconto": 0,
+    "vlrOferta": 7.99,
+    "dtUltimaAlteracao": "2023/05/24 12:28:15",
+    "nsuRegistro": 1784908
+  },
+  {
+    "cdFilial": 1,
     "cdProduto": 18666,
     "descricao": "ABS INTIMUS DAYS 15UN S/ABAS C/PEF",
     "descricaoUsual": "ABS INTIMUS DAYS 15UN S/ABAS C/PEF",
@@ -24025,28 +24047,6 @@
   },
   {
     "cdFilial": 1,
-    "cdProduto": 748473,
-    "descricao": "GLYCOLIC HA SERUM 30ML",
-    "descricaoUsual": "GLYCOLIC HA SERUM 30ML",
-    "codigoBarras": "3337875778916",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 427,
-    "nomeFabricante": "NEUTROGENA",
-    "cdLinha": 10,
-    "nomeLinha": "DERMOCOSMETICOS",
-    "cdCategoria": 0,
-    "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
-    "vlrTabela": 249.99,
-    "percDesconto": 0,
-    "vlrOferta": 249.99,
-    "dtUltimaAlteracao": "2023/05/20 18:27:47",
-    "nsuRegistro": 1779507
-  },
-  {
-    "cdFilial": 1,
     "cdProduto": 751516,
     "descricao": "NEUTROGENA BRIGHT BOOST FPS30 40G SN OUT",
     "descricaoUsual": "NEUTROGENA BRIGHT BOOST FPS30 40G SN OUT",
@@ -24544,12 +24544,12 @@
     "nomeLinha": "HIGIENE&BELEZA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 50,
+    "qtdEstoque": 48,
     "vlrTabela": 2.49,
     "percDesconto": 0,
     "vlrOferta": 2.49,
-    "dtUltimaAlteracao": "2023/04/21 16:18:10",
-    "nsuRegistro": 1737618
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -26392,12 +26392,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 104.99,
     "percDesconto": 0,
     "vlrOferta": 104.99,
-    "dtUltimaAlteracao": "2023/04/11 00:24:54",
-    "nsuRegistro": 1722264
+    "dtUltimaAlteracao": "2023/05/24 19:28:07",
+    "nsuRegistro": 1785328
   },
   {
     "cdFilial": 1,
@@ -26546,12 +26546,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 149.9,
     "percDesconto": 0,
     "vlrOferta": 149.9,
-    "dtUltimaAlteracao": "2023/05/11 16:11:15",
-    "nsuRegistro": 1766411
+    "dtUltimaAlteracao": "2023/05/24 19:28:07",
+    "nsuRegistro": 1785328
   },
   {
     "cdFilial": 1,
@@ -26942,12 +26942,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 84.49,
     "percDesconto": 0,
     "vlrOferta": 84.49,
-    "dtUltimaAlteracao": "2023/05/08 20:04:40",
-    "nsuRegistro": 1762324
+    "dtUltimaAlteracao": "2023/05/24 11:27:59",
+    "nsuRegistro": 1784847
   },
   {
     "cdFilial": 1,
@@ -26986,12 +26986,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
+    "qtdEstoque": 2,
     "vlrTabela": 87.7,
     "percDesconto": 0,
     "vlrOferta": 87.7,
-    "dtUltimaAlteracao": "2023/05/22 11:28:21",
-    "nsuRegistro": 1781968
+    "dtUltimaAlteracao": "2023/05/24 12:28:15",
+    "nsuRegistro": 1784908
   },
   {
     "cdFilial": 1,
@@ -27366,6 +27366,28 @@
     "vlrOferta": 59.4,
     "dtUltimaAlteracao": "2023/05/23 14:27:56",
     "nsuRegistro": 1783587
+  },
+  {
+    "cdFilial": 1,
+    "cdProduto": 748475,
+    "descricao": "VICHY CS UV GLOW FPS60 CLARAMEDIA 40G",
+    "descricaoUsual": "VICHY CS UV GLOW FPS60 CLARAMEDIA 40G",
+    "codigoBarras": "7899706180498",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 577,
+    "nomeFabricante": "VICHY",
+    "cdLinha": 10,
+    "nomeLinha": "DERMOCOSMETICOS",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 1,
+    "vlrTabela": 89.99,
+    "percDesconto": 0,
+    "vlrOferta": 89.99,
+    "dtUltimaAlteracao": "2023/05/24 08:30:24",
+    "nsuRegistro": 1784670
   },
   {
     "cdFilial": 1,
@@ -27822,12 +27844,12 @@
     "nomeLinha": "DERMOCOSMETICOS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 239.9,
     "percDesconto": 0,
     "vlrOferta": 239.9,
-    "dtUltimaAlteracao": "2023/05/19 16:58:04",
-    "nsuRegistro": 1777978
+    "dtUltimaAlteracao": "2023/05/24 11:27:59",
+    "nsuRegistro": 1784847
   },
   {
     "cdFilial": 1,
@@ -29679,28 +29701,6 @@
   },
   {
     "cdFilial": 1,
-    "cdProduto": 749821,
-    "descricao": "ISDIN FOTOP FUSION WATER SPF 60 30ML",
-    "descricaoUsual": "ISDIN FOTOP FUSION WATER SPF 60 30ML",
-    "codigoBarras": "8429420225718",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 660,
-    "nomeFabricante": "ISDIN",
-    "cdLinha": 10,
-    "nomeLinha": "DERMOCOSMETICOS",
-    "cdCategoria": 0,
-    "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
-    "vlrTabela": 75.49,
-    "percDesconto": 0,
-    "vlrOferta": 75.49,
-    "dtUltimaAlteracao": "2023/04/11 00:24:54",
-    "nsuRegistro": 1722264
-  },
-  {
-    "cdFilial": 1,
     "cdProduto": 749852,
     "descricao": "ISDINCEUTICS HYALURONIC CONCENTRATE SERUM 30ML",
     "descricaoUsual": "ISDINCEUTICS HYALURONIC CONCENTRATE SERUM 30ML",
@@ -29874,6 +29874,28 @@
     "vlrOferta": 119.9,
     "dtUltimaAlteracao": "2023/05/08 10:35:36",
     "nsuRegistro": 1761755
+  },
+  {
+    "cdFilial": 1,
+    "cdProduto": 752199,
+    "descricao": "ISDINCEUTICS FLAVOC FORTE 3U 5,3ML",
+    "descricaoUsual": "ISDINCEUTICS FLAVOC FORTE 3U 5,3ML",
+    "codigoBarras": "8429420235960",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 660,
+    "nomeFabricante": "ISDIN",
+    "cdLinha": 10,
+    "nomeLinha": "DERMOCOSMETICOS",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 1,
+    "vlrTabela": 319.9,
+    "percDesconto": 0,
+    "vlrOferta": 319.9,
+    "dtUltimaAlteracao": "2023/05/24 13:27:47",
+    "nsuRegistro": 1784967
   },
   {
     "cdFilial": 1,
@@ -30862,8 +30884,8 @@
     "vlrTabela": 86.9,
     "percDesconto": 21.8642,
     "vlrOferta": 67.9,
-    "dtUltimaAlteracao": "2023/05/23 19:58:01",
-    "nsuRegistro": 1783918
+    "dtUltimaAlteracao": "2023/05/24 17:28:16",
+    "nsuRegistro": 1785208
   },
   {
     "cdFilial": 1,
@@ -31170,8 +31192,8 @@
     "vlrTabela": 86.9,
     "percDesconto": 0,
     "vlrOferta": 86.9,
-    "dtUltimaAlteracao": "2023/02/10 14:52:05",
-    "nsuRegistro": 1636732
+    "dtUltimaAlteracao": "2023/05/24 17:28:16",
+    "nsuRegistro": 1785208
   },
   {
     "cdFilial": 1,
@@ -32492,6 +32514,28 @@
     "vlrOferta": 49.4,
     "dtUltimaAlteracao": "2023/05/17 17:49:24",
     "nsuRegistro": 1775149
+  },
+  {
+    "cdFilial": 1,
+    "cdProduto": 735627,
+    "descricao": "ABS INTIMUS NOTURNO SECA C/ABAS 30UN",
+    "descricaoUsual": "ABS INTIMUS NOTURNO SECA C/ABAS 30UN",
+    "codigoBarras": "7896007550906",
+    "inativo": false,
+    "cdMarca": 0,
+    "nomeMarca": "NAO DEFINIDO",
+    "cdFabricante": 701,
+    "nomeFabricante": "P&G PERFUMARIA",
+    "cdLinha": 13,
+    "nomeLinha": "PERFUMARIA",
+    "cdCategoria": 0,
+    "nomeCategoria": "NAO DEFINIDO",
+    "qtdEstoque": 1,
+    "vlrTabela": 24.9,
+    "percDesconto": 0,
+    "vlrOferta": 24.9,
+    "dtUltimaAlteracao": "2023/05/24 12:57:51",
+    "nsuRegistro": 1784937
   },
   {
     "cdFilial": 1,
@@ -34008,28 +34052,6 @@
     "vlrTabela": 29.99,
     "percDesconto": 0,
     "vlrOferta": 29.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 1494,
-    "descricao": "GF BOZZANO 300G INCOLOR",
-    "descricaoUsual": "GF BOZZANO 300G INCOLOR",
-    "codigoBarras": "7891350034844",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 710,
-    "nomeFabricante": "HYPERMARCAS PERFUMARIA",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 0,
-    "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 1,
-    "vlrTabela": 17.99,
-    "percDesconto": 0,
-    "vlrOferta": 17.99,
     "dtUltimaAlteracao": "2023/04/24 00:19:38",
     "nsuRegistro": 1740979
   },
@@ -43486,12 +43508,12 @@
     "nomeLinha": "PERFUMES",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 3,
+    "qtdEstoque": 2,
     "vlrTabela": 699.99,
     "percDesconto": 0,
     "vlrOferta": 699.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
+    "dtUltimaAlteracao": "2023/05/24 11:57:58",
+    "nsuRegistro": 1784877
   },
   {
     "cdFilial": 1,
@@ -52418,12 +52440,12 @@
     "nomeLinha": "PERFUMARIA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 2,
+    "qtdEstoque": 1,
     "vlrTabela": 13.9,
     "percDesconto": 0,
     "vlrOferta": 13.9,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
+    "dtUltimaAlteracao": "2023/05/23 22:27:54",
+    "nsuRegistro": 1784067
   },
   {
     "cdFilial": 1,
@@ -54464,12 +54486,12 @@
     "nomeLinha": "MAQUIAGENS",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 7,
+    "qtdEstoque": 6,
     "vlrTabela": 18.9,
     "percDesconto": 0,
     "vlrOferta": 18.9,
-    "dtUltimaAlteracao": "2023/05/15 17:56:06",
-    "nsuRegistro": 1772276
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -64540,12 +64562,12 @@
     "nomeLinha": "HIGIENE&BELEZA",
     "cdCategoria": 0,
     "nomeCategoria": "NAO DEFINIDO",
-    "qtdEstoque": 5,
+    "qtdEstoque": 4,
     "vlrTabela": 49.9,
     "percDesconto": 0,
     "vlrOferta": 49.9,
-    "dtUltimaAlteracao": "2023/01/06 09:40:10",
-    "nsuRegistro": 1586020
+    "dtUltimaAlteracao": "2023/05/24 18:27:56",
+    "nsuRegistro": 1785267
   },
   {
     "cdFilial": 1,
@@ -66328,28 +66350,6 @@
     "vlrOferta": 59.99,
     "dtUltimaAlteracao": "2023/05/08 10:35:36",
     "nsuRegistro": 1761755
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 732668,
-    "descricao": "BATOM MARI MARIA LIQ MATTE HAZEL NUDE",
-    "descricaoUsual": "BATOM MARI MARIA LIQ MATTE HAZEL NUDE",
-    "codigoBarras": "7896032656239",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 292,
-    "nomeFabricante": "FARMAERVAS",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 1,
-    "vlrTabela": 29.9,
-    "percDesconto": 0,
-    "vlrOferta": 29.9,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
   },
   {
     "cdFilial": 1,
@@ -68792,115 +68792,5 @@
     "vlrOferta": 73.8,
     "dtUltimaAlteracao": "2023/04/20 19:18:14",
     "nsuRegistro": 1736358
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 741671,
-    "descricao": "BASE LIQUIDA BRUNA TAVARES BT SKIN F40 40ML",
-    "descricaoUsual": "BASE LIQUIDA BRUNA TAVARES BT SKIN F40 40ML",
-    "codigoBarras": "7896032656871",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 790183,
-    "nomeFabricante": "BRUNA TAVARES ",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 4,
-    "vlrTabela": 69.99,
-    "percDesconto": 0,
-    "vlrOferta": 69.99,
-    "dtUltimaAlteracao": "2023/05/20 15:27:48",
-    "nsuRegistro": 1779327
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 744215,
-    "descricao": "BASE MARI MARIA COVER UP MM10",
-    "descricaoUsual": "BASE MARI MARIA COVER UP MM10",
-    "codigoBarras": "7896032659971",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 790183,
-    "nomeFabricante": "BRUNA TAVARES ",
-    "cdLinha": 13,
-    "nomeLinha": "PERFUMARIA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 4,
-    "vlrTabela": 29.99,
-    "percDesconto": 0,
-    "vlrOferta": 29.99,
-    "dtUltimaAlteracao": "2023/04/24 00:19:38",
-    "nsuRegistro": 1740979
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 750589,
-    "descricao": "BT VELVET 2X1 PRIMER/SOMB LIQ TOFFEE",
-    "descricaoUsual": "BT VELVET 2X1 PRIMER/SOMB LIQ TOFFEE",
-    "codigoBarras": "7896032679603",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 790183,
-    "nomeFabricante": "BRUNA TAVARES ",
-    "cdLinha": 42,
-    "nomeLinha": "HIGIENE&BELEZA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 2,
-    "vlrTabela": 49.9,
-    "percDesconto": 0,
-    "vlrOferta": 49.9,
-    "dtUltimaAlteracao": "2023/04/06 13:53:48",
-    "nsuRegistro": 1715873
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 750591,
-    "descricao": "BT VELVET 2X1 PRIMER/SOMB LIQ BROWN",
-    "descricaoUsual": "BT VELVET 2X1 PRIMER/SOMB LIQ BROWN",
-    "codigoBarras": "7896032679658",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 790183,
-    "nomeFabricante": "BRUNA TAVARES ",
-    "cdLinha": 42,
-    "nomeLinha": "HIGIENE&BELEZA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 3,
-    "vlrTabela": 49.9,
-    "percDesconto": 0,
-    "vlrOferta": 49.9,
-    "dtUltimaAlteracao": "2022/11/09 13:29:34",
-    "nsuRegistro": 1502729
-  },
-  {
-    "cdFilial": 1,
-    "cdProduto": 751013,
-    "descricao": "BT VELVET 2X1 LQ CAPPUCCINO - 520879969",
-    "descricaoUsual": "BT VELVET 2X1 LQ CAPPUCCINO - 520879969",
-    "codigoBarras": "7896032679696",
-    "inativo": false,
-    "cdMarca": 0,
-    "nomeMarca": "NAO DEFINIDO",
-    "cdFabricante": 790183,
-    "nomeFabricante": "BRUNA TAVARES ",
-    "cdLinha": 42,
-    "nomeLinha": "HIGIENE&BELEZA",
-    "cdCategoria": 1,
-    "nomeCategoria": "MAQUIAGEM",
-    "qtdEstoque": 3,
-    "vlrTabela": 49.9,
-    "percDesconto": 0,
-    "vlrOferta": 49.9,
-    "dtUltimaAlteracao": "2022/11/09 13:29:34",
-    "nsuRegistro": 1502729
   }
 ]

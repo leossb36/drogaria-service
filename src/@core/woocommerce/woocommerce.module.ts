@@ -1,5 +1,4 @@
 import { CreateProductWithImagesOnWoocommerce } from './use-case/create-product-with-images-woocommerce.use-case';
-import { CreateProductUseCaseOnMongo } from './use-case/create-product-mongo.use-case';
 import { CreateProductOnWoocommerce } from './use-case/create-product-woocommerce.use-case';
 import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
 import { CreateCategoryUseCase } from './use-case/create-category.use-case';
@@ -27,7 +26,6 @@ import { Module } from '@nestjs/common';
   ],
   providers: [
     CreateProductWithImagesOnWoocommerce,
-    CreateProductUseCaseOnMongo,
     CreateProductOnWoocommerce,
     UpdateAllProductsFromVetor,
     CreateCategoryUseCase,

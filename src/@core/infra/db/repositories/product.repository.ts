@@ -154,4 +154,20 @@ export class ProductRepository {
       throw new BadRequestException('Cannot find order with this id');
     }
   }
+
+  async getProductsSku(skus: any[]) {
+    try {
+      const result = await this.productModel
+        .find({
+          sku: {
+            $in: [...skus.map((sku) => sku)],
+          },
+        })
+        .lean();
+
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Cannot find order with this id');
+    }
+  }
 }

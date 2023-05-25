@@ -82,6 +82,18 @@ export class Product {
 
   @Prop()
   images: [{ src: string }];
+
+  @Prop()
+  attributes: [
+    {
+      id?: number;
+      name?: string;
+      options?: string[];
+      position?: number;
+      visible?: boolean;
+      variation?: boolean;
+    },
+  ];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

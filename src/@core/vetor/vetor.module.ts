@@ -16,6 +16,9 @@ import { OrderRepository } from '@core/infra/db/repositories/order.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { VetorService } from './vetor.service';
 import { Module } from '@nestjs/common';
+import { CreateProductUseCaseOnMongo } from './use-case/create-product-mongo.use-case';
+import { GetProductDataBaseUseCase } from './use-case/get-product-database.use-case';
+import { UploadCloudinaryUseCase } from './use-case/upload-cloudinary.use-case';
 
 @Module({
   imports: [
@@ -26,8 +29,11 @@ import { Module } from '@nestjs/common';
     WordpressModule,
   ],
   providers: [
+    CreateProductUseCaseOnMongo,
+    GetProductDataBaseUseCase,
     SaveProductStreamUseCase,
     ListProductVetorUseCase,
+    UploadCloudinaryUseCase,
     ReadStreamVetorUseCase,
     GetProductVetorUseCase,
     SaveOrderVetorUseCase,
