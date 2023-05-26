@@ -11,23 +11,22 @@ export class UploadCloudinaryUseCase {
   ) {}
 
   async execute(products: any[]): Promise<any> {
-    const uploadedProducts = [];
     try {
-      for (const product of products) {
+      const promises = products.map(async (product) => {
         const query =
           product.attributes[0].options[0] !== null
             ? product.attributes[0].options[0].toString()
             : product.description;
-        const upload = await this.cloudinaryService.create(product, query);
-        uploadedProducts.push(upload);
-      }
+        return await this.cloudinaryService.create(product, query);
+      });
+      const result = await Promise.all(promises);
 
-      const chunks = ChunckData(uploadedProducts);
+      const chunks = ChunckData(result);
 
       for (const chunk of chunks) {
         await this.productRepository.updateProductBatch(chunk);
       }
-      return uploadedProducts;
+      return result;
     } catch (error) {
       return null;
     }

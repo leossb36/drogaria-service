@@ -36,7 +36,9 @@ export class Cloudinary {
         {
           resource_type: 'image',
           public_id: query,
-          transformation: [{ width: 500, height: 500, crop: 'scale' }],
+          transformation: [
+            { width: 1000, height: 1000, crop: 'scale', quality: '100' },
+          ],
         },
         (error, result) => {
           if (error) return reject(error);

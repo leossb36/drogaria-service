@@ -54,10 +54,10 @@ export class VetorService {
         .filter((prod) => {
           return !mongoProducts.some((mongo) => mongo.sku === prod.sku);
         })
-        .slice(0, 100);
+        .slice(0, 3);
 
       await this.createProductUseCaseOnMongo.execute(products);
-      const scrapImages = await this.scrapImagesUseCase.execute(products, 0);
+      const scrapImages = await this.scrapImagesUseCase.execute(products, 1);
 
       return await this.uploadCloudinaryUseCase.execute(scrapImages);
     } catch (error) {
