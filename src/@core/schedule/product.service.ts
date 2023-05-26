@@ -13,7 +13,7 @@ export class ProductService {
     private readonly updateAllProductsFromVetor: UpdateAllProductsFromVetor,
   ) {}
 
-  // @Cron('20 */1 * * * *')
+  @Cron('20 */1 * * * *')
   async updateProductStock() {
     CustomLogger.info(`[ProductService - updateProductData]  Start job`);
     const products = this.updateProductUseCase.execute();
@@ -22,7 +22,7 @@ export class ProductService {
     return result;
   }
 
-  // @Cron('0 30 0 * * *')
+  @Cron('0 30 0 * * *')
   async updateAllProducts() {
     CustomLogger.info(`[ProductService - updateAllProducts]  Start job`);
     const products = this.updateAllProductsFromVetor.execute();
@@ -31,7 +31,7 @@ export class ProductService {
     return result;
   }
 
-  // @Cron('0 0 0 * * *')
+  @Cron('0 0 0 * * *')
   async createProductJsonData() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     const promiseFile = this.saveProductStreamUseCase.execute();

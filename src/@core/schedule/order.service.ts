@@ -11,7 +11,7 @@ export class OrderService {
     private readonly saveOrderVetorUseCase: SaveOrderVetorUseCase,
   ) {}
 
-  // @Cron('0 */5 * * * *')
+  @Cron('0 */5 * * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrder]  Start job`);
     const orderStatus = this.updatedOrderStatus.execute();
@@ -20,7 +20,7 @@ export class OrderService {
     return result;
   }
 
-  // @Cron('40 */1 * * * *')
+  @Cron('40 */1 * * * *')
   async sendOrderToVetor(): Promise<any> {
     CustomLogger.info(`[OrderService - sendOrderToVetor]  Start job`);
     const result = await this.saveOrderVetorUseCase.execute();
