@@ -9,22 +9,12 @@ export class QueryFilter {
     return this;
   }
 
-  setCategory() {
-    const filters = Object.values(CategoryEnum);
-    const categories = [];
-    let result: string;
-    let query: string;
-    for (let index = 0; index < filters.length; index++) {
-      query = `nomeLinha eq '${filters[index]}'`;
-      if (index === filters.length - 1) {
-        result = query;
-      } else {
-        result = query + ' or ';
-      }
-      categories.push(result);
-      query = categories.join('');
-    }
-    this.filters.push(query);
+  setFilters() {
+    const categories = Object.values(CategoryEnum);
+    categories.map((category) => {
+      const odata = `cdFilial eq 1 and qtdEstoque gt 0 and inativo eq false and contains(nomeLinha, '${category}')`;
+      this.filters.push(odata);
+    });
     return this;
   }
 
@@ -39,7 +29,7 @@ export class QueryFilter {
   }
 
   getQuery() {
-    this.query = this.filters.join(' and ');
+    this.query = this.filters.join(' or ');
     return this.query;
   }
 }

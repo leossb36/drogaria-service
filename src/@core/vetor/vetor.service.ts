@@ -16,22 +16,7 @@ export class VetorService {
     private readonly uploadCloudinaryUseCase: UploadCloudinaryUseCase,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
   ) {}
-  /**
-   * pegar os itens; ok
-   * pra cada item eu faço o scrap ok
-   * salvar no mongodb de acordo com o codigo de barra; ok
-   * faço o recize das imagens pra 500x500 - propriamente no cloudinary; ok
-   * upload do arquivo no cloudinary; ok
-   * faço o cadastro dos produtos no woocommerce sem imagem; ok
-   * faço o update dos produtos utilizando a url do cloudinary; partial
-   *
-   * OBS tenho que cadastrar no cloudinary utilizando uma chave composta - codigoDeBarras | sku ok
-   * isso me garante que quando o produto nao tiver codigo de barras eu puxo a imagem pela sku ok
-   *
-   * OBS no scrapper eu tenho que dar a opção primaria de puxar pelo codigo de barras ok
-   *
-   * Preciso orquestrar o envio pro banco para nao estourar o throughput da serpapi ok
-   */
+
   async saveProductInfo() {
     try {
       const products: getProductWooCommerceModelView[] =

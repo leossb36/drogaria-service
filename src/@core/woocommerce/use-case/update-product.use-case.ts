@@ -39,8 +39,8 @@ export class UpdateProductUseCase {
       const product = data[0];
       updateProductOnWoocommerceStock.push({
         id: item.woocommerceId,
+        name: product.descricao,
         stock_quantity: product.qtdEstoque,
-        categories: item.categories,
       });
     }
 

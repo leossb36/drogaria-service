@@ -70,11 +70,7 @@ export async function FetchVetorProducts(instance: any) {
     { flags: 'w' },
   );
 
-  const query = queryFilter
-    .setFilial()
-    .setHasStock()
-    .setActiveProduct()
-    .getQuery();
+  const query = queryFilter.setFilters().getQuery();
 
   const { total } = await instance.getProductInfo('/produtos/consulta', {
     $filter: query,
@@ -92,9 +88,7 @@ export async function FetchVetorProducts(instance: any) {
       const readStream = Readable.from(data, { objectMode: true });
       readStream
         .on('data', (response) => {
-          if (Object.values(CategoryEnum).includes(response.nomeLinha)) {
-            productStream.push(response);
-          }
+          productStream.push(response);
         })
         .on('error', (error) => {
           console.error('error while trying resolve file', error);
@@ -102,7 +96,7 @@ export async function FetchVetorProducts(instance: any) {
 
       queryCounter += data.length;
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error(error);
     }
 
     querySkip += queryTop;

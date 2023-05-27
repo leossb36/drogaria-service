@@ -190,6 +190,8 @@ export class SaveOrderVetorUseCase {
       timeStyle: 'long',
     }).format(new Date(order.date_paid));
 
-    return `Pagamento via ${order.payment_method_title.toString()} ${transaction}. Pago em ${date}.`;
+    return `Pagamento via ${order.payment_method_title.toString()} ${transaction}. Pago em ${date}. Frete: R$ ${
+      order.shipping_total
+    }`;
   }
 }

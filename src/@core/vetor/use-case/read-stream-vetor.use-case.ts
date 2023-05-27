@@ -1,5 +1,5 @@
 import { CloudinaryService } from '@core/cloudinary/cloudinary.service';
-import { CategoryEnum } from '@core/common/enum/category.enum';
+import { CategoryEnum, CategoryIdsEnum } from '@core/common/enum/category.enum';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import { createReadStream } from 'fs';
@@ -10,12 +10,10 @@ import * as path from 'path';
 export class ReadStreamVetorUseCase {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
-    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   public async readFromJson(): Promise<any> {
     const result = [];
-    const categories = await this.getAllCategories();
 
     return new Promise((resolve, reject) => {
       const stream = createReadStream(
@@ -28,16 +26,12 @@ export class ReadStreamVetorUseCase {
             data['qtdEstoque'] > 0 &&
             Object.values(CategoryEnum).includes(data['nomeLinha'])
           ) {
-            const category = categories.find(
-              (category) => category.name === data['nomeLinha'],
-            );
+            const categoryId = this.formatCategory(data['nomeLinha']);
             const sku = `${data['cdProduto']}-${data['descricao'].replaceAll(
               ' ',
               '-',
             )}`;
-            // const fileId = data['codigoBarras'] ? data['codigoBarras'] : sku;
-            // const imageUrl = await this.cloudinaryService.getFileUrl(fileId);
-            const product = this.buildProducts(data, category?.id, sku);
+            const product = this.buildProducts(data, categoryId, sku);
             result.push(product);
           }
         })
@@ -109,10 +103,32 @@ export class ReadStreamVetorUseCase {
           variation: true,
         },
       ],
-      images: [],
     };
 
     return product;
+  }
+
+  private formatCategory(category) {
+    switch (category) {
+      case CategoryEnum.CABELO:
+        return CategoryIdsEnum.CABELO;
+      case CategoryEnum.DERMOCOSMETICOS:
+        return CategoryIdsEnum.DERMOCOSMETICOS;
+      case CategoryEnum.HIGIENE:
+        return CategoryIdsEnum.HIGIENE;
+      case CategoryEnum.FRALDAS:
+        return CategoryIdsEnum.FRALDAS;
+      case CategoryEnum.LEITE:
+        return CategoryIdsEnum.FRALDAS;
+      case CategoryEnum.MAQUIAGENS:
+        return CategoryIdsEnum.MAQUIAGENS;
+      case CategoryEnum.PERFUMARIA:
+        return CategoryIdsEnum.PERFUMARIA;
+      case CategoryEnum.PERFUMES:
+        return CategoryIdsEnum.PERFUMARIA;
+      default:
+        return CategoryIdsEnum.PERFUMARIA;
+    }
   }
 
   private async getAllCategories(): Promise<any[]> {

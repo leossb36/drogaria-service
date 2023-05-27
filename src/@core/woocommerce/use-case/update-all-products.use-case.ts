@@ -49,9 +49,7 @@ export class UpdateAllProductsFromVetor {
 
       updateProductOnWoocommerceStock.push({
         id: item.id,
-        stock_quantity: filterStream[0].stock_quantity,
-        categories: [...filterStream[0].categories],
-        attributes: filterStream[0].attributes,
+        ...filterStream[0],
       });
     }
 
