@@ -1,4 +1,3 @@
-import { CloudinaryService } from '@core/cloudinary/cloudinary.service';
 import { CategoryEnum, CategoryIdsEnum } from '@core/common/enum/category.enum';
 import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
