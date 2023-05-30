@@ -48,6 +48,7 @@ import { UploadCloudinaryUseCase } from './use-case/upload-cloudinary.use-case';
     SaveProductStreamUseCase,
     ReadStreamVetorUseCase,
     SaveOrderVetorUseCase,
+    GetOrderVetorUseCase,
     ScrapImagesUseCase,
     ProductRepository,
     OrderRepository,

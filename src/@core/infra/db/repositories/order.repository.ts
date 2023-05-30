@@ -24,13 +24,11 @@ export class OrderRepository {
 
   async findAll() {
     try {
-      const orders = await this.orderModel.aggregate([
-        {
-          $match: {
-            status: OrderStatusEnum.PROCESSING,
-          },
-        },
-      ]);
+      const orders = await this.orderModel
+        .find({
+          status: OrderStatusEnum.PROCESSING,
+        })
+        .lean();
       return orders;
     } catch (error) {
       throw new BadRequestException('Cannot find orders on database');

@@ -4,10 +4,15 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
 import { ProductRepository } from '@core/infra/db/repositories/product.repository';
 import MysqlConnection from '@config/mysql.config';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import CustomLogger from '@common/logger/logger';
 import * as mysql from 'mysql2/promise';
 import { Cron } from '@nestjs/schedule';
+import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-case';
+import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
+import { GetOrderVetorUseCase } from '@core/vetor/use-case/get-order-vetor.use-case';
+import { ValidationHelper } from '@core/utils/validation-helper';
+import { StatusEnum } from '@core/common/enum/status.enum';
 
 @Injectable()
 export class WoocommerceService {
@@ -15,6 +20,9 @@ export class WoocommerceService {
     private readonly createProductWithImagesOnWoocommerce: CreateProductWithImagesOnWoocommerce,
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly getOrderOnDataBaseUseCase: GetOrderOnDataBaseUseCase,
+    private readonly getOrderOnVetorUseCase: GetOrderVetorUseCase,
+    private readonly updateOrderStatusUseCase: UpdatedOrderStatusUseCase,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
     private readonly productRepository: ProductRepository,
   ) {}
@@ -180,6 +188,47 @@ export class WoocommerceService {
       count: mongoProducts.length,
       ids: getProductsWithoutImageWrongImage.map((product) => product.id),
       message: 'Products updated successfully!',
+    };
+  }
+
+  async updateOrders() {
+    try {
+      const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
+
+      if (!ordersOnDataBase.length) {
+        return this.emptyCallbackResponse(ordersOnDataBase.length);
+      }
+
+      const ordersToUpdate = [];
+      for (const order of ordersOnDataBase) {
+        const { numeroPedido, cdOrcamento } = order;
+        const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
+          numeroPedido,
+          cdOrcamento,
+        });
+
+        if (
+          !orderFromVetor ||
+          orderFromVetor?.cdOrcamento === StatusEnum.NOT_FOUND
+        ) {
+          continue;
+        }
+
+        ordersToUpdate.push(
+          ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+        );
+      }
+      return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
+    } catch (error) {
+      throw new BadRequestException('Cannot update orders', error);
+    }
+  }
+
+  private emptyCallbackResponse(count: number) {
+    return {
+      count,
+      status: 200,
+      message: 'Cannot find any order to update',
     };
   }
 }

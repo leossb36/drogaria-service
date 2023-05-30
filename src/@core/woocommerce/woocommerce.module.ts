@@ -6,7 +6,6 @@ import { WoocommerceController } from './woocommerce.controller';
 import { UpdateProductUseCase } from './use-case/update-product.use-case';
 import { CreateOrderUseCase } from './use-case/create-order.use-case';
 import { WoocommerceService } from './woocomerce.service';
-import { UpdatedOrderStatus } from './use-case/update-order-status.use-case';
 import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
 import { IntegrationModule } from '@core/infra/integration.module';
 import { GetProductUseCase } from './use-case/get-product.use-case';
@@ -16,6 +15,8 @@ import { ProductService } from '@core/schedule/product.service';
 import { OrderService } from '@core/schedule/order.service';
 import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
+import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-case';
+import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
 
 @Module({
   imports: [
@@ -28,11 +29,12 @@ import { Module } from '@nestjs/common';
     CreateProductWithImagesOnWoocommerce,
     CreateProductOnWoocommerce,
     UpdateAllProductsFromVetor,
+    UpdatedOrderStatusUseCase,
+    GetOrderOnDataBaseUseCase,
     CreateCategoryUseCase,
     UpdateProductUseCase,
     CreateOrderUseCase,
     WoocommerceService,
-    UpdatedOrderStatus,
     ScrapImagesUseCase,
     GetProductUseCase,
     ProductService,

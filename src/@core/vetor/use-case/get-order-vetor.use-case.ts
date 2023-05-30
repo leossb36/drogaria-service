@@ -1,6 +1,6 @@
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { ValidationHelper } from '@core/utils/validation-helper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetOrderDto } from '../dto/get-order.dto';
 import { GetOrderInformationModelView } from '../mv/get-order-information.mv';
 
@@ -17,9 +17,7 @@ export class GetOrderVetorUseCase {
     const { status, data } = request;
 
     if (!ValidationHelper.isOk(status)) {
-      throw new BadRequestException(
-        `Cannot find any order with this id :: ${query.numeroPedido}`,
-      );
+      return null;
     }
 
     return {

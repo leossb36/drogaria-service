@@ -6,7 +6,6 @@ import { CreateCategoryUseCase } from './use-case/create-category.use-case';
 import { UpdateProductUseCase } from './use-case/update-product.use-case';
 import { WoocommerceService } from './woocomerce.service';
 import { CreateOrderUseCase } from './use-case/create-order.use-case';
-import { UpdatedOrderStatus } from './use-case/update-order-status.use-case';
 import { GetProductUseCase } from './use-case/get-product.use-case';
 import { createWooOrderDto } from './dto/create-woo-order.dto';
 import { OrderService } from '@core/schedule/order.service';
@@ -21,7 +20,6 @@ export class WoocommerceController {
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly woocommerceService: WoocommerceService,
-    private readonly updatedOrderStatus: UpdatedOrderStatus,
     private readonly getProductUseCase: GetProductUseCase,
     private readonly orderService: OrderService,
   ) {}
@@ -74,8 +72,8 @@ export class WoocommerceController {
   }
 
   @Put('/order/update')
-  async updateOrderBatch(): Promise<unknown> {
-    return await this.updatedOrderStatus.execute();
+  async updateOrderBatch(): Promise<any> {
+    return await this.woocommerceService.updateOrders();
   }
   @Post('category')
   async createCategory(): Promise<createWooCategoryModelView> {
