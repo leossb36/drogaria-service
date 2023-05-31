@@ -1,5 +1,5 @@
 import CustomLogger from '@common/logger/logger';
-import { SaveOrderVetorUseCase } from '@core/vetor/use-case/save-order-vetor.use-case';
+import { VetorService } from '@core/vetor/vetor.service';
 import { WoocommerceService } from '@core/woocommerce/woocomerce.service';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
@@ -8,14 +8,13 @@ import { Cron } from '@nestjs/schedule';
 export class OrderService {
   constructor(
     private readonly woocommerceService: WoocommerceService,
-    private readonly saveOrderVetorUseCase: SaveOrderVetorUseCase,
+    private readonly vetorService: VetorService,
   ) {}
 
   @Cron('0 */3 * * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrders]  Start job`);
-    const orderStatus = this.woocommerceService.updateOrders();
-    const result = Promise.resolve(await orderStatus);
+    const result = await this.woocommerceService.updateOrders();
     CustomLogger.info(`[OrderService - updateOrders]  End job`);
     return result;
   }
@@ -23,7 +22,7 @@ export class OrderService {
   @Cron('40 */1 * * * *')
   async sendOrderToVetor(): Promise<any> {
     CustomLogger.info(`[OrderService - sendOrderToVetor]  Start job`);
-    const result = await this.saveOrderVetorUseCase.execute();
+    const result = await this.vetorService.saveOrderVetor();
     CustomLogger.info(`[OrderService - sendOrderToVetor]  End job`);
     return result;
   }

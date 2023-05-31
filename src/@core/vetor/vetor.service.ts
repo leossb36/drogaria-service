@@ -1,21 +1,25 @@
-import { getProductWooCommerceModelView } from '@core/woocommerce/mv/get-product-woo.mv';
 import { ListProductVetorUseCase } from './use-case/list-product-vetor.use-case';
-import { CloudinaryService } from '@core/cloudinary/cloudinary.service';
 import { Injectable } from '@nestjs/common';
 import { GetProductDataBaseUseCase } from './use-case/get-product-database.use-case';
 import { CreateProductUseCaseOnMongo } from './use-case/create-product-mongo.use-case';
 import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
 import { UploadCloudinaryUseCase } from './use-case/upload-cloudinary.use-case';
+import { SaveOrderVetorUseCase } from './use-case/save-order-vetor.use-case';
 
 @Injectable()
 export class VetorService {
   constructor(
-    private readonly listProductVetorUseCase: ListProductVetorUseCase,
-    private readonly getProductDataBaseUseCase: GetProductDataBaseUseCase,
     private readonly createProductUseCaseOnMongo: CreateProductUseCaseOnMongo,
+    private readonly getProductDataBaseUseCase: GetProductDataBaseUseCase,
+    private readonly listProductVetorUseCase: ListProductVetorUseCase,
     private readonly uploadCloudinaryUseCase: UploadCloudinaryUseCase,
+    private readonly saveOrderVetorUseCase: SaveOrderVetorUseCase,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
   ) {}
+
+  async saveOrderVetor() {
+    return await this.saveOrderVetorUseCase.execute();
+  }
 
   async saveOnBlobStorage() {
     try {

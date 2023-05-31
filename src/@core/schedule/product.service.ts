@@ -16,8 +16,7 @@ export class ProductService {
   @Cron('20 */1 * * * *')
   async updateProductStock() {
     CustomLogger.info(`[ProductService - updateProductData]  Start job`);
-    const products = this.updateProductUseCase.execute();
-    const result = Promise.resolve(await products);
+    const result = await this.updateProductUseCase.execute();
     CustomLogger.info(`[ProductService - updateProductData]  End job`);
     return result;
   }
@@ -25,8 +24,7 @@ export class ProductService {
   @Cron('0 30 0 * * *')
   async updateAllProducts() {
     CustomLogger.info(`[ProductService - updateAllProducts]  Start job`);
-    const products = this.updateAllProductsFromVetor.execute();
-    const result = Promise.resolve(await products);
+    const result = await this.updateAllProductsFromVetor.execute();
     CustomLogger.info(`[ProductService - updateAllProducts]  End job`);
     return result;
   }
@@ -34,8 +32,7 @@ export class ProductService {
   @Cron('0 0 0 * * *')
   async createProductJsonData() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
-    const promiseFile = this.saveProductStreamUseCase.execute();
-    const result = Promise.resolve(await promiseFile);
+    const result = await this.saveProductStreamUseCase.execute();
     CustomLogger.info(`[ProductService - createProductJsonData]  End job`);
     return result;
   }
