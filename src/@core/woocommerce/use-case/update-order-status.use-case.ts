@@ -4,6 +4,7 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { ChunckData } from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
 import { ObjectHelper } from '@core/utils/object-helper';
+import { FinishStatusEnum } from '@core/common/enum/woocommerce-status.enum';
 
 @Injectable()
 export class UpdatedOrderStatusUseCase {
@@ -18,8 +19,12 @@ export class UpdatedOrderStatusUseCase {
       const cpChunk = JSON.parse(JSON.stringify(chunk));
       await Promise.all([
         this.woocommerceIntegration.updateOrderBatch(chunk),
-        this.orderRepository.updateManyOrderStatus(
-          cpChunk.map((ck) => ObjectHelper.changeKey(ck, 'numeroPedido', 'id')),
+        this.orderRepository.updateOrderBatch(
+          cpChunk
+            .filter((order) =>
+              Object.values(FinishStatusEnum).includes(order.status),
+            )
+            .map((ck) => ObjectHelper.changeKey(ck, 'numeroPedido', 'id')),
         ),
       ]);
     }
