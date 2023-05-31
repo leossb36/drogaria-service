@@ -17,17 +17,6 @@ export class VetorService {
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
   ) {}
 
-  async saveProductInfo() {
-    try {
-      const products: getProductWooCommerceModelView[] =
-        await this.listProductVetorUseCase.execute();
-
-      return products;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async saveOnBlobStorage() {
     try {
       const vetorProducts = await this.listProductVetorUseCase.execute();

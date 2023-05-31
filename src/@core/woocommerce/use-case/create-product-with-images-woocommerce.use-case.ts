@@ -2,23 +2,23 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { Injectable } from '@nestjs/common';
 import { ChunckData } from '@core/utils/fetch-helper';
 import * as mysql from 'mysql2/promise';
-import { RowDataPacket } from 'mysql2/promise';
 import MysqlConnection from '@config/mysql.config';
 import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 
 @Injectable()
 export class CreateProductWithImagesOnWoocommerce {
   constructor(
     private readonly woocommerceIntegration: WoocommerceIntegration,
+    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly productRepository: ProductRepository,
   ) {}
 
   async execute(): Promise<any[]> {
     try {
       const pool: mysql.Pool = await MysqlConnection.connect();
-      const productsFromWooCommerce = await this.getProductsFromWoocommerce(
-        pool,
-      );
+      const productsFromWooCommerce =
+        await this.getProductsFromWoocommerceUseCase.execute(pool, []);
 
       const productsOnDataBase =
         await this.productRepository.findProductsWithImageAndNotInWooCommerce(
@@ -50,33 +50,7 @@ export class CreateProductWithImagesOnWoocommerce {
       await MysqlConnection.endConnection(pool);
       return result;
     } catch (error) {
-      return null;
+      return [];
     }
-  }
-
-  private async getProductsFromWoocommerce(pool: mysql.Pool): Promise<any[]> {
-    const products = [];
-    const [rows, fields] = await pool.query(
-      `SELECT * from wp_posts wp
-          JOIN wp_postmeta wp2 ON wp2.post_id = wp.ID
-        WHERE wp.post_type = "product"`,
-    );
-
-    const results = (rows as RowDataPacket[]).map((row) => row);
-    products.push(
-      ...results
-        .filter((product) => product.meta_key === '_sku')
-        .map((prd) => {
-          return {
-            id: prd['ID'],
-            sku: prd.meta_value,
-            title: prd.post_title,
-            description: prd.post_content,
-            thumbnail: prd.meta_key === '_thumbnail_id' ? prd.meta_value : null,
-          };
-        }),
-    );
-
-    return products;
   }
 }

@@ -24,9 +24,9 @@ export class WoocommerceController {
     private readonly orderService: OrderService,
   ) {}
 
-  @Put('/product/update')
+  @Put('/product/image/update')
   async updateProductRoutine(): Promise<unknown> {
-    return await this.woocommerceService.updateProductRoutine();
+    return await this.woocommerceService.updateImageProduct();
   }
 
   @Put('/product/update/all')
@@ -36,17 +36,12 @@ export class WoocommerceController {
 
   @Put('/product/retry')
   async retryScrapNewImage(): Promise<unknown> {
-    return await this.woocommerceService.retryScrapNewImage();
+    return await this.woocommerceService.retryCreateImage();
   }
 
   @Post('/product/create/woo')
   async createProductRoutineOnWoocommerce(): Promise<unknown> {
     return await this.woocommerceService.createProductRoutineOnWoocommerce();
-  }
-
-  @Post('/product/create/mongo')
-  async createProductRoutineOnMongo(): Promise<unknown> {
-    return await this.woocommerceService.createProductRoutineOnMongo();
   }
 
   @Put('/products/fetch')

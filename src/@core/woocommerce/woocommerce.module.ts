@@ -17,6 +17,8 @@ import { VetorModule } from '@core/vetor/vetor.module';
 import { Module } from '@nestjs/common';
 import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-case';
 import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
+import { RetryScrapImageProductUseCase } from './use-case/retry-create-image-product.use-case';
+import { UpdateImageProductUseCase } from './use-case/update-image-product.use-case';
 
 @Module({
   imports: [
@@ -27,8 +29,10 @@ import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-ca
   ],
   providers: [
     CreateProductWithImagesOnWoocommerce,
+    RetryScrapImageProductUseCase,
     CreateProductOnWoocommerce,
     UpdateAllProductsFromVetor,
+    UpdateImageProductUseCase,
     UpdatedOrderStatusUseCase,
     GetOrderOnDataBaseUseCase,
     CreateCategoryUseCase,
