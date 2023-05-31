@@ -11,7 +11,7 @@ export class OrderService {
     private readonly saveOrderVetorUseCase: SaveOrderVetorUseCase,
   ) {}
 
-  @Cron('0 */5 * * * *')
+  @Cron('0 */3 * * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrders]  Start job`);
     const orderStatus = this.woocommerceService.updateOrders();

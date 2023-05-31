@@ -97,6 +97,21 @@ export class OrderRepository {
     }
   }
 
+  async updateManyOrderStatus(orders: any[]) {
+    try {
+      await this.orderModel.deleteMany({
+        sku: {
+          $in: [...orders.map((order) => order.numeroPedido)],
+        },
+      });
+
+      const insertMany = await this.orderModel.insertMany(orders);
+      return insertMany;
+    } catch (error) {
+      throw new BadRequestException('Cannot find order with this id');
+    }
+  }
+
   async updateOrderStatus(orders: any[]) {
     try {
       const result = await this.orderModel.updateMany(
