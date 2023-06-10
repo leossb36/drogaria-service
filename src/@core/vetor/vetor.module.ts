@@ -52,6 +52,7 @@ import { UploadCloudinaryUseCase } from './use-case/upload-cloudinary.use-case';
     ScrapImagesUseCase,
     ProductRepository,
     OrderRepository,
+    VetorService,
   ],
 })
 export class VetorModule {}
