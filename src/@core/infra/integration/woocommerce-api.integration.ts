@@ -39,6 +39,17 @@ export class WoocommerceIntegration {
     }
   }
 
+  async getAllProductsByIds(ids: any[]): Promise<any> {
+    try {
+      const response = await FetchAllProducts(this.woocommerceConfig);
+      const filtered = response.filter((product) => ids.includes(product.id));
+      return filtered;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
   async productById(id: string): Promise<any> {
     try {
       const response = await this.woocommerceConfig.get(`products/${id}`);
@@ -135,6 +146,22 @@ export class WoocommerceIntegration {
   ): Promise<any> {
     const data = {
       create: [...products],
+    };
+    try {
+      const response = await this.woocommerceConfig.post(
+        'products/batch',
+        data,
+      );
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
+  async deleteProductBatch(products: any[]): Promise<any> {
+    const data = {
+      delete: [...products.map((product) => product.id)],
     };
     try {
       const response = await this.woocommerceConfig.post(

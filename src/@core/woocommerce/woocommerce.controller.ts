@@ -1,9 +1,8 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { createWooCategoryModelView } from './mv/create-woo-category.mv';
 import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
 import { createWooOrderModelView } from './mv/create-woo-order.mv';
 import { CreateCategoryUseCase } from './use-case/create-category.use-case';
-import { UpdateProductUseCase } from './use-case/update-product.use-case';
 import { WoocommerceService } from './woocomerce.service';
 import { CreateOrderUseCase } from './use-case/create-order.use-case';
 import { GetProductUseCase } from './use-case/get-product.use-case';
@@ -17,7 +16,6 @@ export class WoocommerceController {
   constructor(
     private readonly updateAllProductsFromVetor: UpdateAllProductsFromVetor,
     private readonly createCategoryUseCase: CreateCategoryUseCase,
-    private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly createOrderUseCase: CreateOrderUseCase,
     private readonly woocommerceService: WoocommerceService,
     private readonly getProductUseCase: GetProductUseCase,
@@ -39,14 +37,14 @@ export class WoocommerceController {
     return await this.woocommerceService.retryCreateImage();
   }
 
-  @Post('/product/create/woo')
+  @Post('/product/create')
   async createProductRoutineOnWoocommerce(): Promise<unknown> {
     return await this.woocommerceService.createProductRoutineOnWoocommerce();
   }
 
-  @Put('/products/fetch')
-  async updateProductFetch(): Promise<unknown> {
-    return await this.updateProductUseCase.execute();
+  @Delete('/product/delete')
+  async deleteProducts(): Promise<unknown> {
+    return await this.woocommerceService.deleteProducts();
   }
 
   @Get('/products')

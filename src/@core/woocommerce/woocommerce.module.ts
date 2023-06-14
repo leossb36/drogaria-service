@@ -19,6 +19,7 @@ import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-
 import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
 import { RetryScrapImageProductUseCase } from './use-case/retry-create-image-product.use-case';
 import { UpdateImageProductUseCase } from './use-case/update-image-product.use-case';
+import { DeleteProductsUseCase } from './use-case/delete-products.use-case';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UpdateImageProductUseCase } from './use-case/update-image-product.use-c
     UpdateImageProductUseCase,
     UpdatedOrderStatusUseCase,
     GetOrderOnDataBaseUseCase,
+    DeleteProductsUseCase,
     CreateCategoryUseCase,
     UpdateProductUseCase,
     CreateOrderUseCase,

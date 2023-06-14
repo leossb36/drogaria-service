@@ -111,6 +111,8 @@ export class ReadStreamVetorUseCase {
     switch (category) {
       case CategoryEnum.CABELO:
         return CategoryIdsEnum.CABELO;
+      case CategoryEnum.INFANTIL:
+        return CategoryIdsEnum.FRALDAS;
       case CategoryEnum.DERMOCOSMETICOS:
         return CategoryIdsEnum.DERMOCOSMETICOS;
       case CategoryEnum.HIGIENE:

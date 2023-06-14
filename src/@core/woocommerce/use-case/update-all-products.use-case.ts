@@ -6,11 +6,13 @@ import MysqlConnection from '@config/mysql.config';
 import * as mysql from 'mysql2/promise';
 import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 import { ReadStreamVetorUseCase } from '@core/vetor/use-case/read-stream-vetor.use-case';
+import { UpdateProductUseCase } from './update-product.use-case';
 
 @Injectable()
 export class UpdateAllProductsFromVetor {
   constructor(
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
+    private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly readStreamVetorUseCase: ReadStreamVetorUseCase,
   ) {}
@@ -31,11 +33,12 @@ export class UpdateAllProductsFromVetor {
       return !readStreamProducts.some((stream) => stream.sku === product.sku);
     });
 
-    for (const item of productsWithoutStock) {
-      updateProductOnWoocommerceStock.push({
-        id: item.id,
-        stock_quantity: 0,
-      });
+    const woocommerceProductsFullInfo = await this.updateProductUseCase.execute(
+      productsWithoutStock,
+    );
+
+    for (const item of woocommerceProductsFullInfo) {
+      updateProductOnWoocommerceStock.push(item);
     }
 
     const productsWithStock = productsFromWooCommerce.filter((product) => {

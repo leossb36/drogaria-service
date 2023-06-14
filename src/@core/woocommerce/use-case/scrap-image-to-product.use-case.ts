@@ -33,7 +33,7 @@ export class ScrapImagesUseCase {
       }
       return products;
     } catch (error) {
-      return null;
+      console.log(error);
     }
   }
 }

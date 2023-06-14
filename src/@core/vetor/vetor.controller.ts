@@ -17,7 +17,7 @@ export class VetorIntegrationController {
   ) {}
 
   @Get('/products')
-  async getProducts(@Param('code') code: number): Promise<any> {
+  async getProducts(@Query('code') code: string): Promise<any> {
     return await this.getProductVetorUseCase.execute(code);
   }
 

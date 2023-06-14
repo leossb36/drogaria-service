@@ -1,36 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { GetProductVetorUseCase } from '@core/vetor/use-case/get-product-vetor.use-case';
 import { CategoryEnum } from '@core/common/enum/category.enum';
-import { AdapterHelper } from '@core/utils/adapter-helper';
+import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 
 @Injectable()
-export class UpdateProductUseCase {
+export class DeleteProductsUseCase {
   constructor(
     private readonly getProductVetorUseCase: GetProductVetorUseCase,
+    private readonly woocommerceIntegration: WoocommerceIntegration,
   ) {}
 
   async execute(products: any[]): Promise<any[]> {
-    const productsToUpdate = [];
+    const productsToDelete = [];
     for (const product of products) {
-      const productToUpdate = await this.hasProductOnVetor(product);
+      const productToDelete = await this.hasProductOnVetor(product);
 
       if (
-        productToUpdate &&
-        Object.values(CategoryEnum).includes(productToUpdate.nomeLinha)
+        productToDelete &&
+        !Object.values(CategoryEnum).includes(productToDelete.nomeLinha)
       ) {
-        productsToUpdate.push({
-          id: product.id,
-          ...AdapterHelper.buildProduct(productToUpdate),
-        });
+        productsToDelete.push(product);
       } else {
         continue;
       }
     }
-    if (!productsToUpdate.length) {
+    if (!productsToDelete.length) {
       return [];
     }
 
-    return productsToUpdate;
+    return productsToDelete;
   }
 
   private async hasProductOnVetor(product: any) {
