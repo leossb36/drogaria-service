@@ -11,7 +11,7 @@ export class OrderService {
     private readonly vetorService: VetorService,
   ) {}
 
-  @Cron('0 */3 * * * *')
+  @Cron('0 */3 7-23 * * *')
   async updateOrder() {
     CustomLogger.info(`[OrderService - updateOrders]  Start job`);
     const result = await this.woocommerceService.updateOrders();
@@ -19,7 +19,7 @@ export class OrderService {
     return result;
   }
 
-  @Cron('40 */1 * * * *')
+  @Cron('40 */1 7-23 * * *')
   async sendOrderToVetor(): Promise<any> {
     CustomLogger.info(`[OrderService - sendOrderToVetor]  Start job`);
     const result = await this.vetorService.saveOrderVetor();
