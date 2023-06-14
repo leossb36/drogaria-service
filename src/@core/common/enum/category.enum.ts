@@ -8,6 +8,7 @@ export enum CategoryEnum {
   HIGIENE = 'HIGIENE&BELEZA',
   LEITE = 'LEITES',
   FRALDAS = 'FRALDAS',
+  INFANTIL = 'INFANTIL',
 }
 
 export enum CategoryIdsEnum {
@@ -20,4 +21,15 @@ export enum CategoryIdsEnum {
   HIGIENE = '639',
   LEITE = '642',
   FRALDAS = '646',
+}
+
+export enum CategorySlugEnum {
+  'PERFUMARIA' = 'perfumaria',
+  'PERFUMES' = 'perfumaria',
+  'MAQUIAGENS' = 'maquiagens',
+  'DERMOCOSMETICOS' = 'dermocosmeticos',
+  'LINHA CAPILAR' = 'linha-capilar',
+  'HIGIENE&BELEZA' = 'higienebeleza',
+  'LEITES' = 'linha-infantil',
+  'FRALDAS' = 'linha-infantil',
 }
