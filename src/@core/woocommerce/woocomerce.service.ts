@@ -83,6 +83,10 @@ export class WoocommerceService {
       woocommerceProducts,
     );
 
+    if (!productsToDelete.length) {
+      return [];
+    }
+
     const chunks = ChunckData(productsToDelete);
 
     const result = [];

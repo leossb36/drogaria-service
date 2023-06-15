@@ -9,6 +9,7 @@ import { GetProductUseCase } from './use-case/get-product.use-case';
 import { createWooOrderDto } from './dto/create-woo-order.dto';
 import { OrderService } from '@core/schedule/order.service';
 import { ApiTags } from '@nestjs/swagger';
+import { ProductService } from '@core/schedule/product.service';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
@@ -20,11 +21,17 @@ export class WoocommerceController {
     private readonly woocommerceService: WoocommerceService,
     private readonly getProductUseCase: GetProductUseCase,
     private readonly orderService: OrderService,
+    private readonly productService: ProductService,
   ) {}
 
   @Put('/product/image/update')
   async updateProductRoutine(): Promise<unknown> {
     return await this.woocommerceService.updateImageProduct();
+  }
+
+  @Put('/product/full/update')
+  async productRoutine(): Promise<unknown> {
+    return await this.productService.productRoutine();
   }
 
   @Put('/product/update/all')

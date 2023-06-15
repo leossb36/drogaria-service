@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 import { SaveProductStreamUseCase } from './use-case/save-product-vetor-stream.use-case';
 import { GetProductVetorUseCase } from './use-case/get-product-vetor.use-case';
 import { GetOrderVetorUseCase } from './use-case/get-order-vetor.use-case';
