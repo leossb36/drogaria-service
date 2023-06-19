@@ -14,12 +14,10 @@ export class GetProductVetorUseCase {
       },
     );
 
-    const { data } = product;
-
-    if (!data.length) {
-      throw new BadRequestException('Cannot find any product');
+    if (!product.data?.length) {
+      return {};
     }
 
-    return ObjectHelper.arrayToObject(data);
+    return ObjectHelper.arrayToObject(product.data);
   }
 }
