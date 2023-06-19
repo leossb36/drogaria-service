@@ -1,6 +1,6 @@
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { ObjectHelper } from '@core/utils/object-helper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class GetProductVetorUseCase {

@@ -62,8 +62,16 @@ export class WoocommerceService {
       const products = await this.woocommerceIntegration.createProductBatch(
         chunk,
       );
-      await this.productRepository.createProductBatch(chunk);
+      const productNotOnDb = await this.productRepository.filterNotInDataBase(
+        chunk.map((product) => product.sku),
+      );
+
       result.push(...products.data?.create);
+      if (!productNotOnDb.length) {
+        continue;
+      } else {
+        await this.productRepository.createProductBatch(productNotOnDb);
+      }
     }
 
     return {

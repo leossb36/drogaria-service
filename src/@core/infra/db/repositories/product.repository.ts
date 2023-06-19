@@ -134,7 +134,7 @@ export class ProductRepository {
       const insertMany = await this.productModel.insertMany(products);
       return insertMany;
     } catch (error) {
-      throw new BadRequestException('Cannot find order with this id');
+      throw new BadRequestException('Cannot find product with this id');
     }
   }
 
@@ -151,7 +151,7 @@ export class ProductRepository {
 
       return result;
     } catch (error) {
-      throw new BadRequestException('Cannot find order with this id');
+      throw new BadRequestException('Cannot find product with this id');
     }
   }
 
@@ -167,7 +167,23 @@ export class ProductRepository {
 
       return result;
     } catch (error) {
-      throw new BadRequestException('Cannot find order with this id');
+      throw new BadRequestException('Cannot find product with this id');
+    }
+  }
+
+  async filterNotInDataBase(skus: any[]) {
+    try {
+      const result = await this.productModel
+        .find({
+          sku: {
+            $nin: [...skus.map((sku) => sku)],
+          },
+        })
+        .lean();
+
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Cannot find product with this id');
     }
   }
 }
