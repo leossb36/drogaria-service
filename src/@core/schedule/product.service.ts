@@ -22,7 +22,7 @@ export class ProductService {
     );
     await this.woocommerceService.deleteProducts();
     CustomLogger.info(
-      `[ProductService - productRoutine - deleteProducts]  Start job`,
+      `[ProductService - productRoutine - deleteProducts]  end job`,
     );
 
     CustomLogger.info(
