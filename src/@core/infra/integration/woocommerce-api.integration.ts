@@ -152,7 +152,7 @@ export class WoocommerceIntegration {
         'products/batch',
         data,
       );
-      return response;
+      return response.data;
     } catch (error) {
       console.error(error.response.headers);
       console.error(error.response.data);

@@ -59,18 +59,20 @@ export class WoocommerceService {
 
     const result = [];
     for (const chunk of chunks) {
-      const products = await this.woocommerceIntegration.createProductBatch(
-        chunk,
-      );
-      const productNotOnDb = await this.productRepository.filterNotInDataBase(
+      await this.woocommerceIntegration.createProductBatch(chunk);
+      const productInDb = await this.productRepository.getProductsSku(
         chunk.map((product) => product.sku),
       );
 
-      result.push(...products.data?.create);
-      if (!productNotOnDb.length) {
+      const productsNotInDb = chunk.filter((product) => {
+        return !productInDb.some((prod) => prod.sku === product.sku);
+      });
+
+      result.push(...chunk);
+      if (!productsNotInDb.length) {
         continue;
       } else {
-        await this.productRepository.createProductBatch(productNotOnDb);
+        await this.productRepository.createProductBatch(productsNotInDb);
       }
     }
 
@@ -119,10 +121,15 @@ export class WoocommerceService {
     const productsWithoutImage =
       await this.woocommerceIntegration.getProductsWithoutImage();
 
-    if (!productsWithoutImage.length) {
+    const productsInDb = await this.productRepository.findProductsWithoutImage(
+      productsWithoutImage.map((product) => product.sku),
+      5,
+    );
+
+    if (!productsInDb.length) {
       return [];
     }
-    return await this.scrapImagesUseCase.execute(productsWithoutImage, 0);
+    return await this.scrapImagesUseCase.execute(productsInDb, 0);
   }
 
   async retryCreateImage() {

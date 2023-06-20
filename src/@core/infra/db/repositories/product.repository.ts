@@ -38,11 +38,14 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithoutImage(limit: number) {
+  async findProductsWithoutImage(skus: any[], limit: number) {
     try {
       const products = await this.productModel
         .find(
           {
+            sku: {
+              $in: [...skus.map((sku) => sku)],
+            },
             images: { $size: 0 },
           },
           undefined,
@@ -161,22 +164,6 @@ export class ProductRepository {
         .find({
           sku: {
             $in: [...skus.map((sku) => sku)],
-          },
-        })
-        .lean();
-
-      return result;
-    } catch (error) {
-      throw new BadRequestException('Cannot find product with this id');
-    }
-  }
-
-  async filterNotInDataBase(skus: any[]) {
-    try {
-      const result = await this.productModel
-        .find({
-          sku: {
-            $nin: [...skus.map((sku) => sku)],
           },
         })
         .lean();

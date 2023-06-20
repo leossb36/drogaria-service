@@ -54,7 +54,7 @@ export async function getProductsWithoutImages(instance: WooCommerceRestApi) {
     actualPage += 1;
   } while (products.length > 0);
 
-  return returnData.reverse().slice(0, 2);
+  return returnData.reverse().slice(0, 5);
 }
 
 export async function FetchVetorProducts(instance: any) {
