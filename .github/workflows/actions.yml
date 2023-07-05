@@ -35,7 +35,7 @@ jobs:
           port: 22
           script: |
             cd /root/drogaria-service
-            git pull origin master
+            git pull origin main
             git status
             npm install
             npm run build
