@@ -11,7 +11,7 @@ export class ProductService {
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
-  // @Cron('0 0 0 * * *')
+  @Cron('0 0 0 * * *')
   async productRoutine() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     await this.saveProductStreamUseCase.execute();
@@ -42,14 +42,14 @@ export class ProductService {
     );
   }
 
-  // @Cron('0 30 2 * * *')
+  @Cron('0 30 2 * * *')
   async scrapImages() {
     CustomLogger.info(`[ProductService - updateImageProduct]  Start job`);
     await this.woocommerceService.scrapImages();
     CustomLogger.info(`[ProductService - updateImageProduct]  End job`);
   }
 
-  // @Cron('*/3 3-6 * * *')
+  @Cron('*/3 3-6 * * *')
   async updateImageProduct() {
     CustomLogger.info(`[ProductService - updateImageProduct]  Start job`);
     await this.woocommerceService.updateImageProduct();
