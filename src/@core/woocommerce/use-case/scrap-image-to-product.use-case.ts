@@ -13,9 +13,13 @@ export class ScrapImagesUseCase {
   async execute(productOnWoocommerce: any[], retry: number): Promise<any> {
     try {
       const images = await Promise.all(
-        productOnWoocommerce.map((product) =>
-          this.searchEngine.getImageUrl(product.description, retry),
-        ),
+        productOnWoocommerce.map((product) => {
+          const query =
+            product.attributes[0].options[0] !== null
+              ? product.attributes[0].options[0].toString()
+              : product.description;
+          return this.searchEngine.getImageUrl(query, retry);
+        }),
       );
       const products = [];
 
