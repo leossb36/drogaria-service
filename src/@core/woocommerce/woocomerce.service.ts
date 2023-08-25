@@ -55,6 +55,13 @@ export class WoocommerceService {
       return !woocommerceProducts.some((prd) => prd.sku === stream.sku);
     });
 
+    if (!productsToCreate.length) {
+      return {
+        data: [],
+        message: 'Does not any product to create',
+      };
+    }
+
     const chunks = ChunckData(productsToCreate);
 
     const result = [];

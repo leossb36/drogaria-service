@@ -64,12 +64,10 @@ export class AdapterHelper {
         return CategoryIdsEnum.FRALDAS;
       case CategoryEnum.MAQUIAGENS:
         return CategoryIdsEnum.MAQUIAGENS;
-      case CategoryEnum.PERFUMARIA:
-        return CategoryIdsEnum.PERFUMARIA;
       case CategoryEnum.PERFUMES:
-        return CategoryIdsEnum.PERFUMARIA;
+        return CategoryIdsEnum.PERFUMES;
       default:
-        return CategoryIdsEnum.PERFUMARIA;
+        return CategoryIdsEnum.PERFUMES;
     }
   }
 }

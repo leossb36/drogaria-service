@@ -1,6 +1,6 @@
 export enum CategoryEnum {
   // 624, 622, 647, 621, 644, 639, 642, 646
-  PERFUMARIA = 'PERFUMARIA',
+  // PERFUMARIA = 'PERFUMARIA',
   PERFUMES = 'PERFUMES',
   MAQUIAGENS = 'MAQUIAGENS',
   DERMOCOSMETICOS = 'DERMOCOSMETICOS',
@@ -13,7 +13,7 @@ export enum CategoryEnum {
 
 export enum CategoryIdsEnum {
   // 624, 622, 647, 621, 644, 639, 642, 646
-  PERFUMARIA = '624',
+  // PERFUMARIA = '624',
   PERFUMES = '622',
   MAQUIAGENS = '647',
   DERMOCOSMETICOS = '621',

@@ -36,6 +36,7 @@ export class DeleteProductsUseCase {
       product.sku.split('-')[0],
     );
 
-    return hasProduct ? hasProduct : undefined;
+    if (hasProduct) return hasProduct;
+    else return;
   }
 }
