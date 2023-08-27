@@ -2,7 +2,7 @@ import CustomLogger from '@common/logger/logger';
 import { SaveProductStreamUseCase } from '@core/vetor/use-case/save-product-vetor-stream.use-case';
 import { WoocommerceService } from '@core/woocommerce/woocomerce.service';
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ProductService {
@@ -11,7 +11,7 @@ export class ProductService {
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
-  @Cron('0 0 0 * * *')
+  @Cron(CronExpression.EVERY_2_HOURS)
   async productRoutine() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     await this.saveProductStreamUseCase.execute();
@@ -42,17 +42,30 @@ export class ProductService {
     );
   }
 
-  @Cron('0 30 2 * * *')
-  async scrapImages() {
-    CustomLogger.info(`[ProductService - updateImageProduct]  Start job`);
-    await this.woocommerceService.scrapImages();
-    CustomLogger.info(`[ProductService - updateImageProduct]  End job`);
-  }
-
-  @Cron('*/3 3-6 * * *')
+  @Cron('0 */5 * * * *')
   async updateImageProduct() {
-    CustomLogger.info(`[ProductService - updateImageProduct]  Start job`);
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - createProductsOnDb]  Start job`,
+    );
+    await this.woocommerceService.createProductsOnDb();
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - createProductsOnDb]  End job`,
+    );
+
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - scrapImages]  Start job`,
+    );
+    await this.woocommerceService.scrapImages();
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - scrapImages]  End job`,
+    );
+
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - updateImageProduct]  Start job`,
+    );
     await this.woocommerceService.updateImageProduct();
-    CustomLogger.info(`[ProductService - updateImageProduct]  End job`);
+    CustomLogger.info(
+      `[ProductService - updateImageProduct - updateImageProduct]  End job`,
+    );
   }
 }

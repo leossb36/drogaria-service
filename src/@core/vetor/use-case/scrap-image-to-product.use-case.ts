@@ -15,7 +15,7 @@ export class ScrapImagesUseCase {
       const images = await Promise.all(
         streamProducts.map((product) => {
           const query =
-            product.attributes[0].options[0] !== null
+            product.attributes[0].options[0] !== ''
               ? product.attributes[0].options[0].toString()
               : product.description;
           return this.searchEngine.getImageUrl(query, retry);

@@ -2,6 +2,7 @@ import { ConfigService } from '@config/configuration.config';
 import { CategoryIdsEnum } from '@core/common/enum/category.enum';
 import FetchAllProducts, {
   getProductsWithoutImages,
+  getProductsWithoutImagesFull,
 } from '@core/utils/fetch-helper';
 import { Injectable } from '@nestjs/common';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
@@ -83,6 +84,18 @@ export class WoocommerceIntegration {
     } catch (err) {
       console.error(err.response.headers);
       console.error(err.response.data);
+    }
+  }
+
+  async getProductsWithoutImageFull(): Promise<any[]> {
+    try {
+      const products = await getProductsWithoutImagesFull(
+        this.woocommerceConfig,
+      );
+
+      return products;
+    } catch (err) {
+      console.error(err.response);
     }
   }
 
@@ -284,6 +297,7 @@ export class WoocommerceIntegration {
           `${url}/${endpoint}/${product.id}`,
           { ...body },
           {
+            headers: { 'Accept-Encoding': '*' },
             auth: {
               username: consumerKey,
               password: consumerSecret,

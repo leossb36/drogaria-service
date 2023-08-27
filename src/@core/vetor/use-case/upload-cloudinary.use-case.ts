@@ -14,7 +14,7 @@ export class UploadCloudinaryUseCase {
     try {
       const promises = products.map(async (product) => {
         const query =
-          product.attributes[0].options[0] !== null
+          product.attributes[0].options[0] !== ''
             ? product.attributes[0].options[0].toString()
             : product.description;
         return await this.cloudinaryService.create(product, query);

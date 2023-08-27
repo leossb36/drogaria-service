@@ -124,9 +124,48 @@ export class WoocommerceService {
     return await this.updateAllProductsFromVetor.execute();
   }
 
+  async createProductsOnDb() {
+    const productsWithoutImage =
+      await this.woocommerceIntegration.getProductsWithoutImageFull();
+
+    const productsInDb = await this.productRepository.findProductsWithoutImage(
+      productsWithoutImage.map((product) => product.sku),
+      0,
+    );
+    if (!productsInDb.length) {
+      return await this.productRepository.createProductBatch(
+        productsWithoutImage,
+      );
+    }
+
+    const productsWithImageInDb =
+      await this.productRepository.findProductsWithImage(
+        productsWithoutImage.map((prd) => prd.sku),
+        undefined,
+      );
+
+    if (productsWithImageInDb.length && productsWithImageInDb.length === 5) {
+      return [];
+    }
+
+    const productsNotInDd = productsWithoutImage.filter((prd) => {
+      return !productsInDb.some((prod) => prod.sku === prd.sku);
+    });
+
+    if (!productsNotInDd.length) {
+      return [];
+    }
+
+    return await this.productRepository.createProductBatch(productsNotInDd);
+  }
+
   async scrapImages() {
     const productsWithoutImage =
       await this.woocommerceIntegration.getProductsWithoutImage();
+
+    if (!productsWithoutImage.length) {
+      return [];
+    }
 
     const productsInDb = await this.productRepository.findProductsWithoutImage(
       productsWithoutImage.map((product) => product.sku),
@@ -134,7 +173,17 @@ export class WoocommerceService {
     );
 
     if (!productsInDb.length) {
-      return [];
+      const existInDBWithImage =
+        await this.productRepository.findProductsWithImage(
+          productsWithoutImage.map((product) => product.sku),
+          5,
+        );
+
+      if (existInDBWithImage.length && existInDBWithImage.length === 5) {
+        return [];
+      }
+      await this.productRepository.createProductBatch(productsWithoutImage);
+      return await this.scrapImagesUseCase.execute(productsWithoutImage, 0);
     }
     return await this.scrapImagesUseCase.execute(productsInDb, 0);
   }
@@ -145,6 +194,21 @@ export class WoocommerceService {
 
   async updateImageProduct() {
     return await this.updateImageProductUseCase.execute();
+  }
+
+  async removeAllWithoutImage() {
+    const productsWithoutImage =
+      await this.woocommerceIntegration.getProductsWithoutImageFull();
+    const productsInDb = await this.productRepository.findProductsWithoutImage(
+      productsWithoutImage.map((product) => product.sku),
+      100,
+    );
+
+    return await this.productRepository.deleteAll(productsInDb);
+  }
+
+  async deleteAllWithoutImage() {
+    return await this.productRepository.deleteAllWithoutImage();
   }
 
   async updateOrders() {

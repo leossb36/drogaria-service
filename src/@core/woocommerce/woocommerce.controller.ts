@@ -29,6 +29,11 @@ export class WoocommerceController {
     return await this.woocommerceService.updateImageProduct();
   }
 
+  @Post('/product/image')
+  async scrapImages(): Promise<unknown> {
+    return await this.woocommerceService.scrapImages();
+  }
+
   @Put('/product/full/update')
   async productRoutine(): Promise<unknown> {
     return await this.productService.productRoutine();
@@ -49,9 +54,24 @@ export class WoocommerceController {
     return await this.woocommerceService.createProductRoutineOnWoocommerce();
   }
 
+  @Post('/product/create/mongo')
+  async createProductsOnDb(): Promise<unknown> {
+    return await this.woocommerceService.createProductsOnDb();
+  }
+
   @Delete('/product/delete')
   async deleteProducts(): Promise<unknown> {
     return await this.woocommerceService.deleteProducts();
+  }
+
+  @Delete('/product/mongo/delete')
+  async deleteAll(): Promise<unknown> {
+    return await this.woocommerceService.removeAllWithoutImage();
+  }
+
+  @Delete('/product/mongo/delete/all')
+  async deleteAllWithoutImage(): Promise<unknown> {
+    return await this.woocommerceService.deleteAllWithoutImage();
   }
 
   @Get('/products')

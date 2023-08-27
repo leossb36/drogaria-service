@@ -16,7 +16,7 @@ export class ProductRepository {
     try {
       return await product.save();
     } catch (error) {
-      throw new BadRequestException('Cannot save order on database');
+      throw new BadRequestException('Cannot save product on database');
     }
   }
 
@@ -25,7 +25,7 @@ export class ProductRepository {
       const result = await this.productModel.insertMany(products);
       return result;
     } catch (error) {
-      throw new BadRequestException('Cannot save order on database');
+      throw new BadRequestException('Cannot save product on database: batch');
     }
   }
 
@@ -53,6 +53,36 @@ export class ProductRepository {
         )
         .lean();
       return products;
+    } catch (error) {
+      throw new BadRequestException('Cannot find products on database');
+    }
+  }
+
+  async findProductsWithImage(skus: any[], limit: number) {
+    try {
+      const products = await this.productModel
+        .find(
+          {
+            sku: {
+              $in: [...skus.map((sku) => sku)],
+            },
+            images: { $size: 1 },
+          },
+          undefined,
+          { limit },
+        )
+        .lean();
+      return products;
+    } catch (error) {
+      throw new BadRequestException('Cannot find products on database');
+    }
+  }
+  async deleteAllWithoutImage() {
+    try {
+      const response = await this.productModel.deleteMany({
+        images: { $size: 0 },
+      });
+      return response;
     } catch (error) {
       throw new BadRequestException('Cannot find products on database');
     }
@@ -136,6 +166,18 @@ export class ProductRepository {
 
       const insertMany = await this.productModel.insertMany(products);
       return insertMany;
+    } catch (error) {
+      throw new BadRequestException('Cannot find product with this id');
+    }
+  }
+  async deleteAll(products: any[]) {
+    try {
+      const response = await this.productModel.deleteMany({
+        sku: {
+          $in: [...products.map((product) => product.sku)],
+        },
+      });
+      return response;
     } catch (error) {
       throw new BadRequestException('Cannot find product with this id');
     }
