@@ -107,13 +107,13 @@ export async function FetchVetorProducts(instance: any) {
 
   do {
     try {
-      const { data } = await instance.getProductInfo('/produtos/consulta', {
+      const response = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,
         $skip: querySkip,
         $filter: query,
       });
 
-      const readStream = Readable.from(data, { objectMode: true });
+      const readStream = Readable.from(response.data, { objectMode: true });
       readStream
         .on('data', (response) => {
           productStream.push(response);
@@ -122,7 +122,7 @@ export async function FetchVetorProducts(instance: any) {
           console.error('error while trying resolve file', error);
         });
 
-      queryCounter += data.length;
+      queryCounter += response.data.length;
     } catch (error) {
       console.error(error);
     }
