@@ -11,7 +11,7 @@ export class ProductService {
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
-  @Cron(CronExpression.EVERY_2_HOURS)
+  @Cron(CronExpression.EVERY_3_HOURS)
   async productRoutine() {
     CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
     await this.saveProductStreamUseCase.execute();
