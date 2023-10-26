@@ -13,9 +13,13 @@ export class ProductService {
 
   @Cron(CronExpression.EVERY_3_HOURS)
   async productRoutine() {
-    CustomLogger.info(`[ProductService - createProductJsonData]  Start job`);
+    CustomLogger.info(
+      `[ProductService - productRoutine - saveProductStream]  Start job`,
+    );
     await this.saveProductStreamUseCase.execute();
-    CustomLogger.info(`[ProductService - createProductJsonData]  End job`);
+    CustomLogger.info(
+      `[ProductService - productRoutine -saveProductStream]  End job`,
+    );
 
     CustomLogger.info(
       `[ProductService - productRoutine - deleteProducts]  Start job`,

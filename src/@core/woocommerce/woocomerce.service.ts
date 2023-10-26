@@ -108,7 +108,7 @@ export class WoocommerceService {
 
     const result = [];
     for (const chunk of chunks) {
-      const products = await this.woocommerceIntegration.deleteProductBatch(
+      const products = await this.woocommerceIntegration.deactivateProducts(
         chunk,
       );
       result.push(...products.data?.delete);

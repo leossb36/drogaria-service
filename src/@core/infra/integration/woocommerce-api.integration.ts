@@ -172,9 +172,13 @@ export class WoocommerceIntegration {
     }
   }
 
-  async deleteProductBatch(products: any[]): Promise<any> {
+  async deactivateProducts(products: any[]): Promise<any> {
+    const productIds = products.map((product) => product.id);
     const data = {
-      delete: [...products.map((product) => product.id)],
+      update: productIds.map((productId) => ({
+        id: productId,
+        status: 'draft',
+      })),
     };
     try {
       const response = await this.woocommerceConfig.post(
@@ -183,8 +187,7 @@ export class WoocommerceIntegration {
       );
       return response;
     } catch (error) {
-      console.error(error.response.headers);
-      console.error(error.response.data);
+      throw error;
     }
   }
 
