@@ -188,7 +188,7 @@ export class SaveOrderVetorUseCase {
       timeStyle: 'long',
     }).format(new Date(order.date_paid));
 
-    const message = `Frete: R$ ${order.shipping_total}. - Entrega ao destinatário`;
+    const message = `Frete: RS ${order.shipping_total}. - Entrega ao destinatário`;
 
     return `Pagamento via ${order.payment_method_title.toString()} ${transaction}. Pago em ${date}. ${
       order.shipping_total !== '' ? message : 'Retirada no local'
