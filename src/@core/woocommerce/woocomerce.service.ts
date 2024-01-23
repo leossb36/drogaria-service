@@ -212,6 +212,7 @@ export class WoocommerceService {
   }
 
   async updateOrders() {
+    console.log('iniciando serviço');
     const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
 
     if (!ordersOnDataBase.length) {
@@ -240,6 +241,7 @@ export class WoocommerceService {
         );
       }
     }
+    console.log('cheguei ate aqui');
     if (!ordersToUpdate.length) {
       return {
         count: 0,
