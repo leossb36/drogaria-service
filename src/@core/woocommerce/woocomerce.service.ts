@@ -212,36 +212,32 @@ export class WoocommerceService {
   }
 
   async updateOrders() {
-    try {
-      const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
+    const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
 
-      if (!ordersOnDataBase.length) {
-        return this.emptyCallbackResponse(ordersOnDataBase.length);
-      }
-
-      const ordersToUpdate = [];
-      for (const order of ordersOnDataBase) {
-        const { numeroPedido, cdOrcamento } = order;
-        const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
-          numeroPedido,
-          cdOrcamento,
-        });
-
-        if (
-          !orderFromVetor ||
-          orderFromVetor?.cdOrcamento === StatusEnum.NOT_FOUND
-        ) {
-          continue;
-        }
-
-        ordersToUpdate.push(
-          ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
-        );
-      }
-      return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
-    } catch (error) {
-      throw new BadRequestException('Cannot update orders', error);
+    if (!ordersOnDataBase.length) {
+      return this.emptyCallbackResponse(ordersOnDataBase.length);
     }
+
+    const ordersToUpdate = [];
+    for (const order of ordersOnDataBase) {
+      const { numeroPedido, cdOrcamento } = order;
+      const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
+        numeroPedido,
+        cdOrcamento,
+      });
+
+      if (
+        !orderFromVetor ||
+        orderFromVetor?.cdOrcamento === StatusEnum.NOT_FOUND
+      ) {
+        continue;
+      }
+
+      ordersToUpdate.push(
+        ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+      );
+    }
+    return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
   }
 
   private emptyCallbackResponse(count: number) {
