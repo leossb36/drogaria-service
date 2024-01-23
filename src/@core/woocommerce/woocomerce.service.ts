@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-case';
 import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
 import { GetOrderVetorUseCase } from '@core/vetor/use-case/get-order-vetor.use-case';
@@ -227,15 +227,13 @@ export class WoocommerceService {
       });
 
       if (
-        !orderFromVetor ||
-        orderFromVetor?.cdOrcamento === StatusEnum.NOT_FOUND
+        orderFromVetor &&
+        orderFromVetor?.cdOrcamento !== StatusEnum.NOT_FOUND
       ) {
-        continue;
+        ordersToUpdate.push(
+          ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+        );
       }
-
-      ordersToUpdate.push(
-        ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
-      );
     }
     return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
   }
