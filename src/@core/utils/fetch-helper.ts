@@ -116,7 +116,7 @@ export async function FetchVetorProducts(instance: any) {
       const readStream = Readable.from(response.data, { objectMode: true });
       readStream
         .on('data', (response) => {
-          productStream.push(response);
+          productStream.push(response.data);
         })
         .on('error', (error) => {
           console.error('error while trying resolve file', error);
