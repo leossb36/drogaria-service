@@ -8,20 +8,20 @@ jobs:
   deploy-pipeline:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
 
       - name: installing pm2
         run: npm install pm2@latest -g
-
-      - name: Install Node dependecies
-        run: npm ci
 
       - name: Building Node project
         run: npm run build --if-present
