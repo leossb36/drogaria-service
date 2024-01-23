@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { OrderStatusEnum } from '@core/common/enum/orderStatus.enum';
 import { OrderDto } from '@core/woocommerce/dto/order.dto';
 import { Order, OrderDocument } from '../schema/order.schema';
+import { FinishStatusEnum } from '@core/common/enum/woocommerce-status.enum';
 
 @Injectable()
 export class OrderRepository {
@@ -79,18 +80,19 @@ export class OrderRepository {
 
   async updateOrderBatch(orders: any[]) {
     try {
-      const result = await this.orderModel.updateMany(
-        {
-          numeroPedido: {
-            $in: [...orders.map((order) => order.numeroPedido)],
+      const updateOperations = orders.map((order) => {
+        const status = Object.values(FinishStatusEnum).includes(order.status)
+          ? OrderStatusEnum.TERMINATED
+          : order.status;
+        return {
+          updateOne: {
+            filter: { numeroPedido: order.numeroPedido },
+            update: { $set: { status } },
           },
-        },
-        {
-          $set: {
-            status: OrderStatusEnum.TERMINATED,
-          },
-        },
-      );
+        };
+      });
+
+      const result = await this.orderModel.bulkWrite(updateOperations);
       return result;
     } catch (error) {
       throw new BadRequestException('Cannot find order with this id');

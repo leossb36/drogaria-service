@@ -10,3 +10,11 @@ export enum StatusEnum {
   CANCELED = 8, //Cancelado
   SEND_BACK = 9, //Devolvido
 }
+
+export enum StatusEnumTerminated {
+  NOT_FOUND = 0, // Não encontrado
+  RECEIVED = 6, //Entregue
+  NOT_DONE = 7, //Entrega não realizada
+  CANCELED = 8, //Cancelado
+  SEND_BACK = 9, //Devolvido
+}

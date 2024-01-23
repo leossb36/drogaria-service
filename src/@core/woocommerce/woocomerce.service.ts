@@ -3,7 +3,7 @@ import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-
 import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
 import { GetOrderVetorUseCase } from '@core/vetor/use-case/get-order-vetor.use-case';
 import { ValidationHelper } from '@core/utils/validation-helper';
-import { StatusEnum } from '@core/common/enum/status.enum';
+import { StatusEnumTerminated } from '@core/common/enum/status.enum';
 import { RetryScrapImageProductUseCase } from './use-case/retry-create-image-product.use-case';
 import { UpdateImageProductUseCase } from './use-case/update-image-product.use-case';
 import { ReadStreamVetorUseCase } from '@core/vetor/use-case/read-stream-vetor.use-case';
@@ -226,15 +226,28 @@ export class WoocommerceService {
         cdOrcamento,
       });
 
+      const isTerminated = Object.values(StatusEnumTerminated).includes(
+        orderFromVetor?.situacao,
+      );
+
       if (
         orderFromVetor &&
-        orderFromVetor?.cdOrcamento !== StatusEnum.NOT_FOUND
+        !isTerminated &&
+        orderFromVetor.situacao !== order.situacao
       ) {
         ordersToUpdate.push(
           ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
         );
       }
     }
+    if (!ordersToUpdate.length) {
+      return {
+        count: 0,
+        status: 200,
+        message: 'There is no order to update',
+      };
+    }
+
     return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
   }
 
