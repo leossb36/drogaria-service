@@ -53,6 +53,7 @@ export class UpdateAllProductsFromVetor {
       updateProductOnWoocommerceStock.push({
         id: item.id,
         ...filterStream[0],
+        status: filterStream[0].stock_quantity > 0 ? 'publish' : 'draft',
       });
     }
 

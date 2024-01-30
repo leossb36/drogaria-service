@@ -29,6 +29,11 @@ export class WoocommerceController {
     return await this.woocommerceService.updateImageProduct();
   }
 
+  @Post('/products/stream')
+  async updateStreamFile(): Promise<any> {
+    return await this.productService.updateStreamFile();
+  }
+
   @Post('/product/image')
   async scrapImages(): Promise<unknown> {
     return await this.woocommerceService.scrapImages();

@@ -158,7 +158,10 @@ export class WoocommerceIntegration {
     products: getProductWooCommerceModelView[],
   ): Promise<any> {
     const data = {
-      create: [...products],
+      create: products.map((product) => ({
+        ...product,
+        status: product.stock_quantity > 0 ? 'publish' : 'draft',
+      })),
     };
     try {
       const response = await this.woocommerceConfig.post(

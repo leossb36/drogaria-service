@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { GetProductVetorUseCase } from '@core/vetor/use-case/get-product-vetor.use-case';
 import { CategoryEnum } from '@core/common/enum/category.enum';
-import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
+import { delay } from '@core/utils/delay';
 
 @Injectable()
 export class DeleteProductsUseCase {
   constructor(
     private readonly getProductVetorUseCase: GetProductVetorUseCase,
-    private readonly woocommerceIntegration: WoocommerceIntegration,
   ) {}
 
   async execute(products: any[]): Promise<any[]> {
     const productsToDelete = [];
     for (const product of products) {
+      await delay(1000);
       const productToDelete = await this.hasProductOnVetor(product);
 
       if (

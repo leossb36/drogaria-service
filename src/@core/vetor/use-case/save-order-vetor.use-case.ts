@@ -10,6 +10,7 @@ import { ValidationClientHelper } from '@core/utils/validation-client-helper';
 import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 import { Cliente, CreateOrderDto, Item } from '../dto/create-order.dto';
 import { OrderRepository } from '@core/infra/db/repositories/order.repository';
+import { delay } from '@core/utils/delay';
 
 @Injectable()
 export class SaveOrderVetorUseCase {
@@ -65,6 +66,8 @@ export class SaveOrderVetorUseCase {
         retirar: false,
         itens,
       } as CreateOrderDto;
+
+      await delay(1000);
 
       const result = await this.integration.createOrder(
         sendToVetor,

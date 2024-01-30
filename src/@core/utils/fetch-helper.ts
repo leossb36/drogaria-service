@@ -3,6 +3,7 @@ import { QueryFilter } from './query-builder';
 import * as path from 'path';
 import { createWriteStream } from 'fs';
 import { Readable } from 'stream';
+import { delay } from './delay';
 
 export default async function FetchAllProducts(instance: WooCommerceRestApi) {
   let actualPage = 1;
@@ -89,7 +90,7 @@ export async function getProductsWithoutImagesFull(
 export async function FetchVetorProducts(instance: any) {
   const queryFilter = new QueryFilter();
   const productStream = [];
-  const queryTop = 100;
+  const queryTop = 500;
   let querySkip = 0;
   let queryCounter = 0;
 
@@ -107,28 +108,28 @@ export async function FetchVetorProducts(instance: any) {
 
   do {
     try {
+      await delay(1000);
       const response = await instance.getProductInfo('/produtos/consulta', {
         $top: queryTop,
         $skip: querySkip,
         $filter: query,
       });
 
+      queryCounter += response.data.length;
+      querySkip = queryCounter;
+
       const readStream = Readable.from(response.data, { objectMode: true });
       readStream
-        .on('data', (response) => {
-          productStream.push(response.data);
+        .on('data', (data) => {
+          productStream.push(data);
         })
         .on('error', (error) => {
           console.error('error while trying resolve file', error);
         });
-
-      queryCounter += response.data.length;
     } catch (error) {
       console.error(error);
     }
-
-    querySkip += queryTop;
-  } while (queryCounter < total);
+  } while (productStream.length < total);
   writebleStream.write(JSON.stringify(productStream, null, 2));
 
   return productStream.length;

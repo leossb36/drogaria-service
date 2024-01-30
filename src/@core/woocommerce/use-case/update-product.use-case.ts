@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GetProductVetorUseCase } from '@core/vetor/use-case/get-product-vetor.use-case';
 import { CategoryEnum } from '@core/common/enum/category.enum';
 import { AdapterHelper } from '@core/utils/adapter-helper';
+import { delay } from '@core/utils/delay';
 
 @Injectable()
 export class UpdateProductUseCase {
@@ -12,6 +13,7 @@ export class UpdateProductUseCase {
   async execute(products: any[]): Promise<any[]> {
     const productsToUpdate = [];
     for (const product of products) {
+      await delay(1000);
       const productToUpdate = await this.hasProductOnVetor(product);
 
       if (

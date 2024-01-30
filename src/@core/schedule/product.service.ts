@@ -11,16 +11,29 @@ export class ProductService {
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
-  @Cron(CronExpression.EVERY_3_HOURS)
-  async productRoutine() {
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async updateStreamFile() {
     CustomLogger.info(
       `[ProductService - productRoutine - saveProductStream]  Start job`,
     );
     await this.saveProductStreamUseCase.execute();
+
     CustomLogger.info(
       `[ProductService - productRoutine -saveProductStream]  End job`,
     );
 
+    CustomLogger.info(
+      `[ProductService - productRoutine - createProducts]  Start job`,
+    );
+
+    await this.woocommerceService.createProductRoutineOnWoocommerce();
+    CustomLogger.info(
+      `[ProductService - productRoutine - createProducts]  End job`,
+    );
+  }
+
+  @Cron(CronExpression.EVERY_12_HOURS)
+  async productRoutine() {
     CustomLogger.info(
       `[ProductService - productRoutine - deleteProducts]  Start job`,
     );
@@ -28,21 +41,12 @@ export class ProductService {
     CustomLogger.info(
       `[ProductService - productRoutine - deleteProducts]  end job`,
     );
-
     CustomLogger.info(
       `[ProductService - productRoutine - updateProducts]  Start job`,
     );
     await this.woocommerceService.updateProducts();
     CustomLogger.info(
       `[ProductService - productRoutine - updateProducts]  End job`,
-    );
-
-    CustomLogger.info(
-      `[ProductService - productRoutine - createProducts]  Start job`,
-    );
-    await this.woocommerceService.createProductRoutineOnWoocommerce();
-    CustomLogger.info(
-      `[ProductService - productRoutine - createProducts]  End job`,
     );
   }
 

@@ -7,7 +7,7 @@ export class QueryFilter {
   setFilters() {
     const categories = Object.values(CategoryEnum);
     categories.map((category) => {
-      const odata = `cdFilial eq 1 and qtdEstoque gt 0 and inativo eq false and contains(nomeLinha, '${category}')`;
+      const odata = `cdFilial eq 1 and inativo eq false and contains(nomeLinha, '${category}')`;
       this.filters.push(odata);
     });
     return this;
