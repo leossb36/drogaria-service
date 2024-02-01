@@ -35,6 +35,15 @@ export class ProductService {
   @Cron(CronExpression.EVERY_12_HOURS)
   async productRoutine() {
     CustomLogger.info(
+      `[ProductService - productRoutine - saveProductStream]  Start job`,
+    );
+    await this.saveProductStreamUseCase.execute();
+
+    CustomLogger.info(
+      `[ProductService - productRoutine -saveProductStream]  End job`,
+    );
+
+    CustomLogger.info(
       `[ProductService - productRoutine - updateProducts]  Start job`,
     );
     await this.woocommerceService.updateProducts();
