@@ -44,6 +44,7 @@ export class UpdateImageProductUseCase {
         images: mongoPrd.images,
         name: mongoPrd.name,
         description: mongoPrd.description,
+        stock_quantity: mongoPrd.stock_quantity,
       };
     });
     for (const product of updateDocs) {

@@ -1,5 +1,4 @@
 import { CategoryEnum, CategoryIdsEnum } from '@core/common/enum/category.enum';
-import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.integration';
 import { Injectable } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { parse } from 'JSONStream';
@@ -7,11 +6,7 @@ import * as path from 'path';
 
 @Injectable()
 export class ReadStreamVetorUseCase {
-  constructor(
-    private readonly woocommerceIntegration: WoocommerceIntegration,
-  ) {}
-
-  public async readFromJson(): Promise<any> {
+  public async readFromJson(): Promise<any[]> {
     const result = [];
 
     return new Promise((resolve, reject) => {
@@ -21,10 +16,7 @@ export class ReadStreamVetorUseCase {
 
       stream
         .on('data', (data) => {
-          if (
-            data['qtdEstoque'] > 0 &&
-            Object.values(CategoryEnum).includes(data['nomeLinha'])
-          ) {
+          if (Object.values(CategoryEnum).includes(data['nomeLinha'])) {
             const categoryId = this.formatCategory(data['nomeLinha']);
             const sku = `${data['cdProduto']}-${data['descricao'].replaceAll(
               ' ',
@@ -33,6 +25,27 @@ export class ReadStreamVetorUseCase {
             const product = this.buildProducts(data, categoryId, sku);
             result.push(product);
           }
+        })
+        .on('end', () => {
+          resolve(result);
+        })
+        .on('error', (err) => {
+          reject(err.message);
+        });
+    });
+  }
+
+  public async readStream(): Promise<any[]> {
+    const result = [];
+
+    return new Promise((resolve, reject) => {
+      const stream = createReadStream(
+        path.join('./src', '@core', 'infra', 'seed', 'data.json'),
+      ).pipe(parse('*'));
+
+      stream
+        .on('data', (data) => {
+          result.push(data);
         })
         .on('end', () => {
           resolve(result);
@@ -128,9 +141,5 @@ export class ReadStreamVetorUseCase {
       default:
         return CategoryIdsEnum.PERFUMES;
     }
-  }
-
-  private async getAllCategories(): Promise<any[]> {
-    return await this.woocommerceIntegration.getAllCategories();
   }
 }

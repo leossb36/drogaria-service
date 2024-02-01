@@ -23,7 +23,6 @@ export class UpdatedOrderStatusUseCase {
         ),
       ]);
     }
-    console.log('provavelmente ta por aqui');
     return {
       count: orders.length,
       status: 200,

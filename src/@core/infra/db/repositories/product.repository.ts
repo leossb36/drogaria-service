@@ -158,14 +158,17 @@ export class ProductRepository {
 
   async updateProductBatch(products: any[]) {
     try {
-      await this.productModel.deleteMany({
-        sku: {
-          $in: [...products.map((product) => product.sku)],
-        },
+      const bulkOperations = products.map((product) => {
+        return {
+          updateOne: {
+            filter: { sku: product.sku },
+            update: { $set: product },
+            upsert: true,
+          },
+        };
       });
-
-      const insertMany = await this.productModel.insertMany(products);
-      return insertMany;
+      const result = await this.productModel.bulkWrite(bulkOperations);
+      return result;
     } catch (error) {
       throw new BadRequestException('Cannot find product with this id');
     }

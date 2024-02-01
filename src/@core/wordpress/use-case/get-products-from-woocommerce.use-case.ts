@@ -12,7 +12,7 @@ export class GetProductsFromWoocommerceUseCase {
     pool: mysql.Pool,
     productsSkus?: any[],
   ): Promise<any[]> {
-    const [rows, _] = await pool.query(
+    const [rows] = await pool.query(
       `SELECT
         wp.ID as id,
         wp.post_title as title,

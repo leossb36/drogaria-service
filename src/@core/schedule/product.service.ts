@@ -35,13 +35,6 @@ export class ProductService {
   @Cron(CronExpression.EVERY_12_HOURS)
   async productRoutine() {
     CustomLogger.info(
-      `[ProductService - productRoutine - deleteProducts]  Start job`,
-    );
-    await this.woocommerceService.deleteProducts();
-    CustomLogger.info(
-      `[ProductService - productRoutine - deleteProducts]  end job`,
-    );
-    CustomLogger.info(
       `[ProductService - productRoutine - updateProducts]  Start job`,
     );
     await this.woocommerceService.updateProducts();

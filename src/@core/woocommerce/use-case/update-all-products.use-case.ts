@@ -6,64 +6,64 @@ import MysqlConnection from '@config/mysql.config';
 import * as mysql from 'mysql2/promise';
 import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 import { ReadStreamVetorUseCase } from '@core/vetor/use-case/read-stream-vetor.use-case';
-import { UpdateProductUseCase } from './update-product.use-case';
+import { ProductRepository } from '@core/infra/db/repositories/product.repository';
+import { AdapterHelper } from '@core/utils/adapter-helper';
 
 @Injectable()
 export class UpdateAllProductsFromVetor {
   constructor(
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
-    private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly readStreamVetorUseCase: ReadStreamVetorUseCase,
+    private readonly productRepository: ProductRepository,
   ) {}
 
   async execute(): Promise<any> {
     const pool: mysql.Pool = await MysqlConnection.connect();
 
     const [readStreamProducts, productsFromWooCommerce] = await Promise.all([
-      this.readStreamVetorUseCase.readFromJson(),
+      this.readStreamVetorUseCase.readStream(),
       this.getProductsFromWoocommerceUseCase.execute(pool, []),
     ]);
 
     await MysqlConnection.endConnection(pool);
 
-    const updateProductOnWoocommerceStock = [];
+    const productsToUpdate = [];
+    for (const item of productsFromWooCommerce) {
+      try {
+        const code = Number(item.sku.split('-')[0]);
 
-    const productsWithoutStock = productsFromWooCommerce.filter((product) => {
-      return !readStreamProducts.some((stream) => stream.sku === product.sku);
-    });
+        const streamData = readStreamProducts.find(
+          (product) => product.cdProduto === code,
+        );
 
-    const woocommerceProductsFullInfo = await this.updateProductUseCase.execute(
-      productsWithoutStock,
-    );
+        if (!streamData) {
+          productsToUpdate.push({
+            ...item,
+            status: 'draft',
+          });
+        } else {
+          const data = AdapterHelper.buildProduct(streamData);
 
-    for (const item of woocommerceProductsFullInfo) {
-      updateProductOnWoocommerceStock.push(item);
+          productsToUpdate.push({
+            id: item.id,
+            status: data.stock_quantity > 0 ? 'publish' : 'draft',
+            ...data,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
 
-    const productsWithStock = productsFromWooCommerce.filter((product) => {
-      return readStreamProducts.some((stream) => stream.sku === product.sku);
-    });
-
-    for (const item of productsWithStock) {
-      const filterStream = readStreamProducts.filter(
-        (stream) => stream.sku === item.sku,
-      );
-
-      updateProductOnWoocommerceStock.push({
-        id: item.id,
-        ...filterStream[0],
-        status: filterStream[0].stock_quantity > 0 ? 'publish' : 'draft',
-      });
-    }
-
-    const chunks = ChunckData(updateProductOnWoocommerceStock);
+    const chunks = ChunckData(productsToUpdate);
     for (const chunk of chunks) {
       await this.woocommerceIntegration.updateProductBatch(chunk);
+      await this.productRepository.updateProductBatch(chunk);
     }
 
     return {
-      count: updateProductOnWoocommerceStock.length,
+      count: productsToUpdate.length,
       message: messages.woocommerce.product.update.success,
     };
   }

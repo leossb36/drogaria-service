@@ -160,7 +160,10 @@ export class WoocommerceIntegration {
     const data = {
       create: products.map((product) => ({
         ...product,
-        status: product.stock_quantity > 0 ? 'publish' : 'draft',
+        status:
+          product.stock_quantity > 0 && product.images.length
+            ? 'publish'
+            : 'draft',
       })),
     };
     try {
@@ -295,6 +298,7 @@ export class WoocommerceIntegration {
 
     const body = {
       images: [{ src: product.images[0].src }],
+      status: product.stock_quantity > 0 ? 'publish' : 'draft',
     };
 
     try {
