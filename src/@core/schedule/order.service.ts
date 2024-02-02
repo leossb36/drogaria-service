@@ -2,7 +2,7 @@ import CustomLogger from '@common/logger/logger';
 import { VetorService } from '@core/vetor/vetor.service';
 import { WoocommerceService } from '@core/woocommerce/woocomerce.service';
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class OrderService {
@@ -11,7 +11,7 @@ export class OrderService {
     private readonly vetorService: VetorService,
   ) {}
 
-  @Cron('40 */1 7-23 * * *')
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async sendOrderToVetor(): Promise<any> {
     CustomLogger.info(`[OrderService - sendOrderToVetor]  Start job`);
     await this.vetorService.saveOrderVetor();

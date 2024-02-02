@@ -15,13 +15,19 @@ export class UpdatedOrderStatusUseCase {
   async execute(orders: any): Promise<any> {
     const chunks = ChunckData(orders);
     for (const chunk of chunks) {
-      const cpChunk = JSON.parse(JSON.stringify(chunk));
-      await Promise.all([
-        this.woocommerceIntegration.updateOrderBatch(chunk),
-        this.orderRepository.updateOrderBatch(
-          cpChunk.map((ck) => ObjectHelper.changeKey(ck, 'numeroPedido', 'id')),
-        ),
-      ]);
+      try {
+        const cpChunk = JSON.parse(JSON.stringify(chunk));
+        await Promise.all([
+          this.woocommerceIntegration.updateOrderBatch(chunk),
+          this.orderRepository.updateOrderBatch(
+            cpChunk.map((ck) =>
+              ObjectHelper.changeKey(ck, 'numeroPedido', 'id'),
+            ),
+          ),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
     }
     return {
       count: orders.length,

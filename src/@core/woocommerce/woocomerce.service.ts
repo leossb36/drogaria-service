@@ -212,7 +212,6 @@ export class WoocommerceService {
   }
 
   async updateOrders() {
-    console.log('iniciando serviço');
     const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
 
     if (!ordersOnDataBase.length) {
@@ -221,27 +220,30 @@ export class WoocommerceService {
 
     const ordersToUpdate = [];
     for (const order of ordersOnDataBase) {
-      const { numeroPedido, cdOrcamento } = order;
+      try {
+        const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
+          numeroPedido: order.numeroPedido,
+          cdOrcamento: order.cdOrcamento,
+        });
 
-      const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
-        numeroPedido,
-        cdOrcamento,
-      });
-
-      const isTerminated = Object.values(StatusEnumTerminated).includes(
-        orderFromVetor?.situacao,
-      );
-
-      if (
-        orderFromVetor &&
-        !isTerminated &&
-        orderFromVetor.situacao !== order.situacao
-      ) {
-        ordersToUpdate.push(
-          ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+        const isTerminated = Object.values(StatusEnumTerminated).includes(
+          orderFromVetor?.situacao,
         );
+
+        if (
+          orderFromVetor &&
+          !isTerminated &&
+          orderFromVetor.situacao !== order.situacao
+        ) {
+          ordersToUpdate.push(
+            ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+          );
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
+
     if (!ordersToUpdate.length) {
       return {
         count: 0,
