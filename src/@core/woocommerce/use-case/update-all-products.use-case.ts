@@ -43,7 +43,7 @@ export class UpdateAllProductsFromVetor {
             status: streamData.qtdEstoque > 0 ? 'publish' : 'draft',
             price: item.price,
             regular_price: item.price,
-            sale_price: item.sale_price,
+            sale_price: streamData.vlrOferta.toFixed(2),
             stock_quantity: streamData.qtdEstoque,
           });
         }

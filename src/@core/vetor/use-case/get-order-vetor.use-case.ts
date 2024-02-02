@@ -3,12 +3,14 @@ import { ValidationHelper } from '@core/utils/validation-helper';
 import { Injectable } from '@nestjs/common';
 import { GetOrderDto } from '../dto/get-order.dto';
 import { GetOrderInformationModelView } from '../mv/get-order-information.mv';
+import { delay } from '@core/utils/delay';
 
 @Injectable()
 export class GetOrderVetorUseCase {
   constructor(private readonly integration: VetorIntegrationGateway) {}
 
   async execute(query: GetOrderDto): Promise<GetOrderInformationModelView> {
+    await delay(1000);
     const request = await this.integration.getOrderInfo(
       query,
       '/pedidos/status',
