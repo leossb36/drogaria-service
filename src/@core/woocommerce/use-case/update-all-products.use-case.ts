@@ -2,31 +2,22 @@ import { WoocommerceIntegration } from '@core/infra/integration/woocommerce-api.
 import { Injectable } from '@nestjs/common';
 import * as messages from '@common/messages/response-messages.json';
 import { ChunckData } from '@core/utils/fetch-helper';
-import MysqlConnection from '@config/mysql.config';
-import * as mysql from 'mysql2/promise';
-import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-products-from-woocommerce.use-case';
 import { ReadStreamVetorUseCase } from '@core/vetor/use-case/read-stream-vetor.use-case';
 import { ProductRepository } from '@core/infra/db/repositories/product.repository';
-import { AdapterHelper } from '@core/utils/adapter-helper';
 
 @Injectable()
 export class UpdateAllProductsFromVetor {
   constructor(
-    private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly readStreamVetorUseCase: ReadStreamVetorUseCase,
     private readonly productRepository: ProductRepository,
   ) {}
 
   async execute(): Promise<any> {
-    const pool: mysql.Pool = await MysqlConnection.connect();
-
     const [readStreamProducts, productsFromWooCommerce] = await Promise.all([
       this.readStreamVetorUseCase.readStream(),
-      this.getProductsFromWoocommerceUseCase.execute(pool, []),
+      this.woocommerceIntegration.getAllProducts(),
     ]);
-
-    await MysqlConnection.endConnection(pool);
 
     const productsToUpdate = [];
     for (const item of productsFromWooCommerce) {
@@ -39,16 +30,21 @@ export class UpdateAllProductsFromVetor {
 
         if (!streamData) {
           productsToUpdate.push({
-            ...item,
+            id: item.id,
             status: 'draft',
+            price: item.price,
+            regular_price: item.price,
+            sale_price: item.sale_price,
+            stock_quantity: 0,
           });
         } else {
-          const data = AdapterHelper.buildProduct(streamData);
-
           productsToUpdate.push({
             id: item.id,
-            status: data.stock_quantity > 0 ? 'publish' : 'draft',
-            ...data,
+            status: streamData.qtdEstoque > 0 ? 'publish' : 'draft',
+            price: item.price,
+            regular_price: item.price,
+            sale_price: item.sale_price,
+            stock_quantity: streamData.qtdEstoque,
           });
         }
       } catch (error) {
