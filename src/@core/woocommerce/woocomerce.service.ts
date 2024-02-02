@@ -16,6 +16,7 @@ import { DeleteProductsUseCase } from './use-case/delete-products.use-case';
 import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
 import { ProductRepository } from '@core/infra/db/repositories/product.repository';
 import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
+import { delay } from '@core/utils/delay';
 
 @Injectable()
 export class WoocommerceService {
@@ -220,6 +221,7 @@ export class WoocommerceService {
 
     const ordersToUpdate = [];
     for (const order of ordersOnDataBase) {
+      await delay(1000);
       try {
         const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
           numeroPedido: order.numeroPedido,
