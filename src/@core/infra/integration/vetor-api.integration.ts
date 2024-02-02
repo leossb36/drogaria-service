@@ -1,4 +1,5 @@
 import { ConfigService } from '@config/configuration.config';
+import { delay } from '@core/utils/delay';
 import { GetOrderDto } from '@core/vetor/dto/get-order.dto';
 import { GetProductVetorDto } from '@core/vetor/dto/query-select.dto';
 import { GetCategoryViewModel } from '@core/vetor/mv/get-category.mv';
@@ -68,6 +69,7 @@ export class VetorIntegrationGateway {
 
   async getOrderInfo(params: GetOrderDto, endpoint: string): Promise<any> {
     try {
+      await delay(1000);
       const { data } = await lastValueFrom(
         this.httpService.get(`${this.baseUrl}${endpoint}`, {
           headers: this.headerRequest,
