@@ -11,6 +11,7 @@ import { GetProductsFromWoocommerceUseCase } from '@core/wordpress/use-case/get-
 import { Cliente, CreateOrderDto, Item } from '../dto/create-order.dto';
 import { OrderRepository } from '@core/infra/db/repositories/order.repository';
 import { delay } from '@core/utils/delay';
+import { OperationHelper } from '@core/utils/operation-helper';
 
 @Injectable()
 export class SaveOrderVetorUseCase {
@@ -50,15 +51,25 @@ export class SaveOrderVetorUseCase {
       const paymentInfo = this.formateStringObservation(order);
       const vlrFrete =
         order.shipping_total !== '' ? Number(order.shipping_total) : 0;
+      const taxes = order.fee_lines.map((tax) => Number(tax.total));
+      const vlrOutros = OperationHelper.reduce(taxes);
+      const orderTotal = Number(order.total);
+      const discount = OperationHelper.reduce(
+        itens.map((item) => item.vlrDesconto),
+      );
+
+      const produtosOnly = orderTotal - vlrFrete - vlrOutros - discount;
+
+      const vlrProdutos = Number(produtosOnly.toFixed(2));
       const sendToVetor = {
         cdFilial: +process.env.CD_FILIAL,
         cgcFilial: process.env.CGC_FILIAL || '',
         dtEmissao: new Date().toISOString(),
         cliente: this.getClient(order),
-        vlrProdutos: Number(Number(Number(order.total) - vlrFrete).toFixed(2)),
-        vlrDescontos: 0,
+        vlrProdutos,
+        vlrDescontos: discount,
         vlrFrete,
-        vlrOutros: 0,
+        vlrOutros,
         vlrTotal: Number(order.total),
         vlrTroco: 0,
         observacao: paymentInfo,
@@ -161,7 +172,7 @@ export class SaveOrderVetorUseCase {
         cdBarrasProduto: product.data.attributes[0].options[0].toString(),
         quantidade: item.quantity,
         vlrUnitario: item.price,
-        vlrDesconto: 0,
+        vlrDesconto: Number(item.total_tax),
         vlrTotal: Number(item.total),
       } as Item;
       items.push(data);
