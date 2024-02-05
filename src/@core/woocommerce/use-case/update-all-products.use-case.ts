@@ -41,8 +41,8 @@ export class UpdateAllProductsFromVetor {
           productsToUpdate.push({
             id: item.id,
             status: streamData.qtdEstoque > 0 ? 'publish' : 'draft',
-            price: item.price,
-            regular_price: item.price,
+            price: streamData.vlrTabela.toFixed(2),
+            regular_price: streamData.vlrTabela.toFixed(2),
             sale_price: streamData.vlrOferta.toFixed(2),
             stock_quantity: streamData.qtdEstoque,
           });
