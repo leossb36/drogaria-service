@@ -52,7 +52,7 @@ export class ProductService {
     );
   }
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async updateImageProduct() {
     CustomLogger.info(
       `[ProductService - updateImageProduct - scrapImages]  Start job`,
