@@ -5,7 +5,7 @@ services:
     build: .
     command: npm run start:prod
     volumes:
-      - .:/var/www/server
+      - .:/app
     ports:
       - '${PORT}:${PORT}'
     networks:
@@ -17,7 +17,7 @@ services:
     build: .
     command: npm run start:dev
     volumes:
-      - .:/var/www/server
+      - .:/app
     ports:
       - '${PORT}:${PORT}'
     networks:
@@ -29,7 +29,7 @@ services:
     build: .
     command: npm run start:debug
     volumes:
-      - .:/var/www/server
+      - .:/app
     ports:
       - '${PORT}:${PORT}'
       - '9229:9229'
