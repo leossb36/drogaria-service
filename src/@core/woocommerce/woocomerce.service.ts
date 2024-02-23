@@ -66,28 +66,32 @@ export class WoocommerceService {
     const chunks = ChunckData(productsToCreate);
 
     const result = [];
-    for (const chunk of chunks) {
-      await this.woocommerceIntegration.createProductBatch(chunk);
-      const productInDb = await this.productRepository.getProductsSku(
-        chunk.map((product) => product.sku),
-      );
+    try {
+      for (const chunk of chunks) {
+        await this.woocommerceIntegration.createProductBatch(chunk);
+        const productInDb = await this.productRepository.getProductsSku(
+          chunk.map((product) => product.sku),
+        );
 
-      const productsNotInDb = chunk.filter((product) => {
-        return !productInDb.some((prod) => prod.sku === product.sku);
-      });
+        const productsNotInDb = chunk.filter((product) => {
+          return !productInDb.some((prod) => prod.sku === product.sku);
+        });
 
-      result.push(...chunk);
-      if (!productsNotInDb.length) {
-        continue;
-      } else {
-        await this.productRepository.createProductBatch(productsNotInDb);
+        result.push(...chunk);
+        if (!productsNotInDb.length) {
+          continue;
+        } else {
+          await this.productRepository.createProductBatch(productsNotInDb);
+        }
       }
-    }
 
-    return {
-      amount: result.length,
-      message: 'products created successfully',
-    };
+      return {
+        amount: result.length,
+        message: 'products created successfully',
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteProducts() {

@@ -42,8 +42,6 @@ export class UpdateImageProductUseCase {
       return {
         id: wooProduct.id,
         images: mongoPrd.images,
-        name: mongoPrd.name,
-        description: mongoPrd.description,
         stock_quantity: mongoPrd.stock_quantity,
       };
     });

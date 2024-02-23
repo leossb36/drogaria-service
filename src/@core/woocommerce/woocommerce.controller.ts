@@ -44,6 +44,11 @@ export class WoocommerceController {
     return await this.productService.productRoutine();
   }
 
+  @Put('/products/images')
+  async updateImageProduct(): Promise<any> {
+    return await this.productService.updateImageProduct();
+  }
+
   @Put('/product/update/all')
   async UpdateAllProductsFromVetor(): Promise<unknown> {
     return await this.updateAllProductsFromVetor.execute();

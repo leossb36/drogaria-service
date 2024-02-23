@@ -11,7 +11,7 @@ export class ProductService {
     private readonly woocommerceService: WoocommerceService,
   ) {}
 
-  // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async updateStreamFile() {
     CustomLogger.info(
       `[ProductService - productRoutine - saveProductStream]  Start job`,
@@ -32,7 +32,7 @@ export class ProductService {
     );
   }
 
-  @Cron(CronExpression.EVERY_12_HOURS)
+  @Cron(CronExpression.EVERY_5_HOURS)
   async productRoutine() {
     CustomLogger.info(
       `[ProductService - productRoutine - saveProductStream]  Start job`,
@@ -52,16 +52,8 @@ export class ProductService {
     );
   }
 
-  // @Cron('0 */5 * * * *')
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async updateImageProduct() {
-    CustomLogger.info(
-      `[ProductService - updateImageProduct - createProductsOnDb]  Start job`,
-    );
-    await this.woocommerceService.createProductsOnDb();
-    CustomLogger.info(
-      `[ProductService - updateImageProduct - createProductsOnDb]  End job`,
-    );
-
     CustomLogger.info(
       `[ProductService - updateImageProduct - scrapImages]  Start job`,
     );

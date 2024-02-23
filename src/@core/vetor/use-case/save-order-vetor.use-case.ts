@@ -171,7 +171,7 @@ export class SaveOrderVetorUseCase {
         cdProduto: Number(cdProduct[0]),
         cdBarrasProduto: product.data.attributes[0].options[0].toString(),
         quantidade: item.quantity,
-        vlrUnitario: item.price,
+        vlrUnitario: Number(item.price.toFixed(2)),
         vlrDesconto: Number(item.total_tax),
         vlrTotal: Number(item.total),
       } as Item;

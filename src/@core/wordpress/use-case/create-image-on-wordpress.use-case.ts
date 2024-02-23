@@ -13,6 +13,10 @@ export class CreateImageOnWordpressUseCase {
         [productId, '_thumbnail_id', notfoundId],
       );
 
+      await connection.query(
+        `UPDATE wp_posts SET post_status = 'draft' where ID = ${productId}`,
+      );
+
       await connection.commit();
       return { success: true };
     } catch (err) {

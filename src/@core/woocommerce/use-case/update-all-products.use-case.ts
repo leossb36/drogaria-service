@@ -40,7 +40,10 @@ export class UpdateAllProductsFromVetor {
         } else {
           productsToUpdate.push({
             id: item.id,
-            status: streamData.qtdEstoque > 0 ? 'publish' : 'draft',
+            status:
+              streamData.qtdEstoque > 0 && item.images.length
+                ? 'publish'
+                : 'draft',
             price: streamData.vlrTabela.toFixed(2),
             regular_price: streamData.vlrTabela.toFixed(2),
             sale_price: streamData.vlrOferta.toFixed(2),

@@ -115,6 +115,7 @@ export class ReadStreamVetorUseCase {
           variation: true,
         },
       ],
+      images: [],
     };
 
     return product;

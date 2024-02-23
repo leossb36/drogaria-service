@@ -1,19 +1,21 @@
 
-ARG NODE_VERSION=16-alpine
-ARG NPM_VERSION=9
+ARG NODE_VERSION=18-alpine
 
 FROM node:${NODE_VERSION}
 
-RUN npm install -g npm@${NPM_VERSION}
-RUN mkdir -p /var/www/server
+RUN npm install -g npm@latest
 
-WORKDIR /var/www/server
+WORKDIR /app
 
-ADD . /var/www/server/
+COPY package*.json ./
+COPY tsconfig.* ./
 
 RUN npm install
+
+COPY . .
+
 RUN npm run build
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["npm", "start:prod"]
+CMD ["npm", "run", "start:prod"]
