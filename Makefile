@@ -8,7 +8,7 @@ debug-build:
 	docker compose up --build api-debug
 
 run:
-	docker compose up --build api-debug
+	docker compose up --build api-prod -d
 
 debug-run:
 	docker compose up api-debug
