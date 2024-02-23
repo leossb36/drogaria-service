@@ -40,10 +40,7 @@ export class UpdateAllProductsFromVetor {
         } else {
           productsToUpdate.push({
             id: item.id,
-            status:
-              streamData.qtdEstoque > 0 && item.images.length
-                ? 'publish'
-                : 'draft',
+            status: this.validateStatus(streamData, item),
             price: streamData.vlrTabela.toFixed(2),
             regular_price: streamData.vlrTabela.toFixed(2),
             sale_price: streamData.vlrOferta.toFixed(2),
@@ -65,5 +62,16 @@ export class UpdateAllProductsFromVetor {
       count: productsToUpdate.length,
       message: messages.woocommerce.product.update.success,
     };
+  }
+
+  validateStatus(streamData: any, item: any) {
+    if (
+      streamData.qtdEstoque > 0 &&
+      item.images.length &&
+      item.images[0].id !== 5934
+    ) {
+      return 'publish';
+    }
+    return 'draft';
   }
 }
