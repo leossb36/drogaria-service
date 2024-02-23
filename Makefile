@@ -7,6 +7,9 @@ dev-build:
 debug-build:
 	docker compose up --build api-debug mongo mysql
 
+run:
+	docker compose up --build api-debug mongo mysql
+
 debug-run:
 	docker compose up api-debug mongo mysql
 
