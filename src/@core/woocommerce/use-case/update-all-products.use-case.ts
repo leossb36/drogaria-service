@@ -28,7 +28,7 @@ export class UpdateAllProductsFromVetor {
           (product) => product.cdProduto === code,
         );
 
-        if (!streamData) {
+        if (!streamData && item.stock_quantity <= 0) {
           productsToUpdate.push({
             id: item.id,
             status: 'draft',

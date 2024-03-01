@@ -32,7 +32,7 @@ export class ProductService {
     );
   }
 
-  @Cron(CronExpression.EVERY_5_HOURS)
+  @Cron('0 */15 * * * *')
   async productRoutine() {
     CustomLogger.info(
       `[ProductService - productRoutine - saveProductStream]  Start job`,

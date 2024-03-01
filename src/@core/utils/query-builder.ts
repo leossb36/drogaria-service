@@ -5,9 +5,13 @@ export class QueryFilter {
   private filters: string[] = [];
 
   setFilters() {
+    const now = new Date();
+    const timeBefore = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+    const isoDate = timeBefore.toISOString();
     const categories = Object.values(CategoryEnum);
     categories.map((category) => {
-      const odata = `cdFilial eq 1 and inativo eq false and qtdEstoque gt 0 and contains(nomeLinha, '${category}')`;
+      const odata = `cdFilial eq 1 and inativo eq false and contains(nomeLinha, '${category}') and dtUltimaAlteracao gt ${isoDate}`;
       this.filters.push(odata);
     });
     return this;
