@@ -20,32 +20,32 @@ export class UpdateAllProductsFromVetor {
     ]);
 
     const productsToUpdate = [];
-    for (const item of productsFromWooCommerce) {
+    for (const item of readStreamProducts) {
       try {
-        const code = Number(item.sku.split('-')[0]);
-
-        const streamData = readStreamProducts.find(
-          (product) => product.cdProduto === code,
+        const referenceItem = productsFromWooCommerce.find(
+          (product) => item.cdProduto === Number(product.sku.split('-')[0]),
         );
 
-        if (!streamData && item.stock_quantity <= 0) {
+        if (referenceItem && item.qtdEstoque > 0) {
           productsToUpdate.push({
-            id: item.id,
+            id: referenceItem.id,
+            status: this.validateStatus(item, referenceItem),
+            price: item.vlrTabela.toFixed(2),
+            regular_price: item.vlrTabela.toFixed(2),
+            sale_price: item.vlrOferta.toFixed(2),
+            stock_quantity: item.qtdEstoque,
+          });
+        } else if (referenceItem && item.qtdEstoque <= 0) {
+          productsToUpdate.push({
+            id: referenceItem.id,
             status: 'draft',
-            price: item.price,
-            regular_price: item.price,
-            sale_price: item.sale_price,
-            stock_quantity: 0,
+            price: referenceItem.price,
+            regular_price: referenceItem.price,
+            sale_price: referenceItem.sale_price,
+            stock_quantity: item.qtdEstoque,
           });
-        } else {
-          productsToUpdate.push({
-            id: item.id,
-            status: this.validateStatus(streamData, item),
-            price: streamData.vlrTabela.toFixed(2),
-            regular_price: streamData.vlrTabela.toFixed(2),
-            sale_price: streamData.vlrOferta.toFixed(2),
-            stock_quantity: streamData.qtdEstoque,
-          });
+        } else if (!referenceItem) {
+          continue;
         }
       } catch (error) {
         console.log(error);
