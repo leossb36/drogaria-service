@@ -29,7 +29,7 @@ export class UpdateAllProductsFromVetor {
         if (referenceItem && item.qtdEstoque > 0) {
           productsToUpdate.push({
             id: referenceItem.id,
-            status: this.validateStatus(item, referenceItem),
+            status: this.validateStatus(referenceItem, item),
             price: item.vlrTabela.toFixed(2),
             regular_price: item.vlrTabela.toFixed(2),
             sale_price: item.vlrOferta.toFixed(2),
@@ -64,11 +64,11 @@ export class UpdateAllProductsFromVetor {
     };
   }
 
-  validateStatus(streamData: any, item: any) {
+  validateStatus(referenceItem: any, item: any) {
     if (
-      streamData.qtdEstoque > 0 &&
-      item.images.length &&
-      item.images[0].id !== 5934
+      item.qtdEstoque > 0 &&
+      referenceItem.images.length &&
+      referenceItem.images[0].id !== 5934
     ) {
       return 'publish';
     }
