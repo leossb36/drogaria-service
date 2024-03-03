@@ -35,7 +35,7 @@ export class WoocommerceService {
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
   ) {}
 
-  async createProductRoutineOnWoocommerce() {
+  async createProductRoutineOnWoocommerce(): Promise<any> {
     const pool: mysql.Pool = await MysqlConnection.connect();
 
     const [streamData, woocommerceProducts] = await Promise.all([
@@ -94,7 +94,7 @@ export class WoocommerceService {
     }
   }
 
-  async deleteProducts() {
+  async deleteProducts(): Promise<any> {
     const pool: mysql.Pool = await MysqlConnection.connect();
 
     const woocommerceProducts =
@@ -125,11 +125,11 @@ export class WoocommerceService {
     };
   }
 
-  async updateProducts() {
+  async updateProducts(): Promise<any> {
     return await this.updateAllProductsFromVetor.execute();
   }
 
-  async createProductsOnDb() {
+  async createProductsOnDb(): Promise<any> {
     const productsWithoutImage =
       await this.woocommerceIntegration.getProductsWithoutImageFull();
 
@@ -164,7 +164,7 @@ export class WoocommerceService {
     return await this.productRepository.createProductBatch(productsNotInDd);
   }
 
-  async scrapImages() {
+  async scrapImages(): Promise<any> {
     const productsWithoutImage =
       await this.woocommerceIntegration.getProductsWithoutImage();
 
@@ -193,15 +193,15 @@ export class WoocommerceService {
     return await this.scrapImagesUseCase.execute(productsInDb, 0);
   }
 
-  async retryCreateImage() {
+  async retryCreateImage(): Promise<any> {
     return await this.retryScrapImageProductUseCase.execute();
   }
 
-  async updateImageProduct() {
+  async updateImageProduct(): Promise<any> {
     return await this.updateImageProductUseCase.execute();
   }
 
-  async removeAllWithoutImage() {
+  async removeAllWithoutImage(): Promise<any> {
     const productsWithoutImage =
       await this.woocommerceIntegration.getProductsWithoutImageFull();
     const productsInDb = await this.productRepository.findProductsWithoutImage(
@@ -212,11 +212,11 @@ export class WoocommerceService {
     return await this.productRepository.deleteAll(productsInDb);
   }
 
-  async deleteAllWithoutImage() {
+  async deleteAllWithoutImage(): Promise<any> {
     return await this.productRepository.deleteAllWithoutImage();
   }
 
-  async updateOrders() {
+  async updateOrders(): Promise<any> {
     const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
 
     if (!ordersOnDataBase.length) {
