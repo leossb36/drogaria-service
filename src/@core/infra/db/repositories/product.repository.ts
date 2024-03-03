@@ -20,7 +20,7 @@ export class ProductRepository {
     }
   }
 
-  async createProductBatch(products: any[]) {
+  async createProductBatch(products: any[]): Promise<any> {
     try {
       const result = await this.productModel.insertMany(products);
       return result;
@@ -29,7 +29,7 @@ export class ProductRepository {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<any> {
     try {
       const orders = await this.productModel.find({});
       return orders;
@@ -38,7 +38,7 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithoutImage(skus: any[], limit: number) {
+  async findProductsWithoutImage(skus: any[], limit: number): Promise<any> {
     try {
       const products = await this.productModel
         .find(
@@ -58,7 +58,7 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithImage(skus: any[], limit: number) {
+  async findProductsWithImage(skus: any[], limit: number): Promise<any> {
     try {
       const products = await this.productModel
         .find(
@@ -77,7 +77,7 @@ export class ProductRepository {
       throw new BadRequestException('Cannot find products on database');
     }
   }
-  async deleteAllWithoutImage() {
+  async deleteAllWithoutImage(): Promise<any> {
     try {
       const response = await this.productModel.deleteMany({
         images: { $size: 0 },
@@ -91,7 +91,7 @@ export class ProductRepository {
   async findProductsWithoutImageAndNotInWooCommerce(
     skus: any[],
     limit: number,
-  ) {
+  ): Promise<any> {
     try {
       const products = await this.productModel
         .find(
@@ -111,7 +111,10 @@ export class ProductRepository {
     }
   }
 
-  async findProductsWithImageAndNotInWooCommerce(skus: any[], limit: number) {
+  async findProductsWithImageAndNotInWooCommerce(
+    skus: any[],
+    limit: number,
+  ): Promise<any> {
     try {
       const products = await this.productModel
         .find(
@@ -131,7 +134,7 @@ export class ProductRepository {
     }
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<any> {
     try {
       const product = await this.productModel.findById(id);
       return product;
@@ -140,7 +143,7 @@ export class ProductRepository {
     }
   }
 
-  async findBySku(sku: string) {
+  async findBySku(sku: string): Promise<any> {
     try {
       const product = await this.productModel
         .find({
@@ -156,7 +159,7 @@ export class ProductRepository {
     }
   }
 
-  async updateProductBatch(products: any[]) {
+  async updateProductBatch(products: any[]): Promise<any> {
     try {
       const bulkOperations = products.map((product) => {
         return {
@@ -173,7 +176,7 @@ export class ProductRepository {
       throw new BadRequestException('Cannot find product with this id');
     }
   }
-  async deleteAll(products: any[]) {
+  async deleteAll(products: any[]): Promise<any> {
     try {
       const response = await this.productModel.deleteMany({
         sku: {
@@ -186,7 +189,7 @@ export class ProductRepository {
     }
   }
 
-  async getProductsBySku(skus: any[]) {
+  async getProductsBySku(skus: any[]): Promise<any> {
     try {
       const result = await this.productModel
         .find({
@@ -203,7 +206,7 @@ export class ProductRepository {
     }
   }
 
-  async getProductsSku(skus: any[]) {
+  async getProductsSku(skus: any[]): Promise<any> {
     try {
       const result = await this.productModel
         .find({

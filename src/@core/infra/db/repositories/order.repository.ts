@@ -23,7 +23,7 @@ export class OrderRepository {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<any> {
     try {
       const orders = await this.orderModel
         .find({
@@ -36,7 +36,7 @@ export class OrderRepository {
     }
   }
 
-  async findOrders(ids: any[]) {
+  async findOrders(ids: any[]): Promise<any> {
     try {
       const orders = await this.orderModel
         .find({
@@ -51,7 +51,7 @@ export class OrderRepository {
     }
   }
 
-  async findProductCompleted() {
+  async findProductCompleted(): Promise<any> {
     try {
       const orders = await this.orderModel.aggregate([
         {
@@ -69,7 +69,7 @@ export class OrderRepository {
     }
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<any> {
     try {
       const order = await this.orderModel.findById(id);
       return order;
@@ -78,7 +78,7 @@ export class OrderRepository {
     }
   }
 
-  async updateOrderBatch(orders: any[]) {
+  async updateOrderBatch(orders: any[]): Promise<any> {
     try {
       const updateOperations = orders.map((order) => {
         const status = Object.values(FinishStatusEnum).includes(order.status)
@@ -99,7 +99,7 @@ export class OrderRepository {
     }
   }
 
-  async updateManyOrderStatus(orders: any[]) {
+  async updateManyOrderStatus(orders: any[]): Promise<any> {
     try {
       await this.orderModel.deleteMany({
         sku: {
@@ -114,7 +114,7 @@ export class OrderRepository {
     }
   }
 
-  async updateOrderStatus(orders: any[]) {
+  async updateOrderStatus(orders: any[]): Promise<any> {
     try {
       const result = await this.orderModel.updateMany(
         {
