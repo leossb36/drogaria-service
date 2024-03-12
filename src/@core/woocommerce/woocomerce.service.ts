@@ -232,15 +232,7 @@ export class WoocommerceService {
           cdOrcamento: order.cdOrcamento,
         });
 
-        const isTerminated = Object.values(StatusEnumTerminated).includes(
-          orderFromVetor?.situacao,
-        );
-
-        if (
-          orderFromVetor &&
-          !isTerminated &&
-          orderFromVetor.situacao !== order.situacao
-        ) {
+        if (orderFromVetor && orderFromVetor.situacao !== order.situacao) {
           ordersToUpdate.push(
             ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
           );
