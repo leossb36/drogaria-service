@@ -27,7 +27,7 @@ export class OrderRepository {
     try {
       const orders = await this.orderModel
         .find({
-          status: OrderStatusEnum.PROCESSING,
+          status: { $in: [OrderStatusEnum.PROCESSING, OrderStatusEnum.HOLD] },
         })
         .lean();
       return orders;
