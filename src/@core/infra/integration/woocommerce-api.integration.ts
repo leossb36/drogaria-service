@@ -208,27 +208,14 @@ export class WoocommerceIntegration {
   }
 
   async getOrdersByStatus(): Promise<any> {
-    const consumerKey = this.configService.get('woocommerce').consumerKey;
-    const consumerSecret = this.configService.get('woocommerce').consumerSecret;
-    const url = `${this.configService.get('woocommerce').url}/wp-json/wc/v3`;
-
     try {
-      const response = await lastValueFrom(
-        this.httpService.get(
-          `${url}/orders?status=processing`,
-          {
-            headers: { 'Accept-Encoding': '*' },
-            auth: {
-              username: consumerKey,
-              password: consumerSecret,
-            },
-          },
-        ),
-      )
-     
-      return response.data;
+      const response = await this.woocommerceConfig.get(
+        'orders?status=processing',
+      );
+
+      return response;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
