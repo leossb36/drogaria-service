@@ -28,4 +28,4 @@ jobs:
       run: docker build -t your-image-name .
 
     - name: SSH into server and deploy Docker container
-      run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }} 'docker-compose -f ~/drogaria-service/docker-compose.yml up -d'
+      run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }} 'docker compose -f drogaria-service/docker-compose.yml up -d'
