@@ -1,38 +1,16 @@
-version: '3.5'
+version: "3.8"
 
 services:
-  api-prod:
-    build: .
-    command: npm run start:prod
-    volumes:
-      - .:/app
+  app:
+    container_name: nestjs-app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '${PORT}:${PORT}'
-    networks:
-      - backend
-    env_file:
-      - .env
-
-  api-dev:
-    build: .
-    command: npm run start:dev
-    volumes:
-      - .:/app
-    ports:
-      - '${PORT}:${PORT}'
-    networks:
-      - backend
-    env_file:
-      - .env
-
-  api-debug:
-    build: .
-    command: npm run start:debug
-    volumes:
-      - .:/app
-    ports:
-      - '${PORT}:${PORT}'
-      - '9229:9229'
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    restart: always
     networks:
       - backend
     env_file:
@@ -43,3 +21,4 @@ networks:
   backend:
     name: drogaria_network
     driver: bridge
+

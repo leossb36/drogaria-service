@@ -16,7 +16,6 @@ export class ServerConfig {
   async init() {
     const app = await NestFactory.create(AppModule, { cors: true });
     app.useGlobalInterceptors(new ErrorsInterceptor());
-    app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix(this.configService.get('server').prefix);
     this.swaggerService.init(app);
