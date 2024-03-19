@@ -1,42 +1,31 @@
-name: Node.js CI/CD
+name: Deploy with SSH
 
 on:
   push:
-    branches: ['main']
+    branches:
+      - main
 
 jobs:
-  deploy-pipeline:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Install dependencies
-        run: npm install
+    - name: Login to remote server
+      run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }}
 
-      - name: installing pm2
-        run: npm install pm2@latest -g
+    - name: Pull latest changes from repository
+      run: git pull
 
-      - name: Building Node project
-        run: npm run build --if-present
+    - name: Build Docker image
+      run: docker build -t your-image-name .
 
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: 22
-          script: |
-            cd /root/drogaria-service
-            git pull origin main
-            git status
-            npm install
-            npm run build
-            pm2 restart drogaria-service
+    - name: SSH into server and deploy Docker container
+      run: ssh ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }} 'docker-compose -f ~/drogaria-service/docker-compose.yml up -d'
