@@ -11,7 +11,7 @@ export class QueryFilter {
     const isoDate = timeBefore.toISOString();
     const categories = Object.values(CategoryEnum);
     categories.map((category) => {
-      const odata = `cdFilial eq 1 and inativo eq false and contains(nomeLinha, '${category}') and dtUltimaAlteracao gt ${isoDate}`;
+      const odata = `cdFilial eq 1 and inativo eq false and contains(nomeLinha, '${category}') and dtUltimaAlteracao gt ${isoDate} and vlrTabela gt 0`;
       this.filters.push(odata);
     });
     return this;
