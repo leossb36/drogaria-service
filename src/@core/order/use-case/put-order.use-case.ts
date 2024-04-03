@@ -23,19 +23,16 @@ export class PutOrderUseCase {
     const ordersToUpdate = [];
     for (const order of ordersOnDataBase) {
       await delay(1000);
-      try {
-        const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
-          numeroPedido: order.numeroPedido,
-          cdOrcamento: order.cdOrcamento,
-        });
 
-        if (orderFromVetor && orderFromVetor.situacao !== order.situacao) {
-          ordersToUpdate.push(
-            ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
-          );
-        }
-      } catch (error) {
-        console.log(error);
+      const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
+        numeroPedido: order.numeroPedido,
+        cdOrcamento: order.cdOrcamento,
+      });
+
+      if (orderFromVetor && orderFromVetor.situacao !== order.situacao) {
+        ordersToUpdate.push(
+          ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
+        );
       }
     }
 

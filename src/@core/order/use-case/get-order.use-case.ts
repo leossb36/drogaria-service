@@ -8,17 +8,17 @@ export class GetOrderVetorUseCase {
   constructor(private readonly integration: VetorIntegrationGateway) {}
 
   async execute(query: GetOrderDto): Promise<GetOrderInformationModelView> {
-    try {
-      const response = await this.integration.getOrderInfo(
-        query,
-        '/pedidos/status',
-      );
+    const response = await this.integration.getOrderInfo(
+      query,
+      '/pedidos/status',
+    );
 
-      return {
-        ...response.data.data,
-      };
-    } catch (error) {
-      console.log(error.response.message);
+    if (!response) {
+      return;
     }
+
+    return {
+      ...response.data.data,
+    };
   }
 }
