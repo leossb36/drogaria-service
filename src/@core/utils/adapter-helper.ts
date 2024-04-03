@@ -3,10 +3,7 @@ import { CategoryEnum, CategoryIdsEnum } from '@core/common/enum/category.enum';
 export class AdapterHelper {
   static buildProduct(vetorData) {
     const categoryId = this.formatCategory(vetorData['nomeLinha']);
-    const sku = `${vetorData['cdProduto']}-${vetorData['descricao'].replaceAll(
-      ' ',
-      '-',
-    )}`;
+    const sku = `${vetorData['cdProduto']}`;
     const product = {
       name: vetorData['descricao'],
       slug: vetorData['descricao'].replaceAll(' ', '-'),

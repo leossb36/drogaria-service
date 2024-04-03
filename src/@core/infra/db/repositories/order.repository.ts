@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { OrderStatusEnum } from '@core/common/enum/orderStatus.enum';
-import { OrderDto } from '@core/woocommerce/dto/order.dto';
+import { OrderDto } from '@core/product/dto/order.dto';
 import { Order, OrderDocument } from '../schema/order.schema';
 import { FinishStatusEnum } from '@core/common/enum/woocommerce-status.enum';
 

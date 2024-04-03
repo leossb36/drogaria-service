@@ -1,9 +1,9 @@
 import { ConfigService } from '@config/configuration.config';
 import { delay } from '@core/utils/delay';
-import { GetOrderDto } from '@core/vetor/dto/get-order.dto';
-import { GetProductVetorDto } from '@core/vetor/dto/query-select.dto';
-import { GetCategoryViewModel } from '@core/vetor/mv/get-category.mv';
-import { IProduct } from '@core/vetor/mv/product.mv';
+import { GetOrderDto } from '@core/order/dto/get-order.dto';
+import { GetProductVetorDto } from '@core/order/dto/query-select.dto';
+import { GetCategoryViewModel } from '@core/order/mv/get-category.mv';
+import { IProduct } from '@core/order/mv/product.mv';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
@@ -68,18 +68,18 @@ export class VetorIntegrationGateway {
   }
 
   async getOrderInfo(params: GetOrderDto, endpoint: string): Promise<any> {
+    await delay(1000);
     try {
-      await delay(1000);
-      const { data } = await lastValueFrom(
+      const response = await lastValueFrom(
         this.httpService.get(`${this.baseUrl}${endpoint}`, {
           headers: this.headerRequest,
           params: params,
         }),
       );
 
-      return data;
+      return response;
     } catch (error) {
-      console.error(error.response.data);
+      console.log(error.response.message);
     }
   }
 

@@ -10,8 +10,9 @@ import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import * as mysql from 'mysql2/promise';
 import { CreateImageOnWordpressUseCase } from '@core/wordpress/use-case/create-image-on-wordpress.use-case';
-import { getProductWooCommerceModelView } from '@core/woocommerce/mv/get-product-woo.mv';
-import { createCategoriesDto } from '@core/woocommerce/dto/create-category.dto';
+import { GetProductWoocommerceModelView } from '@core/product/mv/get-product-woo.mv';
+import { createCategoriesDto } from '@core/product/dto/create-category.dto';
+import { PutProductModelView } from '@core/product/mv/put-product.mv';
 
 @Injectable()
 export class WoocommerceIntegration {
@@ -30,7 +31,17 @@ export class WoocommerceIntegration {
     });
   }
 
-  async getAllProducts(): Promise<any> {
+  async getAllProducts(): Promise<GetProductWoocommerceModelView[]> {
+    try {
+      const response = await FetchAllProducts(this.woocommerceConfig);
+      return response;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+    }
+  }
+
+  async getOldProducts(): Promise<any[]> {
     try {
       const response = await FetchAllProducts(this.woocommerceConfig);
       return response;
@@ -155,7 +166,7 @@ export class WoocommerceIntegration {
   }
 
   async createProductBatch(
-    products: getProductWooCommerceModelView[],
+    products: GetProductWoocommerceModelView[],
   ): Promise<any> {
     const data = {
       create: products.map((product) => ({
@@ -235,7 +246,7 @@ export class WoocommerceIntegration {
     }
   }
 
-  async updateProductBatch(products: any) {
+  async updateProductBatch(products: any): Promise<PutProductModelView[]> {
     const data = {
       update: [...products],
     };
@@ -244,7 +255,7 @@ export class WoocommerceIntegration {
         'products/batch',
         data,
       );
-      return response;
+      return response?.data?.update;
     } catch (error) {
       console.error(error.response.headers);
       console.error(error.response.data);
