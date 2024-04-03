@@ -1,7 +1,6 @@
 import { CreateImageOnWordpressUseCase } from '@core/wordpress/use-case/create-image-on-wordpress.use-case';
 import { VetorIntegrationGateway } from '@core/infra/integration/vetor-api.integration';
 import { WoocommerceIntegration } from './integration/woocommerce-api.integration';
-import { WordpressIntegration } from './integration/wordpress-api.Integration';
 import { SerpApiIntegration } from '@core/infra/integration/serp-api.integration';
 import { Module } from '@nestjs/common';
 
@@ -10,7 +9,6 @@ import { Module } from '@nestjs/common';
     CreateImageOnWordpressUseCase,
     VetorIntegrationGateway,
     WoocommerceIntegration,
-    WordpressIntegration,
     SerpApiIntegration,
     {
       provide: 'axiosSerp',
