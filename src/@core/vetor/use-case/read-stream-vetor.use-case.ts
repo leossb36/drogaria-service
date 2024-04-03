@@ -18,10 +18,7 @@ export class ReadStreamVetorUseCase {
         .on('data', (data) => {
           if (Object.values(CategoryEnum).includes(data['nomeLinha'])) {
             const categoryId = this.formatCategory(data['nomeLinha']);
-            const sku = `${data['cdProduto']}-${data['descricao'].replaceAll(
-              ' ',
-              '-',
-            )}`;
+            const sku = `${data['cdProduto']}`;
             const product = this.buildProducts(data, categoryId, sku);
             result.push(product);
           }
