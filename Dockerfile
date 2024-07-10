@@ -1,14 +1,10 @@
-
-FROM node:18
-
-RUN npm install -g npm@latest
+FROM node:18-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY tsconfig.* ./
 
-RUN npm install
+RUN npm install --production
 
 COPY . .
 
@@ -16,4 +12,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
