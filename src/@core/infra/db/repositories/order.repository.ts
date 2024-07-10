@@ -5,6 +5,7 @@ import { OrderStatusEnum } from '@core/common/enum/orderStatus.enum';
 import { OrderDto } from '@core/woocommerce/dto/order.dto';
 import { Order, OrderDocument } from '../schema/order.schema';
 import { FinishStatusEnum } from '@core/common/enum/woocommerce-status.enum';
+import { GetOrderModelView } from '@core/woocommerce/mv/get-order.mv';
 
 @Injectable()
 export class OrderRepository {
@@ -78,6 +79,12 @@ export class OrderRepository {
     }
   }
 
+  async getByOrderId(numeroPedido: string): Promise<GetOrderModelView> {
+    const query = await this.orderModel.findOne({ numeroPedido }).lean();
+
+    return query;
+  }
+
   async updateOrderBatch(orders: any[]): Promise<any> {
     try {
       const updateOperations = orders.map((order) => {
@@ -92,8 +99,7 @@ export class OrderRepository {
         };
       });
 
-      const result = await this.orderModel.bulkWrite(updateOperations);
-      return result;
+      return await this.orderModel.bulkWrite(updateOperations);
     } catch (error) {
       throw new BadRequestException('Cannot find order with this id');
     }
@@ -132,5 +138,20 @@ export class OrderRepository {
     } catch (error) {
       throw new BadRequestException('Cannot find order with this id');
     }
+  }
+
+  async updateOrder(order: any) {
+    const updatedOrder = await this.orderModel
+      .updateOne(
+        { numeroPedido: order.data.id },
+        {
+          $set: {
+            status: order.data.status,
+          },
+        },
+      )
+      .lean();
+
+    return updatedOrder.modifiedCount;
   }
 }

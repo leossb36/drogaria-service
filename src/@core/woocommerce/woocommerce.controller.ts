@@ -10,6 +10,7 @@ import { createWooOrderDto } from './dto/create-woo-order.dto';
 import { OrderService } from '@core/schedule/order.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductService } from '@core/schedule/product.service';
+import { GetWebhookDto } from './dto/webhook.dto';
 
 @ApiTags('Woocommerce')
 @Controller('woocommerce')
@@ -101,9 +102,9 @@ export class WoocommerceController {
     return await this.orderService.sendOrderToVetor();
   }
 
-  @Put('/order/update')
-  async updateOrderBatch(): Promise<any> {
-    return await this.woocommerceService.updateOrders();
+  @Put('/pedidos/notificar')
+  async updateOrderBatch(@Body() webhook: GetWebhookDto): Promise<number> {
+    return await this.woocommerceService.updateOrders(webhook);
   }
   @Post('category')
   async createCategory(): Promise<createWooCategoryModelView> {

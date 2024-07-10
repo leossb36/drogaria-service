@@ -1,4 +1,4 @@
-import { StatusEnum } from '@core/common/enum/status.enum';
+import { StatusEnum, VetorStatusEnum } from '@core/common/enum/status.enum';
 import { WoocommerceStatusEnum } from '@core/common/enum/woocommerce-status.enum';
 
 export class ValidationHelper {
@@ -62,6 +62,33 @@ export class ValidationHelper {
           id,
           status: WoocommerceStatusEnum.REFUNDED,
         };
+      default:
+        return;
+    }
+  }
+
+  static setOrderStatus(status: string) {
+    switch (status) {
+      case VetorStatusEnum.NOT_FOUND:
+        return WoocommerceStatusEnum.FAILED;
+      case VetorStatusEnum.PENDING:
+        return WoocommerceStatusEnum.PENDING;
+      case VetorStatusEnum.ON_SEPARATE:
+        return WoocommerceStatusEnum.ON_HOLD;
+      case VetorStatusEnum.CONFERENCE:
+        return WoocommerceStatusEnum.ON_HOLD;
+      case VetorStatusEnum.FATURED:
+        return WoocommerceStatusEnum.ON_HOLD;
+      case VetorStatusEnum.DISPACH:
+        return WoocommerceStatusEnum.ON_HOLD;
+      case VetorStatusEnum.RECEIVED:
+        return WoocommerceStatusEnum.COMPLETED;
+      case VetorStatusEnum.NOT_DONE:
+        return WoocommerceStatusEnum.FAILED;
+      case VetorStatusEnum.CANCELED:
+        return WoocommerceStatusEnum.CANCELLED;
+      case VetorStatusEnum.SEND_BACK:
+        return WoocommerceStatusEnum.REFUNDED;
       default:
         return;
     }

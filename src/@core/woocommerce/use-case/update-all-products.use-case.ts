@@ -20,6 +20,7 @@ export class UpdateAllProductsFromVetor {
     ]);
 
     const productsToUpdate = [];
+
     for (const item of readStreamProducts) {
       try {
         const referenceItem = productsFromWooCommerce.find(
@@ -34,6 +35,32 @@ export class UpdateAllProductsFromVetor {
             regular_price: item.vlrTabela.toFixed(2),
             sale_price: item.vlrOferta.toFixed(2),
             stock_quantity: item.qtdEstoque,
+            attributes: [
+              {
+                id: 0,
+                name: 'BARCODE',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: false,
+                variation: true,
+              },
+              {
+                id: 0,
+                name: 'EAN',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: true,
+                variation: true,
+              },
+              {
+                id: 0,
+                name: 'GTIN',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: true,
+                variation: true,
+              },
+            ],
           });
         } else if (referenceItem && item.qtdEstoque <= 0) {
           productsToUpdate.push({
@@ -43,6 +70,32 @@ export class UpdateAllProductsFromVetor {
             regular_price: referenceItem.price,
             sale_price: referenceItem.sale_price,
             stock_quantity: item.qtdEstoque,
+            attributes: [
+              {
+                id: 0,
+                name: 'BARCODE',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: false,
+                variation: true,
+              },
+              {
+                id: 0,
+                name: 'EAN',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: false,
+                variation: true,
+              },
+              {
+                id: 0,
+                name: 'GTIN',
+                options: [item.codigoBarras],
+                position: 0,
+                visible: false,
+                variation: true,
+              },
+            ],
           });
         } else if (!referenceItem) {
           continue;

@@ -20,6 +20,7 @@ import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-ca
 import { RetryScrapImageProductUseCase } from './use-case/retry-create-image-product.use-case';
 import { UpdateImageProductUseCase } from './use-case/update-image-product.use-case';
 import { DeleteProductsUseCase } from './use-case/delete-products.use-case';
+import { GetOrderUseCase } from '@core/vetor/use-case/get-order.use-case';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { DeleteProductsUseCase } from './use-case/delete-products.use-case';
     GetProductUseCase,
     ProductService,
     OrderService,
+    GetOrderUseCase,
   ],
   controllers: [WoocommerceController],
   exports: [],

@@ -12,6 +12,8 @@ import * as mysql from 'mysql2/promise';
 import { CreateImageOnWordpressUseCase } from '@core/wordpress/use-case/create-image-on-wordpress.use-case';
 import { getProductWooCommerceModelView } from '@core/woocommerce/mv/get-product-woo.mv';
 import { createCategoriesDto } from '@core/woocommerce/dto/create-category.dto';
+import { GetWebhookDto } from '@core/woocommerce/dto/webhook.dto';
+import { ValidationHelper } from '@core/utils/validation-helper';
 
 @Injectable()
 export class WoocommerceIntegration {
@@ -58,6 +60,25 @@ export class WoocommerceIntegration {
     } catch (error) {
       console.error(error.response.headers);
       console.error(error.response.data);
+    }
+  }
+
+  async updateOrderStatus(
+    orderId: number,
+    webhook: GetWebhookDto,
+  ): Promise<any> {
+    try {
+      const orderStatus = ValidationHelper.setOrderStatus(webhook.status);
+      const data = {
+        status: orderStatus,
+      };
+      const response = await this.woocommerceConfig.put(
+        `orders/${orderId}`,
+        data,
+      );
+      return response;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -248,6 +269,38 @@ export class WoocommerceIntegration {
     } catch (error) {
       console.error(error.response.headers);
       console.error(error.response.data);
+    }
+  }
+
+  async updateAttributes(products: any[]): Promise<any> {
+    const updateData = products.map((product) => ({
+      id: product.id,
+      meta_data: [
+        {
+          id: 1,
+          key: 'EAN',
+        },
+        {
+          id: 2,
+          key: 'GTIN',
+        },
+      ],
+    }));
+
+    const data = {
+      update: updateData,
+    };
+
+    try {
+      const response = await this.woocommerceConfig.post(
+        'products/batch',
+        data,
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error.response.headers);
+      console.error(error.response.data);
+      throw error;
     }
   }
 

@@ -11,6 +11,19 @@ export enum StatusEnum {
   SEND_BACK = 9, //Devolvido
 }
 
+export enum VetorStatusEnum {
+  NOT_FOUND = 'Não encontrado', // Não encontrado
+  PENDING = 'Pendente', // Pendente
+  ON_SEPARATE = 'Em separação', // Em separação
+  CONFERENCE = 'Conferência', // Conferência
+  FATURED = 'Faturado', // Faturado
+  DISPACH = 'Despachado', //Despachado
+  RECEIVED = 'Entregue', //Entregue
+  NOT_DONE = 'Entrega não realizada', //Entrega não realizada
+  CANCELED = 'Cancelado', //Cancelado
+  SEND_BACK = 'Devolvido', //Devolvido
+}
+
 export enum StatusEnumTerminated {
   NOT_FOUND = 0, // Não encontrado
   RECEIVED = 6, //Entregue

@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GetOrderOnDataBaseUseCase } from './use-case/get-order-on-database.use-case';
 import { UpdatedOrderStatusUseCase } from './use-case/update-order-status.use-case';
-import { GetOrderVetorUseCase } from '@core/vetor/use-case/get-order-vetor.use-case';
-import { ValidationHelper } from '@core/utils/validation-helper';
 import { RetryScrapImageProductUseCase } from './use-case/retry-create-image-product.use-case';
 import { UpdateImageProductUseCase } from './use-case/update-image-product.use-case';
 import { ReadStreamVetorUseCase } from '@core/vetor/use-case/read-stream-vetor.use-case';
@@ -15,23 +12,23 @@ import { DeleteProductsUseCase } from './use-case/delete-products.use-case';
 import { UpdateAllProductsFromVetor } from './use-case/update-all-products.use-case';
 import { ProductRepository } from '@core/infra/db/repositories/product.repository';
 import { ScrapImagesUseCase } from './use-case/scrap-image-to-product.use-case';
-import { delay } from '@core/utils/delay';
+import { GetWebhookDto } from './dto/webhook.dto';
+import { GetOrderUseCase } from '@core/vetor/use-case/get-order.use-case';
 
 @Injectable()
 export class WoocommerceService {
   constructor(
     private readonly retryScrapImageProductUseCase: RetryScrapImageProductUseCase,
-    private readonly getOrderOnDataBaseUseCase: GetOrderOnDataBaseUseCase,
     private readonly updateImageProductUseCase: UpdateImageProductUseCase,
-    private readonly updateOrderStatusUseCase: UpdatedOrderStatusUseCase,
-    private readonly getOrderOnVetorUseCase: GetOrderVetorUseCase,
     private readonly readStreamVetorUseCase: ReadStreamVetorUseCase,
     private readonly getProductsFromWoocommerceUseCase: GetProductsFromWoocommerceUseCase,
     private readonly woocommerceIntegration: WoocommerceIntegration,
     private readonly deleteProductsUseCase: DeleteProductsUseCase,
     private readonly updateAllProductsFromVetor: UpdateAllProductsFromVetor,
+    private readonly updateOrderStatusUseCase: UpdatedOrderStatusUseCase,
     private readonly productRepository: ProductRepository,
     private readonly scrapImagesUseCase: ScrapImagesUseCase,
+    private readonly getOrderUseCase: GetOrderUseCase,
   ) {}
 
   async createProductRoutineOnWoocommerce(): Promise<any> {
@@ -215,48 +212,22 @@ export class WoocommerceService {
     return await this.productRepository.deleteAllWithoutImage();
   }
 
-  async updateOrders(): Promise<any> {
-    const ordersOnDataBase = await this.getOrderOnDataBaseUseCase.execute();
+  async updateOrders(webhook: GetWebhookDto): Promise<number> {
+    const order = await this.getOrderUseCase.execute(webhook);
 
-    if (!ordersOnDataBase.length) {
-      return this.emptyCallbackResponse(ordersOnDataBase.length);
+    if (!order) {
+      return 0;
     }
 
-    const ordersToUpdate = [];
-    for (const order of ordersOnDataBase) {
-      await delay(1000);
-      try {
-        const orderFromVetor = await this.getOrderOnVetorUseCase.execute({
-          numeroPedido: order.numeroPedido,
-          cdOrcamento: order.cdOrcamento,
-        });
+    const response = await this.woocommerceIntegration.updateOrderStatus(
+      order.numeroPedido,
+      webhook,
+    );
 
-        if (orderFromVetor && orderFromVetor.situacao !== order.situacao) {
-          ordersToUpdate.push(
-            ValidationHelper.setStatus(orderFromVetor, order.numeroPedido),
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    if (!response) {
+      return 0;
     }
 
-    if (!ordersToUpdate.length) {
-      return {
-        count: 0,
-        status: 200,
-        message: 'There is no order to update',
-      };
-    }
-
-    return await this.updateOrderStatusUseCase.execute(ordersToUpdate);
-  }
-
-  private emptyCallbackResponse(count: number) {
-    return {
-      count,
-      status: 200,
-      message: 'Cannot find any order to update',
-    };
+    return await this.updateOrderStatusUseCase.execute(response);
   }
 }

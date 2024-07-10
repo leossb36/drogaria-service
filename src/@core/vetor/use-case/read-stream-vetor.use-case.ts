@@ -105,10 +105,26 @@ export class ReadStreamVetorUseCase {
       attributes: [
         {
           id: 0,
-          name: 'codeBar',
+          name: 'BARCODE',
           options: [data['codigoBarras']],
           position: 0,
           visible: false,
+          variation: true,
+        },
+        {
+          id: 0,
+          name: 'EAN',
+          options: [data['codigoBarras']],
+          position: 0,
+          visible: true,
+          variation: true,
+        },
+        {
+          id: 0,
+          name: 'GTIN',
+          options: [data['codigoBarras']],
+          position: 0,
+          visible: true,
           variation: true,
         },
       ],
