@@ -1,0 +1,7 @@
+.prettierignore
+public/
+.gitignore
+.husky/
+Dockerfile
+docker-compose.yml
+package-lock.json

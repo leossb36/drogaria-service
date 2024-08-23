@@ -1,18 +1,18 @@
-import { HttpModule } from '@nestjs/axios';
-import { Global, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { ConfigService } from './configuration.config';
+import { ConfigService } from './configuration.config'
+import { Global, Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { HttpModule } from '@nestjs/axios'
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', '.env.development', '.env.production'],
+      envFilePath: ['.env', '.env.development', '.env.production']
     }),
-    HttpModule,
+    HttpModule
   ],
   providers: [ConfigService],
-  exports: [HttpModule, ConfigService],
+  exports: [HttpModule, ConfigService]
 })
 export class InfraModule {}

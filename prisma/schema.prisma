@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type OrdersItems {
+  vetorId       Int
+  woocommerceId Int
+}
+
+type ProductsAttributes {
+  id        Int
+  name      String
+  position  Int
+  variation Boolean
+  visible   Boolean
+}
+
+type ProductsImages {
+  src String
+}
+
+model categories {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  woocommerceId Int
+  slug          String?
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  deleted_at DateTime?
+
+  categoryProduct String[]   @db.ObjectId
+  products        products[] @relation(fields: [categoryProduct], references: [id])
+}
+
+model orders {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  cdOrcamento  Int
+  numeroPedido Int
+  situacao     Int
+  status       String
+
+  items OrdersItems[]
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  deleted_at DateTime?
+}
+
+model products {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  backordered        Boolean?
+  backorders         String?
+  backorders_allowed Boolean?
+  description        String?
+  downloadable       Boolean?
+  has_options        Boolean?
+  manage_stock       Boolean?
+  name               String?
+  on_sale            Boolean?
+  price              String?
+  purchasable        Boolean?
+  regular_price      String?
+  reviews_allowed    Boolean?
+  sale_price         String?
+  shipping_required  Boolean?
+  shipping_taxable   Boolean?
+  short_description  String?
+  sku                String?
+  slug               String?
+  sold_individually  Boolean?
+  stock_quantity     Int?
+  stock_status       String?
+  tax_status         String?
+  virtual            Boolean?
+
+  attributes        ProductsAttributes[]
+  categories        categories[]         @relation(fields: [productCategories], references: [id])
+  productCategories String[]             @db.ObjectId
+  images            ProductsImages[]
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  deleted_at DateTime?
+}
