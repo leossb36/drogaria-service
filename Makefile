@@ -13,7 +13,6 @@ run:
 
 down:
 	@echo "Parando e removendo containers, volumes e imagens desnecessários..."
-	sudo docker compose down --volumes && \
 	sudo docker container prune --force && \
 	sudo docker image prune --all --force && \
 	sudo docker builder prune --all --force && \
