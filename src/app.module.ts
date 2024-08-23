@@ -6,11 +6,13 @@ import { PrismaModule } from './infra/db/prisma/prisma.module'
 import { SwaggerModule } from '@common/swagger/swagger.module'
 import { OrderModule } from './modules/orders/orders.module'
 import { InfraModule } from '@config/infra.module'
+import { ScheduleModule } from '@nestjs/schedule'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { Module } from '@nestjs/common'
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     GracefulShutdownModule.forRoot(),
     InfraModule,
     SwaggerModule,

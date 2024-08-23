@@ -56,11 +56,11 @@ export class OrderRepository {
     }
   }
 
-  async getOrders(ids: string[]): Promise<orders[]> {
+  async getOrders(ids: number[]): Promise<orders[]> {
     try {
       const orders = await this.prisma.orders.findMany({
         where: {
-          id: {
+          numeroPedido: {
             in: ids
           }
         }
